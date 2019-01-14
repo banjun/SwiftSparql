@@ -29,14 +29,14 @@ private func fetch<T: Codable>(_ query: Query) -> Future<[T], QueryError> {
 struct IdolHeight: Codable {
     var name: ResponseLiteral<String>
     var height: ResponseLiteral<Double>
-    var color: ResponseLiteral<String>
+    var color: ResponseLiteral<String>?
 }
 
 class IdolHeightView: NSView {
     let idols: [IdolHeight]
     init(idols: [IdolHeight]) {
         self.idols = idols
-        super.init(frame: NSRect(x: 0, y: 0, width: 512, height: 512))
+        super.init(frame: NSRect(x: 0, y: 0, width: 700, height: 512))
         wantsLayer = true
         layer?.backgroundColor = NSColor.white.cgColor
 
@@ -47,7 +47,7 @@ class IdolHeightView: NSView {
             tf.shadow = NSShadow()
             tf.shadow?.shadowBlurRadius = 0.25
             tf.shadow?.shadowColor = .black
-            let hexColor = Int(idol.color.value, radix: 16)
+            let hexColor = idol.color.flatMap {Int($0.value, radix: 16)}
             tf.textColor = hexColor.map {NSColor(
                 calibratedRed: CGFloat($0 >> 16 & 0xff) / 255,
                 green: CGFloat($0 >> 8 & 0xff) / 255,
@@ -66,7 +66,7 @@ class IdolHeightView: NSView {
     override func layout() {
         super.layout()
         subviews.compactMap {$0 as? NSTextField}.forEach {
-            $0.layer?.transform = CATransform3DMakeRotation(-.pi * 2 / 8, 0, 0, 1)
+            $0.layer?.transform = CATransform3DMakeRotation(-.pi * 0.3, 0, 0, 1)
         }
     }
 
@@ -108,7 +108,8 @@ let query = Query(
             .triple(varS, .init((imas, "Title")), [.varOrTerm(.term(.rdf(.init(string: "CinderellaGirls", lang: "en"))))]),
             .triple(varS, .init((schema, "name")), [.varOrTerm(varName)]),
             .triple(varS, .init((schema, "height")), [.varOrTerm(varHeight)]),
-            .triple(varS, .init((imas, "Color")), [.varOrTerm(varColor)]),
+            .notTriple(.OptionalGraphPattern(.groupGraphPatternSub(GroupGraphPatternSub(patterns: [
+                .triple(varS, .init((imas, "Color")), [.varOrTerm(varColor)])])))),
             ]),
         having: [.logical(NumericExpression("?height") <= 149)],
         order: [.var("?height")],
