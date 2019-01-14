@@ -85,6 +85,19 @@ class ViewController: NSViewController {
         NSLog("%@", "mayukiki = \n\n\(Serializer.serialize(mayukiki))")
         print("\n\n\n")
 
+        let mayukiki2 = Query(prologues: prologues, select: SelectQuery(
+            capture: .vars(["?利き手", "?名前"]),
+            where: WhereClause(patterns: [
+                .triple(.var("?s"), .path((PNameNS(value: "schema"), "name") | (PNameNS(value: "schema"), "alternateName")), [.varOrTerm(.var("?name"))]),
+                .triple(.var("?s"), .init((PNameNS(value: "imas"), "Handedness")), [.varOrTerm(.var("?利き手"))]),
+                .notTriple(.Filter(.builtInCall(.regex(.init(.STR(.init("?name"))), "まゆ", nil)))),
+                .triple(.var("?idol"), .init((PNameNS(value: "imas"), "Handedness")), [.varOrTerm(.var("?利き手"))]),
+                .triple(.var("?idol"), .init((PNameNS(value: "schema"), "name")), [.varOrTerm(.var("?名前"))]),
+                ]),
+            limit: .limit(10)))
+        NSLog("%@", "mayukiki2 = \n\n\(Serializer.serialize(mayukiki2))")
+        print("\n\n\n")
+
         let liveSongs = Query(prologues: prologues, select: SelectQuery(
             capture: .expressions([("?回数", .init(.count(distinct: false, expression: .init("?name")))),
                                    ("?楽曲名", .init(.sample(distinct: false, expression: .init("?name"))))]),
