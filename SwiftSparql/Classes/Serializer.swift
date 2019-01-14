@@ -141,7 +141,7 @@ public enum Serializer {
     }
 
     public static func serialize(_ v: RDFLiteral) -> String {
-        return "\"\(v.string)\""
+        return "\"\(v.string)\"\(v.lang.map {"@" + $0} ?? "")"
     }
 
     public static func serialize(_ v: Int) -> String {

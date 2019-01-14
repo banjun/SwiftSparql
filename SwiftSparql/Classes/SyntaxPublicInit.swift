@@ -137,5 +137,10 @@ public extension PropertyListPathNotEmpty.Verb {
     }
 }
 
+extension RDFLiteral: ExpressibleByStringLiteral {
+    public init(stringLiteral value: String) {
+        self.init(string: value)
+    }
+}
 
 

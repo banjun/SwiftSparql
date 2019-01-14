@@ -234,6 +234,13 @@ public typealias PNameLN = (PNameNS, String)
 /// RDFLiteral      ::=      String ( LANGTAG | ( '^^' iri ) )?
 public struct RDFLiteral {
     public var string: String
+    public var lang: String?
+
+    // public memberwise init
+    public init(string: String, lang: String? = nil) {
+        self.string = string
+        self.lang = lang
+    }
 }
 
 /// Var      ::=      VAR1 | VAR2
