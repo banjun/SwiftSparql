@@ -64,5 +64,43 @@ class ViewController: NSViewController {
             order: [.var("?ユニット名")],
             limit: .limit(10)))
         NSLog("%@", "unitMembers = \n\n\(Serializer.serialize(unitMembers))")
+        print("\n\n\n")
+
+        let mayukiki = Query(prologues: prologues, select: SelectQuery(
+            capture: .vars(["?利き手", "?名前"]),
+            where: WhereClause(
+                first: TriplesBlock(
+                    triplesSameSubjectPath: .varOrTerm(
+                        .var("?s"),
+                        .init(verb: .path((PNameNS(value: "schema"), "name") | (PNameNS(value: "schema"), "alternateName")), objectListPath: [.varOrTerm(.var("?name"))],
+                              successors: [(.init((PNameNS(value: "imas"), "Handedness")), [.varOrTerm(.var("?利き手"))])])),
+                    triplesBlock: nil),
+                successors: [(.Filter(.builtInCall(.regex(.init(.STR(.init("?name"))), "まゆ", nil))), TriplesBlock(
+                    triplesSameSubjectPath: TriplesSameSubjectPath.varOrTerm(
+                        .var("?idol"),
+                        .init(verb: .init((PNameNS(value: "imas"), "Handedness")), objectListPath: [.varOrTerm(.var("?利き手"))],
+                              successors: [(.init((PNameNS(value: "schema"), "name")), [.varOrTerm(.var("?名前"))])])),
+                    triplesBlock: nil))]),
+            limit: .limit(10)))
+        NSLog("%@", "mayukiki = \n\n\(Serializer.serialize(mayukiki))")
+        print("\n\n\n")
+
+        let liveSongs = Query(prologues: prologues, select: SelectQuery(
+            capture: .expressions([("?回数", .init(.count(distinct: false, expression: .init("?name")))),
+                                   ("?楽曲名", .init(.sample(distinct: false, expression: .init("?name"))))]),
+            where: WhereClause(
+                first: TriplesBlock(
+                    triplesSameSubjectPath: .varOrTerm(
+                        .var("?s"),
+                        .init(verb: .init((PNameNS(value: "rdf"), "type")), objectListPath: [.varOrTerm(.term(.iri(.prefixedName(.ln((PNameNS(value: "imas"), "SetlistNumer"))))))],
+                              successors: [(.init((PNameNS(value: "schema"), "name")), [.varOrTerm(.var("?name"))])])),
+                    triplesBlock: nil),
+                successors: []),
+            group: [.var("?name")],
+            having: [.logical(NumericExpression("?回数") > 4)],
+            order: [.desc(.init("?回数"))],
+            limit: .limit(10)))
+        NSLog("%@", "liveSongs = \n\n\(Serializer.serialize(liveSongs))")
+        print("\n\n\n")
     }
 }

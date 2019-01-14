@@ -141,7 +141,7 @@ public enum Serializer {
     }
 
     public static func serialize(_ v: RDFLiteral) -> String {
-        return v.string
+        return "\"\(v.string)\""
     }
 
     public static func serialize(_ v: Int) -> String {
@@ -279,12 +279,12 @@ public enum Serializer {
 
     public static func serialize(_ v: BuiltInCall) -> String {
         switch v {
-        case .count(let distinct, let expression): return "COUNT(\(distinct ? "DISTINCT " : "") \(expression.map(serialize) ?? "*"))"
-        case .sum(let distinct, let expression): return "SUM(\(distinct ? "DISTINCT " : "") \(serialize(expression)))"
-        case .min(let distinct, let expression): return "MIN(\(distinct ? "DISTINCT " : "") \(serialize(expression)))"
-        case .max(let distinct, let expression): return "MAX(\(distinct ? "DISTINCT " : "") \(serialize(expression)))"
-        case .average(let distinct, let expression): return "AVERAGE(\(distinct ? "DISTINCT " : "") \(serialize(expression)))"
-        case .sample(let distinct, let expression): return "SAMPLE(\(distinct ? "DISTINCT " : "") \(serialize(expression)))"
+        case .count(let distinct, let expression): return "COUNT(\(distinct ? "DISTINCT " : "")\(expression.map(serialize) ?? "*"))"
+        case .sum(let distinct, let expression): return "SUM(\(distinct ? "DISTINCT " : "")\(serialize(expression)))"
+        case .min(let distinct, let expression): return "MIN(\(distinct ? "DISTINCT " : "")\(serialize(expression)))"
+        case .max(let distinct, let expression): return "MAX(\(distinct ? "DISTINCT " : "")\(serialize(expression)))"
+        case .average(let distinct, let expression): return "AVERAGE(\(distinct ? "DISTINCT " : "")\(serialize(expression)))"
+        case .sample(let distinct, let expression): return "SAMPLE(\(distinct ? "DISTINCT " : "")\(serialize(expression)))"
         case .groupConcat(let distinct, let expression, let separator): return "GROUP_CONCAT(\(distinct ? "DISTINCT " : "")\(serialize(expression))\(separator.map {"; SEPARATOR = \"\($0)\""} ?? ""))"
         case .STR(let e): return "STR(\(serialize(e)))"
         case .LANG(let e): return "LANG(\(serialize(e)))"
@@ -364,7 +364,7 @@ public enum Serializer {
     public static func serialize(_ v: GroupGraphPatternSub) -> String {
         return [
             v.first.map {[serialize($0)]} ?? [],
-            v.successors.map {[serialize($0), ".", $1.map(serialize)].compactMap {$0}.joined(separator: " ")}
+            v.successors.map {[serialize($0), ".\n", $1.map(serialize)].compactMap {$0}.joined(separator: " ")}
             ].flatMap {$0}.joined(separator: " ")
     }
 
@@ -448,7 +448,7 @@ public enum Serializer {
             [serialize(v.verb)],
             [serialize(v.objectListPath)],
             v.successors.map {[";\n    ", serialize($0), serialize($1)].joined(separator: " ")},
-            ["."]
+            [".\n"]
             ].flatMap {$0}.joined(separator: " ")
     }
 

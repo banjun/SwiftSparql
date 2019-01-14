@@ -32,9 +32,13 @@ public extension SelectClause.Capture {
     }
 }
 
-public extension Expression {
+extension Expression: ExpressibleByStringLiteral {
     public init(_ v: Var) {
         self.ands = [ConditionalAndExpression(valueLogicals: [.init(v)])]
+    }
+
+    public init(_ v: ValueLogical) {
+        self.ands = [ConditionalAndExpression(valueLogicals: [v])]
     }
 
     public init(_ pe: PrimaryExpression) {
@@ -44,6 +48,10 @@ public extension Expression {
     public init(_ v: BuiltInCall) {
         self.init(.builtInCall(v))
     }
+
+    public init(stringLiteral value: String) {
+        self.init(PrimaryExpression.rdfLiteral(.init(string: value)))
+    }
 }
 
 public extension ValueLogical {
@@ -52,9 +60,27 @@ public extension ValueLogical {
     }
 }
 
+public func == (lhs: NumericExpression, rhs: NumericExpression) -> ValueLogical { return .eq(lhs, rhs) }
+public func != (lhs: NumericExpression, rhs: NumericExpression) -> ValueLogical { return .neq(lhs, rhs) }
+public func < (lhs: NumericExpression, rhs: NumericExpression) -> ValueLogical { return .lt(lhs, rhs) }
+public func > (lhs: NumericExpression, rhs: NumericExpression) -> ValueLogical { return .gt(lhs, rhs) }
+public func <= (lhs: NumericExpression, rhs: NumericExpression) -> ValueLogical { return .lte(lhs, rhs) }
+public func >= (lhs: NumericExpression, rhs: NumericExpression) -> ValueLogical { return .gte(lhs, rhs) }
+
+public extension Constraint {
+    public static func logical(_ v: ValueLogical) -> Constraint {
+        return .brackettedExpression(.init(v))
+    }
+}
+
 public extension NumericExpression {
     public init(_ v: Var) {
         self = .single((.simple(.var(v)), []))
+    }
+}
+extension NumericExpression: ExpressibleByIntegerLiteral {
+    public init(integerLiteral value: Int) {
+        self = .single((.simple(.numericLiteral(.integer(value))), []))
     }
 }
 
