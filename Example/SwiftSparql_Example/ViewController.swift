@@ -115,5 +115,24 @@ class ViewController: NSViewController {
             limit: .limit(10)))
         NSLog("%@", "liveSongs = \n\n\(Serializer.serialize(liveSongs))")
         print("\n\n\n")
+
+        let varS = VarOrTerm.var("?s")
+        let varName = VarOrTerm.var("?name")
+        let varHeight = Var("?身長")
+        let rdfType = PropertyListPathNotEmpty.Verb((PNameNS(value: "rdf"), "type"))
+        let schemaName = PropertyListPathNotEmpty.Verb((PNameNS(value: "schema"), "name"))
+        let schemaHeight = PropertyListPathNotEmpty.Verb((PNameNS(value: "schema"), "height"))
+        let imasIdol = ObjectPath.varOrTerm(.term(.iri(.prefixedName(.ln((PNameNS(value: "imas"), "Idol"))))))
+        let idolNames = Query(prologues: prologues, select: SelectQuery(
+            where: WhereClause(patterns: [
+                .triple(varS, rdfType, [imasIdol]),
+                .triple(varS, schemaName, [.varOrTerm(varName)]),
+                .triple(varS, schemaHeight, [.varOrTerm(.var(varHeight))]),
+                ]),
+            having: [.logical(NumericExpression(varHeight) <= 149)],
+            order: [.constraint(.builtInCall(.RAND))],
+            limit: .limit(10)))
+        NSLog("%@", "idolNames = \n\n\(Serializer.serialize(idolNames))")
+        print("\n\n\n")
     }
 }
