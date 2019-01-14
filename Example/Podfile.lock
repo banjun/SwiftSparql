@@ -1,0 +1,16 @@
+PODS:
+  - SwiftSparql (0.1.0)
+
+DEPENDENCIES:
+  - SwiftSparql (from `../`)
+
+EXTERNAL SOURCES:
+  SwiftSparql:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  SwiftSparql: 1335d8ffc29e93dcbddc586fb1c10b307a1ce3e8
+
+PODFILE CHECKSUM: 15389d1227343c813c04c135a10e0d4f3a48cb9f
+
+COCOAPODS: 1.5.3
