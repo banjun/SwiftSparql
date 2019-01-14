@@ -1,5 +1,29 @@
 import Cocoa
 import SwiftSparql
+import BrightFutures
+
+enum QueryError: Error {
+    case urlSession(Error?)
+    case decode(Error)
+}
+
+private func fetch<T: Codable>(_ query: Query) -> Future<[T], QueryError> {
+    let endpoint = URL(string: "https://sparql.crssnky.xyz/spql/imas/query")!
+    return Future<[T], QueryError> { resolve in
+        URLSession.shared.dataTask(with: Request(endpoint: endpoint, query: query).request) { data, response, error in
+            guard let data = data else {
+                return resolve(.failure(.urlSession(error)))
+            }
+
+            do {
+                let r = try JSONDecoder().decode(Response<T>.self, from: data)
+                resolve(.success(r.results.bindings))
+            } catch {
+                return resolve(.failure(.decode(error)))
+            }
+            }.resume()
+    }
+}
 
 class ViewController: NSViewController {
     override func viewDidLoad() {
@@ -134,5 +158,32 @@ class ViewController: NSViewController {
             limit: .limit(10)))
         NSLog("%@", "idolNames = \n\n\(Serializer.serialize(idolNames))")
         print("\n\n\n")
+
+        fetch(liveSongs).onSuccess { (songs: [LiveSong]) in
+            NSLog("%@", "query response: songs = \(songs)")
+            }
+            .onFailure {NSLog("%@", String(describing: $0))}
+
+        fetch(idolNames)
+            .onSuccess { (idols: [IdolHeight]) in
+                NSLog("%@", "query response: idols = \(idols)")
+            }
+            .onFailure {NSLog("%@", String(describing: $0))}
+    }
+}
+
+struct LiveSong: Codable {
+    var 楽曲名: ResponseLiteral<String>
+    var 回数: ResponseLiteral<Int>
+}
+
+struct IdolHeight: Codable {
+    var name: String
+    var 身長: Double
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        name = try container.decode(ResponseLiteral<String>.self, forKey: .name).value
+        身長 = try container.decode(ResponseLiteral<Double>.self, forKey: .身長).value
     }
 }

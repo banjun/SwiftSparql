@@ -1,16 +1,27 @@
 PODS:
+  - BrightFutures (6.0.1):
+    - Result (~> 3.2.4)
+  - Result (3.2.4)
   - SwiftSparql (0.1.0)
 
 DEPENDENCIES:
+  - BrightFutures
   - SwiftSparql (from `../`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - BrightFutures
+    - Result
 
 EXTERNAL SOURCES:
   SwiftSparql:
     :path: "../"
 
 SPEC CHECKSUMS:
+  BrightFutures: 9c03dab79e73ffe504b7bafc15c5bfdaeee54890
+  Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
   SwiftSparql: f5055689b2cec9c44602494bf7acaeadd84efa54
 
-PODFILE CHECKSUM: 15389d1227343c813c04c135a10e0d4f3a48cb9f
+PODFILE CHECKSUM: 122f6671843723138f7c1d09984dd890976a18a7
 
 COCOAPODS: 1.5.3

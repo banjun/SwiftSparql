@@ -2,6 +2,7 @@ use_frameworks!
 
 target 'SwiftSparql_Example' do
   pod 'SwiftSparql', :path => '../'
+  pod 'BrightFutures'
 
   target 'SwiftSparql_Tests' do
     inherit! :search_paths
