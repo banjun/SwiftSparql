@@ -52,9 +52,9 @@ public enum Serializer {
     public static func serialize(_ v: SelectClause.Capture) -> String {
         switch v {
         case .all: return "*"
-        case .vars(let varAsExpressions): return varAsExpressions.map { (v: Var, e: Expression?) in
-            e.map {"(\(serialize($0) + "AS" + serialize(v)))"} ?? serialize(v)}
-            .joined(separator: ", ")
+        case .expressions(let varAsExpressions): return varAsExpressions.map { (v: Var, e: Expression?) in
+            e.map {"(\(serialize($0) + " AS " + serialize(v)))"} ?? serialize(v)}
+            .joined(separator: " ")
         }
     }
 
@@ -195,8 +195,8 @@ public enum Serializer {
 
     public static func serialize(_ v: OrderCondition) -> String {
         switch v {
-        case .asc(let e): return ["ASC", serialize(e)].joined(separator: " ")
-        case .desc(let e): return ["DESC", serialize(e)].joined(separator: " ")
+        case .asc(let e): return "ASC(\(serialize(e)))"
+        case .desc(let e): return "DESC(\(serialize(e)))"
         case .constraint(let c): return serialize(c)
         case .var(let v): return serialize(v)
         }
@@ -285,7 +285,7 @@ public enum Serializer {
         case .max(let distinct, let expression): return "MAX(\(distinct ? "DISTINCT " : "") \(serialize(expression)))"
         case .average(let distinct, let expression): return "AVERAGE(\(distinct ? "DISTINCT " : "") \(serialize(expression)))"
         case .sample(let distinct, let expression): return "SAMPLE(\(distinct ? "DISTINCT " : "") \(serialize(expression)))"
-        case .groupConcat(let distinct, let expression, let separator): return "GROUP_CONCAT(\(distinct ? "DISTINCT " : "") \(serialize(expression)) \(separator.map {"; SEPARATOR = \($0)"} ?? ""))"
+        case .groupConcat(let distinct, let expression, let separator): return "GROUP_CONCAT(\(distinct ? "DISTINCT " : "")\(serialize(expression))\(separator.map {"; SEPARATOR = \"\($0)\""} ?? ""))"
         case .STR(let e): return "STR(\(serialize(e)))"
         case .LANG(let e): return "LANG(\(serialize(e)))"
         case .LANGMATCHES(let e1, let e2): return "LANGMATCHES(\(serialize(e1)), \(serialize(e2))"
@@ -344,10 +344,12 @@ public enum Serializer {
     }
 
     public static func serialize(_ v: GroupGraphPattern) -> String {
+        let body: String
         switch v {
-        case .subSelect(let v): return "{" + serialize(v) + "}"
-        case .groupGraphPatternSub(let v): return "{" + serialize(v) + "}"
+        case .subSelect(let v): body = serialize(v)
+        case .groupGraphPatternSub(let v): body = serialize(v)
         }
+        return "{\n" + body.components(separatedBy: .newlines).map {"    " + $0}.joined(separator: "\n") + "\n}"
     }
 
     public static func serialize(_ v: SubSelect) -> String {
@@ -384,7 +386,7 @@ public enum Serializer {
         return [
             serialize(v.triplesSameSubjectPath),
             v.triplesBlock.value.map(serialize)
-            ].compactMap {$0}.joined(separator: " ")
+            ].compactMap {$0}.joined(separator: "\n")
     }
 
     public static func serialize(_ v: TriplesSameSubjectPath) -> String {
@@ -445,7 +447,8 @@ public enum Serializer {
         return [
             [serialize(v.verb)],
             [serialize(v.objectListPath)],
-            v.successors.map {[";", serialize($0), serialize($1)].joined(separator: " ")}
+            v.successors.map {[";\n    ", serialize($0), serialize($1)].joined(separator: " ")},
+            ["."]
             ].flatMap {$0}.joined(separator: " ")
     }
 
@@ -487,7 +490,7 @@ public enum Serializer {
     }
 
     public static func serialize(_ v: VerbPath) -> String {
-        return v.map(serialize).joined(separator: " | ")
+        return v.map(serialize).joined(separator: "|")
     }
 
 

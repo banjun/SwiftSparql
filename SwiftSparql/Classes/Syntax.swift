@@ -113,7 +113,7 @@ public struct SelectClause {
     public var capture: Capture
     public enum Capture {
         /// ( Var | ( '(' Expression 'AS' Var ')' ) )+
-        case vars([(Var, Expression?)])
+        case expressions([(Var, Expression?)])
         /// '*'
         case all
     }
