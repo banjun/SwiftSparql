@@ -17,8 +17,8 @@ private func fetch<T: Codable>(_ query: Query) -> Future<[T], QueryError> {
             }
 
             do {
-                let r = try JSONDecoder().decode(Response<T>.self, from: data)
-                resolve(.success(r.results.bindings))
+                let r = try SRJBindingsDecoder().decode(T.self, from: data)
+                resolve(.success(r))
             } catch {
                 return resolve(.failure(.decode(error)))
             }
@@ -27,9 +27,9 @@ private func fetch<T: Codable>(_ query: Query) -> Future<[T], QueryError> {
 }
 
 struct IdolHeight: Codable {
-    var name: ResponseLiteral<String>
-    var height: ResponseLiteral<Double>
-    var color: ResponseLiteral<String>?
+    var name: String
+    var height: Double
+    var color: String?
 }
 
 class IdolHeightView: NSView {
@@ -41,13 +41,13 @@ class IdolHeightView: NSView {
         layer?.backgroundColor = NSColor.white.cgColor
 
         idols.enumerated().forEach { i, idol in
-            let tf = NSTextField(labelWithString: idol.name.value)
+            let tf = NSTextField(labelWithString: idol.name)
             tf.font = NSFont.systemFont(ofSize: 16)
             tf.backgroundColor = .clear
             tf.shadow = NSShadow()
             tf.shadow?.shadowBlurRadius = 0.25
             tf.shadow?.shadowColor = .black
-            let hexColor = idol.color.flatMap {Int($0.value, radix: 16)}
+            let hexColor = idol.color.flatMap {Int($0, radix: 16)}
             tf.textColor = hexColor.map {NSColor(
                 calibratedRed: CGFloat($0 >> 16 & 0xff) / 255,
                 green: CGFloat($0 >> 8 & 0xff) / 255,
@@ -57,7 +57,7 @@ class IdolHeightView: NSView {
             tf.sizeToFit()
             tf.setFrameOrigin(NSPoint(
                 x: CGFloat(i) / CGFloat(idols.count) * frame.width,
-                y: -32 + CGFloat(idol.height.value - 120) / (149 - 120) * frame.height))
+                y: -32 + CGFloat(idol.height - 120) / (149 - 120) * frame.height))
             addSubview(tf)
         }
     }
@@ -74,7 +74,7 @@ class IdolHeightView: NSView {
         let path = NSBezierPath()
         idols.enumerated().forEach { i, idol in
             let p = NSPoint(x: CGFloat(i) / CGFloat(idols.count) * frame.width,
-                            y: CGFloat(idol.height.value - 120) / (149 - 120) * frame.height - 20)
+                            y: CGFloat(idol.height - 120) / (149 - 120) * frame.height - 20)
             if path.isEmpty {
                 path.move(to: p)
             } else {

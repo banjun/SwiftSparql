@@ -16,8 +16,8 @@ private func fetch<T: Codable>(_ query: Query) -> Future<[T], QueryError> {
             }
 
             do {
-                let r = try JSONDecoder().decode(Response<T>.self, from: data)
-                resolve(.success(r.results.bindings))
+                let r = try SRJBindingsDecoder().decode(T.self, from: data)
+                resolve(.success(r))
             } catch {
                 return resolve(.failure(.decode(error)))
             }
@@ -173,17 +173,11 @@ class ViewController: NSViewController {
 }
 
 struct LiveSong: Codable {
-    var 楽曲名: ResponseLiteral<String>
-    var 回数: ResponseLiteral<Int>
+    var 楽曲名: String
+    var 回数: Int
 }
 
 struct IdolHeight: Codable {
     var name: String
     var 身長: Double
-
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        name = try container.decode(ResponseLiteral<String>.self, forKey: .name).value
-        身長 = try container.decode(ResponseLiteral<Double>.self, forKey: .身長).value
-    }
 }
