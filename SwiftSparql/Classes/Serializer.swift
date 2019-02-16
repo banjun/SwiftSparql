@@ -148,6 +148,10 @@ public enum Serializer {
         return String(v)
     }
 
+    public static func serialize(_ v: Decimal) -> String {
+        return String(describing: v)
+    }
+
     public static func serialize(_ v: Double) -> String {
         return String(v)
     }

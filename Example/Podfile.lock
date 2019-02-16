@@ -1,8 +1,10 @@
 PODS:
   - BrightFutures (6.0.1):
     - Result (~> 3.2.4)
+  - FootlessParser (0.5.1)
   - Result (3.2.4)
-  - SwiftSparql (0.1.0)
+  - SwiftSparql (0.1.0):
+    - FootlessParser (~> 0.5)
 
 DEPENDENCIES:
   - BrightFutures
@@ -11,6 +13,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - BrightFutures
+    - FootlessParser
     - Result
 
 EXTERNAL SOURCES:
@@ -19,8 +22,9 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   BrightFutures: 9c03dab79e73ffe504b7bafc15c5bfdaeee54890
+  FootlessParser: d59a9266ec55ed5a801fb171e25be43abfb42927
   Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
-  SwiftSparql: f5055689b2cec9c44602494bf7acaeadd84efa54
+  SwiftSparql: 7a739ed711b5189a8ae708606bab3b7395895991
 
 PODFILE CHECKSUM: 122f6671843723138f7c1d09984dd890976a18a7
 

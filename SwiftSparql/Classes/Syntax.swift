@@ -199,7 +199,7 @@ public enum PrimaryExpression {
 /// NumericLiteralNegative      ::=      INTEGER_NEGATIVE |    DECIMAL_NEGATIVE |    DOUBLE_NEGATIVE
 public enum NumericLiteral {
     case integer(Int)
-    case decimal(Int)
+    case decimal(Decimal)
     case double(Double)
 }
 
