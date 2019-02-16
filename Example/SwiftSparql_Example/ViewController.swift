@@ -30,14 +30,12 @@ class ViewController: NSViewController {
         super.viewDidLoad()
         // playground
 
-        let turtleDoc = try! TurtleDoc("""
-schema:Accommodation a rdfs:Class ;
-    rdfs:label "Accommodat#ion" ; #comment
-    dct:source <https://www.w3.org/wiki/WebSchemas/SchemaDotOrgSources#STI_Accommodation_Ontology> ; #comment2
-    rdfs:comment \"\"\"An accommodatins</a>.\"\"\" ; #comment3
-            rdfs:subClassOf schema:Place .
-""")
-        NSLog("%@", "turtleDoc = \(String(describing: turtleDoc))")
+        let turtleDoc = try! TurtleDoc(String(contentsOfFile: Bundle.main.path(forResource: "imas-schema", ofType: "ttl")!))
+//        NSLog("%@", "turtleDoc = \(String(describing: turtleDoc))")
+
+        let swiftCodes = turtleDoc.triples.compactMap {SubjectDescription($0)}.map {$0.swiftCode}
+        print(swiftCodes.joined(separator: "\n\n"))
+
         exit(1)
 
         let prologues: [Prologue] = [
