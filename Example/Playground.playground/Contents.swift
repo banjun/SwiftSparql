@@ -91,28 +91,33 @@ let schema = PNameNS(value: "schema")
 let rdf = PNameNS(value: "rdf")
 let imas = PNameNS(value: "imas")
 
-let varS = VarOrTerm.var("?s")
-let varName = VarOrTerm.var("?name")
-let varHeight = VarOrTerm.var("?height")
-let varColor = VarOrTerm.var("?color")
+let varS = Var("s")
+let varName = Var("name")
+let varHeight = Var("height")
+let varColor = Var("color")
 
 let query = Query(
     prologues: [
         .prefix(schema, IRIRef(value: "http://schema.org/")),
         .prefix(rdf, IRIRef(value: "http://www.w3.org/1999/02/22-rdf-syntax-ns#")),
         .prefix(imas, IRIRef(value: "https://sparql.crssnky.xyz/imasrdf/URIs/imas-schema.ttl#")),
-        ],
+    ],
     select: SelectQuery(
-        where: WhereClause(patterns: [
-            .triple(varS, .init((rdf, "type")), [.varOrTerm(.term(.iri(.prefixedName(.ln((imas, "Idol"))))))]),
-            .triple(varS, .init((imas, "Title")), [.varOrTerm(.term(.rdf(.init(string: "CinderellaGirls", lang: "en"))))]),
-            .triple(varS, .init((schema, "name")), [.varOrTerm(varName)]),
-            .triple(varS, .init((schema, "height")), [.varOrTerm(varHeight)]),
-            .notTriple(.OptionalGraphPattern(.groupGraphPatternSub(GroupGraphPatternSub(patterns: [
-                .triple(varS, .init((imas, "Color")), [.varOrTerm(varColor)])])))),
-            ]),
-        having: [.logical(NumericExpression("?height") <= 149)],
-        order: [.var("?height")],
+        where: WhereClause(patterns:
+            subject(varS)
+                .rdfTypeIsImasIdol()
+                .title(is: RDFLiteral(string: "CinderellaGirls", lang: "en"))
+                .nameKana(is: varName)
+                .schemaHeight(is: varHeight)
+                .triples
+                + [.notTriple(.OptionalGraphPattern(.groupGraphPatternSub(GroupGraphPatternSub(patterns:
+                    subject(varS)
+                        .rdfTypeIsImasIdol()
+                        .color(is: varColor)
+                        .triples))))]
+        ),
+        having: [.logical(NumericExpression(varHeight) <= 149)],
+        order: [.var(varHeight)],
         limit: .limit(100)))
 
 print(Serializer.serialize(query))

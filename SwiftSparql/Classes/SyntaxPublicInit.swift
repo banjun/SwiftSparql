@@ -143,4 +143,14 @@ extension RDFLiteral: ExpressibleByStringLiteral {
     }
 }
 
+extension GraphNodePath {
+    public static func `var`(_ v: Var) -> GraphNodePath {
+        return .varOrTerm(.var(v))
+    }
+}
 
+extension GraphNode {
+    public static func `var`(_ v: Var) -> GraphNode {
+        return .varOrTerm(.var(v))
+    }
+}

@@ -160,12 +160,16 @@ public enum Serializer {
         return v ? "true" : "false"
     }
 
+    public static func serialize(_ v: String) -> String {
+        return v
+    }
+
     public static func serialize(_ v: IRIOrFunction) -> String {
         return [serialize(v.iri), v.argList.map(serialize)].compactMap {$0}.joined(separator: " ")
     }
 
     public static func serialize(_ v: Var) -> String {
-        return v
+        return "?" + v.name
     }
 
     public static func serialize(_ v: SolutionModifier) -> String {
