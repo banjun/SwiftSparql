@@ -3,6 +3,15 @@ public enum GroupGraphPatternSubType {
     case notTriple(GraphPatternNotTriples)
 }
 
+public extension GroupGraphPatternSubType {
+    static func filter(_ c: Constraint) -> GroupGraphPatternSubType {
+        return .notTriple(.Filter(c))
+    }
+    static func filter(_ c: BuiltInCall) -> GroupGraphPatternSubType {
+        return .filter(.builtInCall(c))
+    }
+}
+
 public extension WhereClause {
     public init(patterns: [GroupGraphPatternSubType]) {
         self.init(pattern: .groupGraphPatternSub(.init(patterns: patterns)))

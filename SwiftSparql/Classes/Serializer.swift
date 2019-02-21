@@ -384,7 +384,7 @@ public enum Serializer {
         case .MinusGraphPattern(let p): return ["MINUS", serialize(p)].joined(separator: " ")
         case .GraphGraphPattern(let v, let p): return ["GRAPH", serialize(v), serialize(p)].joined(separator: " ")
         case .ServiceGraphPattern(let silent, let v, let p): return ["SERVICE", silent ? "SILENT": "", serialize(v), serialize(p)].joined(separator: " ")
-        case .Filter(let c): return ["FILTER", serialize(c)].joined(separator: " ")
+        case .Filter(let c): return "FILTER(\(serialize(c)))"
         case .Bind(let e, let v): return ["BIND", serialize(e), "AS", serialize(v)].joined(separator: " ")
         case .InlineData(let v): return ["VALUES", serialize(v)].joined(separator: " ")
         }
