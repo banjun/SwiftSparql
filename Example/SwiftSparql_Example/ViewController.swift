@@ -130,6 +130,30 @@ class ViewController: NSViewController {
         NSLog("%@", "idolNames = \n\n\(Serializer.serialize(idolNames))")
         print("\n\n\n")
 
+        let today: String = {
+            let df = DateFormatter()
+            df.dateFormat = "MM-dd"
+            return df.string(from: Date())
+        }()
+        let birthdays = Query(select: SelectQuery(
+            capture: .expressions([
+                // NOTE: `sample` aggregation returns `{}` empty hash in bindings on empty result and that cause Decoding error
+                (varName, Expression(.sample(distinct: false, expression: .init(Var("なまえ"))))),
+                (Var("date"), Expression(.sample(distinct: false, expression: .init(Var("誕生日"))))),
+                ]),
+            where: WhereClause(patterns:
+                subject(varS)
+                    .rdfTypeIsImasIdol()
+                    .schemaBirthDate(is: Var("誕生日"))
+                    .alternative({[$0.schemaName, $0.schemaAlternateName]}, is: Var("なまえ"))
+                    .triples
+                    + [GroupGraphPatternSubType.filter(.regex(.init(.STR(.init(Var("誕生日")))), .init(stringLiteral: today), nil))]),
+            group: [.var(Var("なまえ"))],
+            order: [.var(varName)]
+            ))
+        NSLog("%@", "birthdays = \n\n\(Serializer.serialize(birthdays))")
+        print("\n\n\n")
+
         fetch(liveSongs).onSuccess { (songs: [LiveSong]) in
             NSLog("%@", "query response: songs = \(songs)")
             }
@@ -140,12 +164,21 @@ class ViewController: NSViewController {
                 NSLog("%@", "query response: idols = \(idols)")
             }
             .onFailure {NSLog("%@", String(describing: $0))}
+
+        fetch(birthdays).onSuccess{ (idols: [Idol]) in
+            NSLog("%@", "query response: birthdays = \(idols)")
+            }
+            .onFailure {NSLog("birthdays: %@", String(describing: $0))}
     }
 }
 
 struct LiveSong: Codable {
     var 楽曲名: String
     var 回数: Int
+}
+
+struct Idol: Codable {
+    var name: String
 }
 
 struct IdolHeight: Codable {

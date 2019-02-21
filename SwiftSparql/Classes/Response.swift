@@ -187,12 +187,13 @@ private struct _SRJBindingsKeyedDecodingContainer<K: CodingKey>: KeyedDecodingCo
     }
 
     func decodeIfPresent(_ type: String.Type, forKey key: Key) throws -> String? {
-        switch decoder.values[key.stringValue] {
+        let term = decoder.values[key.stringValue]
+        switch term {
         case nil: return nil
         case .iri(.ref(let ref))?: return ref.value
         case .literal(string: let v, lang: _)?: return v
         case .typed(value: let v, datatype: _)?: return v
-        default: throw DecodingError.typeMismatch(type, .init(codingPath: codingPath, debugDescription: ""))
+        default: throw DecodingError.typeMismatch(type, .init(codingPath: codingPath, debugDescription: term.debugDescription))
         }
     }
 

@@ -227,6 +227,14 @@ extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.R
         return appended(verb: SchemaOrg.verb("alternateName"), value: [.var(v)])
     }
 
+    public func schemaBirthDate(is v: RDFLiteral) -> TripleBuilder<State> {
+        return appended(verb: SchemaOrg.verb("birthDate"), value: [.literal(v)])
+    }
+
+    public func schemaBirthDate(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: SchemaOrg.verb("birthDate"), value: [.var(v)])
+    }
+
     public func schemaHeight(is v: Var) -> TripleBuilder<State> {
         return appended(verb: SchemaOrg.verb("height"), value: [.var(v)])
     }
