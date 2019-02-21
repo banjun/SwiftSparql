@@ -153,6 +153,7 @@ class ViewController: NSViewController {
                 subject(varS).rdfTypeIsImasIdol()
                     .nameKana(is: varName)
                     .schemaHeight(is: varHeight)
+                    .optional {$0.color(is: Var("color"))}
                     .triples),
             having: [.logical(NumericExpression(varHeight) <= 149)],
             order: [.constraint(.builtInCall(.RAND))],

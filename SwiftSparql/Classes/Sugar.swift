@@ -111,6 +111,13 @@ extension TripleBuilder where State: TripleBuilderStateIncompleteSubjectType {
     }
 }
 
+extension TripleBuilder {
+    public func optional(block: (TripleBuilder<State>) -> TripleBuilder<State>) -> TripleBuilder<State> {
+        let optionalTriples = block(.init(subject: subject, triples: [])).triples
+        return .init(subject: subject, triples: triples + [.notTriple( .OptionalGraphPattern(.groupGraphPatternSub(.init(patterns: optionalTriples))))])
+    }
+}
+
 // MARK: - imas:Idol
 
 public enum ImasSchema: IRIBaseProvider {

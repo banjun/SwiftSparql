@@ -30,6 +30,7 @@ struct IdolHeight: Codable {
     var name: String
     var height: Double
     var color: String?
+    var age: String?
 }
 
 class IdolHeightView: NSView {
@@ -41,7 +42,7 @@ class IdolHeightView: NSView {
         layer?.backgroundColor = NSColor.white.cgColor
 
         idols.enumerated().forEach { i, idol in
-            let tf = NSTextField(labelWithString: idol.name)
+            let tf = NSTextField(labelWithString: idol.name + (idol.age.map {" (\($0))"} ?? ""))
             tf.font = NSFont.systemFont(ofSize: 16)
             tf.backgroundColor = .clear
             tf.shadow = NSShadow()
@@ -91,6 +92,16 @@ let varS = Var("s")
 let varName = Var("name")
 let varHeight = Var("height")
 let varColor = Var("color")
+let varAge = Var("age")
+
+enum FOAFSchema: IRIBaseProvider {
+    static var base: IRIRef {return IRIRef(value: "http://xmlns.com/foaf/0.1/")}
+}
+extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == ImasIdol {
+    func age(is v: Var) -> TripleBuilder<State> {
+        return .init(base: self, appendingVerb: FOAFSchema.verb("age"), value: [.var(v)])
+    }
+}
 
 let query = Query(
     select: SelectQuery(
@@ -100,13 +111,11 @@ let query = Query(
                 .title(is: RDFLiteral(string: "CinderellaGirls", lang: "en"))
                 .schemaName(is: varName)
                 .schemaHeight(is: varHeight)
-                .triples
-                + [.notTriple(.OptionalGraphPattern(.groupGraphPatternSub(GroupGraphPatternSub(patterns:
-                    subject(varS)
-                        .rdfTypeIsImasIdol()
-                        .color(is: varColor)
-                        .triples))))]
-        ),
+                .optional { $0
+                    .color(is: varColor)
+                    .age(is: varAge)
+                }
+                .triples),
         having: [.logical(NumericExpression(varHeight) <= 149)],
         order: [.var(varHeight)],
         limit: .limit(100)))

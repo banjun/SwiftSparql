@@ -197,10 +197,11 @@ private struct _SRJBindingsKeyedDecodingContainer<K: CodingKey>: KeyedDecodingCo
     }
 
     func decodeIfPresent(_ type: Int.Type, forKey key: Key) throws -> Int? {
-        switch decoder.values[key.stringValue] {
+        let term = decoder.values[key.stringValue]
+        switch term {
         case nil: return nil
         case .typed(value: let v, datatype: _)?: return Int(v) // TODO: typecheck
-        default: throw DecodingError.typeMismatch(type, .init(codingPath: codingPath, debugDescription: ""))
+        default: throw DecodingError.typeMismatch(type, .init(codingPath: codingPath, debugDescription: term.debugDescription))
         }
     }
 
