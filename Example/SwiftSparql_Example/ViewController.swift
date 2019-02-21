@@ -59,17 +59,15 @@ class ViewController: NSViewController {
         NSLog("%@", "selectQuery = \n\n\(Serializer.serialize(query))")
         print("\n\n\n")
 
+
         let heightQuery = Query(prologues: prologues, select: SelectQuery(
             capture: .vars([Var("o"), Var("h")]),
-            where: WhereClause(
-                first: TriplesBlock(
-                    triplesSameSubjectPath: TriplesSameSubjectPath.varOrTerm(
-                        .var(Var("s")),
-                        .init(verb: .path((PNameNS(value: "schema"), "name") | (PNameNS(value: "schema"), "alternateName")),
-                              objectListPath: [.varOrTerm(.var(Var("o")))],
-                              successors: [(.init((PNameNS(value: "schema"), "height")),  [.var(Var("h"))])])),
-                    triplesBlock: nil),
-                successors: []),
+            where: WhereClause(patterns:
+                subject(Var("s"))
+                    .rdfTypeIsImasIdol()
+                    .alternative({[$0.schemaName, $0.schemaAlternateName]}, is: Var("o"))
+                    .schemaHeight(is: Var("h"))
+                    .triples),
             order: [.asc(.init(Var("h"))), .var(Var("s"))],
             limit: .limit(10)))
         NSLog("%@", "heightQuery = \n\n\(Serializer.serialize(heightQuery))")

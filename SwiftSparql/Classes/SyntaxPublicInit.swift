@@ -107,6 +107,10 @@ public extension PathEltOrInverse {
     }
 }
 
+public func | (lhs: PathAlternative, rhs: PathAlternative) -> PathAlternative {
+    return lhs + rhs
+}
+
 public func | (lhs: PathSequence, rhs: PathSequence) -> PathAlternative {
     return [lhs, rhs]
 }

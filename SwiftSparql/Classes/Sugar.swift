@@ -116,6 +116,26 @@ extension TripleBuilder {
         let optionalTriples = block(.init(subject: subject, triples: [])).triples
         return .init(subject: subject, triples: triples + [.notTriple( .OptionalGraphPattern(.groupGraphPatternSub(.init(patterns: optionalTriples))))])
     }
+
+    public func alternative(_ block: (TripleBuilder<State>) -> [(Var) -> TripleBuilder<State>], is v: Var) -> TripleBuilder<State> {
+        let alternatives = block(.init(subject: subject, triples: []))
+        let alternativeVerbs: [PropertyListPathNotEmpty.Verb] = alternatives.map {$0(v).triples}.joined().compactMap {
+            switch $0 {
+            case .triple(_, let lv, _): return lv
+            default: fatalError("not yet implemented")
+            }
+        }
+        let pathAlternative = alternativeVerbs.reduce(.path([]), |)
+        return .init(subject: self.subject, triples: self.triples + [.triple(.var(self.subject), pathAlternative, [.var(v)])])
+    }
+}
+
+
+public func | (lhs: PropertyListPathNotEmpty.Verb, rhs: PropertyListPathNotEmpty.Verb) -> PropertyListPathNotEmpty.Verb {
+    switch (lhs, rhs) {
+    case (.path(let l), .path(let r)): return .path(l | r)
+    default: fatalError("not yet implemented")
+    }
 }
 
 // MARK: - imas:Idol
@@ -171,6 +191,14 @@ extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.R
 
     public func schemaName(is v: Var) -> TripleBuilder<State> {
         return appended(verb: SchemaOrg.verb("name"), value: [.var(v)])
+    }
+
+    public func schemaAlternateName(is v: RDFLiteral) -> TripleBuilder<State> {
+        return appended(verb: SchemaOrg.verb("alternateName"), value: [.literal(v)])
+    }
+
+    public func schemaAlternateName(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: SchemaOrg.verb("alternateName"), value: [.var(v)])
     }
 
     public func schemaHeight(is v: Var) -> TripleBuilder<State> {
