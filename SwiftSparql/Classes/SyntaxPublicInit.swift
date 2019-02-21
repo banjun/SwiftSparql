@@ -1,7 +1,7 @@
 
 public extension Query {
     // generic select query
-    public init(prologues: [Prologue], select: SelectQuery) {
+    public init(prologues: [Prologue] = [], select: SelectQuery) {
         self.prologues = prologues
         self.query = .select(select)
         self.valuesClause = ValuesClause()
@@ -132,8 +132,12 @@ public func | (lhs: PNameLN, rhs: PNameLN) -> PathAlternative {
 }
 
 public extension PropertyListPathNotEmpty.Verb {
-    public init(_ name: PNameLN) {
+    init(_ name: PNameLN) {
         self = .path([[PathEltOrInverse(name: name)]])
+    }
+
+    init(_ ref: IRIRef) {
+        self = .path(.init([[.elt(.init(primary: .iri(.ref(ref)), mod: nil))]]))
     }
 }
 
@@ -146,6 +150,14 @@ extension RDFLiteral: ExpressibleByStringLiteral {
 extension GraphNodePath {
     public static func `var`(_ v: Var) -> GraphNodePath {
         return .varOrTerm(.var(v))
+    }
+
+    public static func literal(_ v: RDFLiteral) -> GraphNodePath {
+        return .varOrTerm(.term(.rdf(v)))
+    }
+
+    public static func iriRef(_ r: IRIRef) -> GraphNodePath {
+        return .varOrTerm(.term(.iri(.ref(r))))
     }
 }
 

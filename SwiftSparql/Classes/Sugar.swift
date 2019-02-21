@@ -53,18 +53,25 @@ public struct TripleBuilderStateIncompleteSubject: TripleBuilderStateIncompleteS
 public protocol TripleBuilderStateRDFTypeBoundType: TripleBuilderStateType {
     associatedtype RDFType
 }
-public struct TripleBuilderStateRDFTypeBound<T: ObjectPathConvertible>: TripleBuilderStateRDFTypeBoundType {
+public struct TripleBuilderStateRDFTypeBound<T: RDFTypeConvertible>: TripleBuilderStateRDFTypeBoundType {
     public typealias RDFType = T
 }
 
-public protocol ObjectPathConvertible {
-    static var objectPath: ObjectPath { get }
+public protocol IRIBaseProvider {
+    static var base: IRIRef { get }
 }
-public struct ImasIdol: ObjectPathConvertible {
-    public static var objectPath: ObjectPath {return .varOrTerm(.term(.iri(.prefixedName(.ln((PNameNS(value: "imas"), "Idol"))))))}
+
+public extension IRIBaseProvider {
+    static func rdfType(_ local: String) -> IRIRef {return IRIRef(value: base.value + local)}
+    static func verb(_ local: String) -> IRIRef {return IRIRef(value: base.value + local)}
+    static func verb(_ local: String) -> PropertyListPathNotEmpty.Verb {
+        return .init(IRIRef(value: base.value + local))
+    }
 }
-public struct ImasUnit: ObjectPathConvertible {
-    public static var objectPath: ObjectPath {return .varOrTerm(.term(.iri(.prefixedName(.ln((PNameNS(value: "imas"), "Unit"))))))}
+
+public protocol RDFTypeConvertible {
+    associatedtype Schema: IRIBaseProvider
+    static var rdfType: IRIRef { get }
 }
 
 public struct TripleBuilder<State: TripleBuilderStateType> {
@@ -80,8 +87,12 @@ public struct TripleBuilder<State: TripleBuilderStateType> {
         return .init(subject: v, triples: [])
     }
 
+    public init(base: TripleBuilder<State>, appendingVerb verb: PropertyListPathNotEmpty.Verb, value: ObjectListPath) {
+        self.init(subject: base.subject, triples: base.triples + [.triple(.var(base.subject), verb, value)])
+    }
+
     func appended(verb: PropertyListPathNotEmpty.Verb, value: ObjectListPath) -> TripleBuilder<State> {
-        return .init(subject: subject, triples: triples + [.triple(.var(subject), verb, value)])
+        return .init(base: self, appendingVerb: verb, value: value)
     }
 }
 
@@ -89,81 +100,99 @@ public func subject(_ v: Var) -> TripleBuilder<TripleBuilderStateIncompleteSubje
     return .subject(v)
 }
 
+public enum RDFSyntaxNSSchema: IRIBaseProvider {
+    public static var base: IRIRef {return IRIRef(value: "http://www.w3.org/1999/02/22-rdf-syntax-ns#")}
+}
+
 extension TripleBuilder where State: TripleBuilderStateIncompleteSubjectType {
-    func rdfType<T: ObjectPathConvertible>(is type: T.Type) -> TripleBuilder<TripleBuilderStateRDFTypeBound<T>> {
-        let new = appended(verb: .init((PNameNS(value: "rdf"), "type")), value: [type.objectPath])
+    public func rdfType<T: RDFTypeConvertible>(is type: T.Type) -> TripleBuilder<TripleBuilderStateRDFTypeBound<T>> {
+        let new = appended(verb: RDFSyntaxNSSchema.verb("type"), value: [.iriRef(type.rdfType)])
         return .init(subject: subject, triples: new.triples)
     }
+}
 
+// MARK: - imas:Idol
+
+public enum ImasSchema: IRIBaseProvider {
+    public static var base: IRIRef {return IRIRef(value: "https://sparql.crssnky.xyz/imasrdf/URIs/imas-schema.ttl#")}
+}
+
+public struct ImasIdol: RDFTypeConvertible {
+    public typealias Schema = ImasSchema
+    public static var rdfType: IRIRef {return Schema.rdfType("Idol")}
+}
+
+extension TripleBuilder where State: TripleBuilderStateIncompleteSubjectType {
     public func rdfTypeIsImasIdol() -> TripleBuilder<TripleBuilderStateRDFTypeBound<ImasIdol>> {return rdfType(is: ImasIdol.self)}
-    public func rdfTypeIsImasUnit() -> TripleBuilder<TripleBuilderStateRDFTypeBound<ImasUnit>> {return rdfType(is: ImasUnit.self)}
 }
 
 extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == ImasIdol {
     // MARK: generated functions in form of imas:_
 
-    func nameKana(is value: ObjectListPath) -> TripleBuilder<State> {
-        return appended(verb: .init((PNameNS(value: "imas"), "nameKana")), value: value)
-    }
-
     /// 名前よみがな: 名前のよみがなを表すプロパティ
-    public func nameKana(is value: RDFLiteral) -> TripleBuilder<State> {
-        return nameKana(is: [.varOrTerm(.term(.rdf(value)))])
+    public func nameKana(is v: RDFLiteral) -> TripleBuilder<State> {
+        return appended(verb: State.RDFType.Schema.verb("nameKana"), value: [.literal(v)])
     }
     /// 名前よみがな: 名前のよみがなを表すプロパティ
     public func nameKana(is v: Var) -> TripleBuilder<State> {
-        return nameKana(is: [.varOrTerm(.var(v))])
-    }
-
-    func title(is value: ObjectListPath) -> TripleBuilder<State> {
-        return appended(verb: .init((PNameNS(value: "imas"), "Title")), value: value)
+        return appended(verb: State.RDFType.Schema.verb("nameKana"), value: [.var(v)])
     }
 
     ///
-    public func title(is value: RDFLiteral) -> TripleBuilder<State> {
-        return title(is: [.varOrTerm(.term(.rdf(value)))])
+    public func title(is v: RDFLiteral) -> TripleBuilder<State> {
+        return appended(verb: State.RDFType.Schema.verb("Title"), value: [.literal(v)])
     }
     ///
     public func title(is v: Var) -> TripleBuilder<State> {
-        return title(is: [.varOrTerm(.var(v))])
-    }
-
-    func color(is value: ObjectListPath) -> TripleBuilder<State> {
-        return appended(verb: .init((PNameNS(value: "imas"), "Color")), value: value)
+        return appended(verb: State.RDFType.Schema.verb("Title"), value: [.var(v)])
     }
 
     ///
-    public func color(is value: RDFLiteral) -> TripleBuilder<State> {
-        return color(is: [.varOrTerm(.term(.rdf(value)))])
+    public func color(is v: RDFLiteral) -> TripleBuilder<State> {
+        return appended(verb: State.RDFType.Schema.verb("Color"), value: [.literal(v)])
     }
     ///
     public func color(is v: Var) -> TripleBuilder<State> {
-        return color(is: [.varOrTerm(.var(v))])
+        return appended(verb: State.RDFType.Schema.verb("Color"), value: [.var(v)])
     }
 
     // MARK: generated functions in form of schema:_
 
-    func schemaHeight(is value: ObjectListPath) -> TripleBuilder<State> {
-        return .init(subject: subject, triples: triples + [.triple(
-            .var(subject),
-            .init((PNameNS(value: "schema"), "height")),
-            value)])
+    public func schemaName(is v: RDFLiteral) -> TripleBuilder<State> {
+        return appended(verb: SchemaOrg.verb("name"), value: [.literal(v)])
+    }
+
+    public func schemaName(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: SchemaOrg.verb("name"), value: [.var(v)])
     }
 
     public func schemaHeight(is v: Var) -> TripleBuilder<State> {
-        return schemaHeight(is: [.varOrTerm(.var(v))])
+        return appended(verb: SchemaOrg.verb("height"), value: [.var(v)])
     }
 }
 
+// MARK: - imas:Unit
+
+public struct ImasUnit: RDFTypeConvertible {
+    public typealias Schema = ImasSchema
+    public static var rdfType: IRIRef {return Schema.rdfType("Unit")}
+}
+
+extension TripleBuilder where State: TripleBuilderStateIncompleteSubjectType {
+    public func rdfTypeIsImasUnit() -> TripleBuilder<TripleBuilderStateRDFTypeBound<ImasUnit>> {return rdfType(is: ImasUnit.self)}
+}
 
 public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == ImasUnit {
     // MARK: generated functions in form of schema:_
     
     /// member: A member of an Organization or a ProgramMembership. Organizations can be members of organizations; ProgramMembership is typically for individuals.
-    func schemaMember(is value: RDFLiteral) -> TripleBuilder<State> {
-        return .init(subject: subject, triples: triples + [.triple(
-            .var(subject),
-            .init((PNameNS(value: "schema"), "member")),
-            [.varOrTerm(.term(.rdf(value)))])])
+    func schemaMember(is v: RDFLiteral) -> TripleBuilder<State> {
+        return appended(verb: SchemaOrg.verb("member"), value: [.literal(v)])
     }
+}
+
+// MARK: - schema.org
+
+public enum SchemaOrg: IRIBaseProvider {
+    public static var base: IRIRef {return IRIRef(value: "http://schema.org/")}
 }

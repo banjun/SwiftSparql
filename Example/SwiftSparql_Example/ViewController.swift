@@ -133,14 +133,11 @@ class ViewController: NSViewController {
         let liveSongs = Query(prologues: prologues, select: SelectQuery(
             capture: .expressions([(Var("回数"), .init(.count(distinct: false, expression: .init(Var("name"))))),
                                    (Var("楽曲名"), .init(.sample(distinct: false, expression: .init(Var("name")))))]),
-            where: WhereClause(
-                first: TriplesBlock(
-                    triplesSameSubjectPath: .varOrTerm(
-                        .var(Var("s")),
-                        .init(verb: .init((PNameNS(value: "rdf"), "type")), objectListPath: [.varOrTerm(.term(.iri(.prefixedName(.ln((PNameNS(value: "imas"), "SetlistNumber"))))))],
-                              successors: [(.init((PNameNS(value: "schema"), "name")), [.var(Var("name"))])])),
-                    triplesBlock: nil),
-                successors: []),
+            where: WhereClause(patterns:
+                subject(Var("s"))
+                    .rdfType(is: ImasSetlistNumber.self)
+                    .name(is: Var("name"))
+                    .triples),
             group: [.var(Var("name"))],
             having: [.logical(NumericExpression(Var("回数")) > 4)],
             order: [.desc(.init(Var("回数")))],
@@ -198,4 +195,15 @@ struct LiveSong: Codable {
 struct IdolHeight: Codable {
     var name: String
     var 身長: Double
+}
+
+enum ImasSetlistNumber: RDFTypeConvertible {
+    typealias Schema = ImasSchema
+    static var rdfType: IRIRef {return Schema.rdfType("SetlistNumber")}
+}
+
+extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == ImasSetlistNumber {
+    func name(is v: Var) -> TripleBuilder<State> {
+        return .init(base: self, appendingVerb: SchemaOrg.verb("name"), value: [.var(v)])
+    }
 }
