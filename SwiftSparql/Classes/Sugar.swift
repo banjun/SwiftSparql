@@ -117,15 +117,24 @@ extension TripleBuilder {
         return .init(subject: subject, triples: triples + [.notTriple( .OptionalGraphPattern(.groupGraphPatternSub(.init(patterns: optionalTriples))))])
     }
 
-    public func alternative(_ block: (TripleBuilder<State>) -> [(Var) -> TripleBuilder<State>], is v: Var) -> TripleBuilder<State> {
-        let alternatives = block(.init(subject: subject, triples: []))
-        let alternativeVerbs: [PropertyListPathNotEmpty.Verb] = alternatives.map {$0(v).triples}.joined().compactMap {
+    private func verbPathAlternatives(_ triples: [GroupGraphPatternSubType]) -> PropertyListPathNotEmpty.Verb {
+        return triples.compactMap {
             switch $0 {
             case .triple(_, let lv, _): return lv
             default: fatalError("not yet implemented")
             }
-        }
-        let pathAlternative = alternativeVerbs.reduce(.path([]), |)
+        }.reduce(.path([]), |)
+    }
+
+    public func alternative(_ block: (TripleBuilder<State>) -> [(RDFLiteral) -> TripleBuilder<State>], is v: RDFLiteral) -> TripleBuilder<State> {
+        let alternatives = block(.init(subject: subject, triples: []))
+        let pathAlternative = verbPathAlternatives(Array(alternatives.map {$0(v).triples}.joined()))
+        return .init(subject: self.subject, triples: self.triples + [.triple(.var(self.subject), pathAlternative, [.literal(v)])])
+    }
+
+    public func alternative(_ block: (TripleBuilder<State>) -> [(Var) -> TripleBuilder<State>], is v: Var) -> TripleBuilder<State> {
+        let alternatives = block(.init(subject: subject, triples: []))
+        let pathAlternative = verbPathAlternatives(Array(alternatives.map {$0(v).triples}.joined()))
         return .init(subject: self.subject, triples: self.triples + [.triple(.var(self.subject), pathAlternative, [.var(v)])])
     }
 }
