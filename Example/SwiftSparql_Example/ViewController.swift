@@ -38,12 +38,6 @@ class ViewController: NSViewController {
 //
 //        exit(1)
 
-        let prologues: [Prologue] = [
-            .prefix(PNameNS(value: "schema"), IRIRef(value: "http://schema.org/")),
-            .prefix(PNameNS(value: "rdf"), IRIRef(value: "http://www.w3.org/1999/02/22-rdf-syntax-ns#")),
-            .prefix(PNameNS(value: "imas"), IRIRef(value: "https://sparql.crssnky.xyz/imasrdf/URIs/imas-schema.ttl#")),
-            ]
-
         let query = Query(select: SelectQuery(
             where: WhereClause(patterns: [
                 .triple(.var(Var("s")), PropertyListPathNotEmpty.Verb.init((PNameNS(value: "rdf"), "type")), [.var(Var("o"))]),
@@ -54,7 +48,7 @@ class ViewController: NSViewController {
         print("\n\n\n")
 
 
-        let heightQuery = Query(prologues: prologues, select: SelectQuery(
+        let heightQuery = Query(select: SelectQuery(
             capture: .vars([Var("o"), Var("h")]),
             where: WhereClause(patterns:
                 subject(Var("s"))
@@ -105,7 +99,7 @@ class ViewController: NSViewController {
         NSLog("%@", "mayukiki = \n\n\(Serializer.serialize(mayukiki))")
         print("\n\n\n")
 
-        let liveSongs = Query(prologues: prologues, select: SelectQuery(
+        let liveSongs = Query(select: SelectQuery(
             capture: .expressions([(Var("回数"), .init(.count(distinct: false, expression: .init(Var("name"))))),
                                    (Var("楽曲名"), .init(.sample(distinct: false, expression: .init(Var("name")))))]),
             where: WhereClause(patterns:
@@ -123,7 +117,7 @@ class ViewController: NSViewController {
         let varS = Var("s")
         let varName = Var("name")
         let varHeight = Var("身長")
-        let idolNames = Query(prologues: prologues, select: SelectQuery(
+        let idolNames = Query(select: SelectQuery(
             where: WhereClause(patterns:
                 subject(varS).rdfTypeIsImasIdol()
                     .nameKana(is: varName)
