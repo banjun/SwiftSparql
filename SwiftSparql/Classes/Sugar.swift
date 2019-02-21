@@ -201,6 +201,14 @@ extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.R
         return appended(verb: State.RDFType.Schema.verb("Color"), value: [.var(v)])
     }
 
+    public func handedness(is v: RDFLiteral) -> TripleBuilder<State> {
+        return appended(verb: State.RDFType.Schema.verb("Handedness"), value: [.literal(v)])
+    }
+
+    public func handedness(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: State.RDFType.Schema.verb("Handedness"), value: [.var(v)])
+    }
+
     // MARK: generated functions in form of schema:_
 
     public func schemaName(is v: RDFLiteral) -> TripleBuilder<State> {
@@ -237,10 +245,23 @@ extension TripleBuilder where State: TripleBuilderStateIncompleteSubjectType {
 
 public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == ImasUnit {
     // MARK: generated functions in form of schema:_
-    
+
     /// member: A member of an Organization or a ProgramMembership. Organizations can be members of organizations; ProgramMembership is typically for individuals.
     func schemaMember(is v: RDFLiteral) -> TripleBuilder<State> {
         return appended(verb: SchemaOrg.verb("member"), value: [.literal(v)])
+    }
+
+    /// member: A member of an Organization or a ProgramMembership. Organizations can be members of organizations; ProgramMembership is typically for individuals.
+    func schemaMember(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: SchemaOrg.verb("member"), value: [.var(v)])
+    }
+
+    func schemaName(is v: RDFLiteral) -> TripleBuilder<State> {
+        return appended(verb: SchemaOrg.verb("name"), value: [.literal(v)])
+    }
+
+    func schemaName(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: SchemaOrg.verb("name"), value: [.var(v)])
     }
 }
 
