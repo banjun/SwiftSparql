@@ -116,9 +116,9 @@ let query = Query(
                     .age(is: varAge)
                 }
                 .triples),
-        having: [.logical(NumericExpression(varHeight) <= 149)],
-        order: [.var(varHeight)],
-        limit: .limit(100)))
+        having: [.logical(varHeight <= 149)],
+        order: [.by(varHeight)],
+        limit: 100))
 
 print(Serializer.serialize(query))
 

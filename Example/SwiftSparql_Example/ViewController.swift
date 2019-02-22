@@ -42,7 +42,7 @@ class ViewController: NSViewController {
             where: WhereClause(patterns: [
                 .triple(.var(Var("s")), PropertyListPathNotEmpty.Verb.init((PNameNS(value: "rdf"), "type")), [.var(Var("o"))]),
                 ]),
-            limit: .limit(10)))
+            limit: 10))
 
         NSLog("%@", "selectQuery = \n\n\(Serializer.serialize(query))")
         print("\n\n\n")
@@ -56,8 +56,8 @@ class ViewController: NSViewController {
                     .alternative({[$0.schemaName, $0.schemaAlternateName]}, is: Var("o"))
                     .schemaHeight(is: Var("h"))
                     .triples),
-            order: [.asc(.init(Var("h"))), .var(Var("s"))],
-            limit: .limit(10)))
+            order: [.asc(v: Var("h")), .by(Var("s"))],
+            limit: 10))
         NSLog("%@", "heightQuery = \n\n\(Serializer.serialize(heightQuery))")
         print("\n\n\n")
 
@@ -76,8 +76,8 @@ class ViewController: NSViewController {
                         .schemaName(is: Var("名前"))
                         .triples),
             group: [.var(Var("ユニット名"))],
-            order: [.var(Var("ユニット名"))],
-            limit: .limit(10)))
+            order: [.by(Var("ユニット名"))],
+            limit: 10))
         NSLog("%@", "unitMembers = \n\n\(Serializer.serialize(unitMembers))")
         print("\n\n\n")
 
@@ -88,14 +88,14 @@ class ViewController: NSViewController {
                     .rdfTypeIsImasIdol()
                     .alternative({[$0.schemaName, $0.schemaAlternateName]}, is: Var("name"))
                     .handedness(is: Var("利き手"))
+                    .filter(.CONTAINS(v: Var("name"), sub: "まゆ"))
                     .triples
-                    + [GroupGraphPatternSubType.filter(.regex(.init(.STR(.init(Var("name")))), "まゆ", nil))]
                     + subject(Var("idol"))
                         .rdfTypeIsImasIdol()
                         .handedness(is: Var("利き手"))
                         .schemaName(is: Var("名前"))
                         .triples),
-            limit: .limit(10)))
+            limit: 10))
         NSLog("%@", "mayukiki = \n\n\(Serializer.serialize(mayukiki))")
         print("\n\n\n")
 
@@ -108,9 +108,9 @@ class ViewController: NSViewController {
                     .name(is: Var("name"))
                     .triples),
             group: [.var(Var("name"))],
-            having: [.logical(NumericExpression(Var("回数")) > 4)],
-            order: [.desc(.init(Var("回数")))],
-            limit: .limit(10)))
+            having: [.logical(Var("回数") > 4)],
+            order: [.desc(v: Var("回数"))],
+            limit: 10))
         NSLog("%@", "liveSongs = \n\n\(Serializer.serialize(liveSongs))")
         print("\n\n\n")
 
@@ -124,9 +124,9 @@ class ViewController: NSViewController {
                     .schemaHeight(is: varHeight)
                     .optional {$0.color(is: Var("color"))}
                     .triples),
-            having: [.logical(NumericExpression(varHeight) <= 149)],
-            order: [.constraint(.builtInCall(.RAND))],
-            limit: .limit(10)))
+            having: [.logical(varHeight <= 149)],
+            order: [.by(.RAND)],
+            limit: 10))
         NSLog("%@", "idolNames = \n\n\(Serializer.serialize(idolNames))")
         print("\n\n\n")
 
@@ -146,10 +146,10 @@ class ViewController: NSViewController {
                     .rdfTypeIsImasIdol()
                     .schemaBirthDate(is: Var("誕生日"))
                     .alternative({[$0.schemaName, $0.schemaAlternateName]}, is: Var("なまえ"))
-                    .triples
-                    + [GroupGraphPatternSubType.filter(.regex(.init(.STR(.init(Var("誕生日")))), .init(stringLiteral: today), nil))]),
+                    .filter(.regex(v: Var("誕生日"), pattern: today))
+                    .triples),
             group: [.var(Var("なまえ"))],
-            order: [.var(varName)]
+            order: [.by(varName)]
             ))
         NSLog("%@", "birthdays = \n\n\(Serializer.serialize(birthdays))")
         print("\n\n\n")

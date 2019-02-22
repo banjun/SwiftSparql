@@ -12,6 +12,33 @@ public extension GroupGraphPatternSubType {
     }
 }
 
+public extension BuiltInCall {
+    static func CONTAINS(v: Var, sub: String) -> BuiltInCall {
+        return .CONTAINS(Expression(.STR(v: v)), Expression(stringLiteral: sub))
+    }
+    static func regex(v: Var, pattern: String) -> BuiltInCall {
+        return .regex(Expression(.STR(v: v)), Expression(stringLiteral: pattern), nil)
+    }
+    static func STR(v: Var) -> BuiltInCall {
+        return .STR(Expression(v))
+    }
+}
+
+public extension OrderCondition {
+    static func asc(v: Var) -> OrderCondition {
+        return .asc(Expression(v))
+    }
+    static func desc(v: Var) -> OrderCondition {
+        return .desc(Expression(v))
+    }
+    static func by(_ v: Var) -> OrderCondition {
+        return .var(v)
+    }
+    static func by(_ c: BuiltInCall) -> OrderCondition {
+        return .constraint(.builtInCall(c))
+    }
+}
+
 public extension WhereClause {
     public init(patterns: [GroupGraphPatternSubType]) {
         self.init(pattern: .groupGraphPatternSub(.init(patterns: patterns)))
@@ -145,6 +172,14 @@ extension TripleBuilder {
         let alternatives = block(.init(subject: subject, triples: []))
         let pathAlternative = verbPathAlternatives(Array(alternatives.map {$0(v).triples}.joined()))
         return .init(subject: self.subject, triples: self.triples + [.triple(.var(self.subject), pathAlternative, [.var(v)])])
+    }
+
+    public func filter(_ c: BuiltInCall) -> TripleBuilder<State> {
+        return .init(subject: subject, triples: triples + [.filter(c)])
+    }
+
+    public func filter(_ c: Constraint) -> TripleBuilder<State> {
+        return .init(subject: subject, triples: triples + [.filter(c)])
     }
 }
 
