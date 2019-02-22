@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "FootlessParser",
+        "repositoryURL": "https://github.com/kareman/FootlessParser",
+        "state": {
+          "branch": null,
+          "revision": "0727844a06fd62e3fe0289e97078476e97d515cf",
+          "version": "0.5.1"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

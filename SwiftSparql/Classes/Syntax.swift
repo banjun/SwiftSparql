@@ -1,4 +1,5 @@
 // https://www.w3.org/TR/sparql11-query/#grammar
+import struct Foundation.Decimal
 
 typealias QueryUnit = Query
 
