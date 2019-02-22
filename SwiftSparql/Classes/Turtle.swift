@@ -650,6 +650,7 @@ public extension TurtleDoc {
 
 public struct SubjectDescription {
     public var subject: TurtleDoc.Subject
+    public var a: IRI?
     public var label: String?
     public var comment: String?
 
@@ -668,7 +669,10 @@ public struct SubjectDescription {
                         self.comment = l.string
                     }
                 case .iri: break
-                case .a: break
+                case .a:
+                    for case .iri(let iri) in objects {
+                        self.a = iri
+                    }
                 }
             }
         case .blank: return nil
