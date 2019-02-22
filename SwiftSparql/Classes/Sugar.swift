@@ -174,6 +174,7 @@ extension TripleBuilder {
         return .init(subject: self.subject, triples: self.triples + [.triple(.var(self.subject), pathAlternative, [.var(v)])])
     }
 
+    // NOTE: filter does not use the subject and thus this may not be right place. (actually independent to TripleBuilder)
     public func filter(_ c: BuiltInCall) -> TripleBuilder<State> {
         return .init(subject: subject, triples: triples + [.filter(c)])
     }
