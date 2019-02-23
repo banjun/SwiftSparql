@@ -67,6 +67,41 @@ extension IRIRef {
     }
 }
 
+struct RDFTypeConvertible {
+    let type: CamelIdentifier
+    let schema: IRIBaseProvider
+    let local: String
+
+    init?(_ subject: TurtleDoc.Subject, directives: [IRIBaseProvider], prologues: [Prologue]) {
+        switch subject {
+        case .iri(let iri):
+            guard let d = (directives.first {IRIRef(iri, on: prologues)!.value.hasPrefix($0.iri.value)}) else { return nil }
+            schema = d
+            switch iri {
+            case .prefixedName(.ln(_, let local)):
+                self.type = CamelIdentifier(raw: Serializer.serialize(iri))
+                self.local = local
+            case .prefixedName(.ns): return nil
+            case .ref: return nil
+            }
+        default: return nil
+        }
+    }
+
+    var swiftCode: String {
+        return """
+        public struct \(type.id): RDFTypeConvertible {
+            public typealias Schema = \(schema.typeName)
+            public static var rdfType: IRIRef {return Schema.rdfType("\(local)")}
+        }
+
+        extension TripleBuilder where State: TripleBuilderStateIncompleteSubjectType {
+            public func rdfTypeIs\(type.id)() -> TripleBuilder<TripleBuilderStateRDFTypeBound<\(type.id)>> {return rdfType(is: \(type.id).self)}
+        }
+        """
+    }
+}
+
 struct TripleBuilderStateRDFTypeBoundType {
     let type: CamelIdentifier
     let verbs: [(prefix: String, schema: String, local: String, label: String?, comment: String?)]
@@ -188,7 +223,10 @@ SignalProducer(classes)
         print("\(type) has \(vs.count) verbs")})
     .collect()
     .startWithValues { values in
-        let extensions = values.compactMap { subjectDescription, verbs in
+        let rdfTypeConvertibles = values.compactMap { subjectDescription, _ in
+            RDFTypeConvertible(subjectDescription.subject, directives: directives, prologues: prologues)
+        }
+        let verbExtensions = values.compactMap { subjectDescription, verbs in
             TripleBuilderStateRDFTypeBoundType(
                 subject: subjectDescription.subject,
                 verbs: verbs.map {$0.v},
@@ -196,7 +234,9 @@ SignalProducer(classes)
                 properties: properties,
                 prologues: prologues)
         }
-        let swiftCodes = directives.map {$0.swiftCode} + extensions.map {$0.swiftCode}
+        let swiftCodes = directives.map {$0.swiftCode}
+            + rdfTypeConvertibles.map {$0.swiftCode}
+            + verbExtensions.map {$0.swiftCode}
         // print(swiftCodes.joined(separator: "\n\n"))
         print(swiftCodes.joined(separator: "\n\n"))
 }

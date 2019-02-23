@@ -104,8 +104,8 @@ class ViewController: NSViewController {
                                    (Var("楽曲名"), .init(.sample(distinct: false, expression: .init(Var("name")))))]),
             where: WhereClause(patterns:
                 subject(Var("s"))
-                    .rdfType(is: ImasSetlistNumber.self)
-                    .name(is: Var("name"))
+                    .rdfTypeIsImasSetlistNumber()
+                    .schemaName(is: Var("name"))
                     .triples),
             group: [.var(Var("name"))],
             having: [.logical(Var("回数") > 4)],
@@ -184,15 +184,4 @@ struct Idol: Codable {
 struct IdolHeight: Codable {
     var name: String
     var 身長: Double
-}
-
-enum ImasSetlistNumber: RDFTypeConvertible {
-    typealias Schema = ImasSchema
-    static var rdfType: IRIRef {return Schema.rdfType("SetlistNumber")}
-}
-
-extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == ImasSetlistNumber {
-    func name(is v: Var) -> TripleBuilder<State> {
-        return .init(base: self, appendingVerb: SchemaOrg.verb("name"), value: [.var(v)])
-    }
 }
