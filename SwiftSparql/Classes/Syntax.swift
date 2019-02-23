@@ -31,7 +31,7 @@ public enum Prologue {
 }
 
 /// IRIREF      ::=      '<' ([^<>"{}|^`\]-[#x00-#x20])* '>'
-public struct IRIRef {
+public struct IRIRef: Equatable {
     public var value: String
 
     // public memberwise init

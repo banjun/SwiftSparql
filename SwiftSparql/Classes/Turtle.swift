@@ -183,9 +183,9 @@ extension TurtleDoc {
             <|> string("\\U") *> count(8, HEX)
 
         // [18]    IRIREF    ::=    '<' ([^#x00-#x20<>"{}|^`\] | UCHAR)* '>' /* #x00=NULL #01-#x1F=control codes #x20=space */
-        let IRIREF = extend <^> char("<") <*> (extend <^> ({$0.joined()} <^> zeroOrMore(
+        let IRIREF = char("<") *> ({$0.joined()} <^> zeroOrMore(
             String.init <^> char(CharacterSet(charactersIn: "\u{00}"..."\u{20}").union(CharacterSet(charactersIn: ">\"{}|^`\\")).inverted, name: "[^#x00-#x20<>\"{}|^`\\]")
-                <|> UCHAR)) <*> (String.init <^> char(">")))
+                <|> UCHAR)) <* char(">")
 
         // [163s]    PN_CHARS_BASE    ::=    [A-Z] | [a-z] | [#x00C0-#x00D6] | [#x00D8-#x00F6] | [#x00F8-#x02FF] | [#x0370-#x037D] | [#x037F-#x1FFF] | [#x200C-#x200D] | [#x2070-#x218F] | [#x2C00-#x2FEF] | [#x3001-#xD7FF] | [#xF900-#xFDCF] | [#xFDF0-#xFFFD] | [#x10000-#xEFFFF]
         let PN_CHARS_BASE_charset = [

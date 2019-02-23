@@ -108,12 +108,12 @@ let query = Query(
         where: WhereClause(patterns:
             subject(varS)
                 .rdfTypeIsImasIdol()
-                .title(is: RDFLiteral(string: "CinderellaGirls", lang: "en"))
+                .imasTitle(is: RDFLiteral(string: "CinderellaGirls", lang: "en"))
                 .alternative({[$0.schemaName, $0.schemaAlternateName]}, is: varName)
                 .schemaHeight(is: varHeight)
                 .optional { $0
-                    .color(is: varColor)
-                    .age(is: varAge)
+                    .imasColor(is: varColor)
+                    .foafAge(is: varAge)
                 }
                 .triples),
         having: [.logical(varHeight <= 149)],

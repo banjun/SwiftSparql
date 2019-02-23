@@ -87,12 +87,12 @@ class ViewController: NSViewController {
                 subject(Var("s"))
                     .rdfTypeIsImasIdol()
                     .alternative({[$0.schemaName, $0.schemaAlternateName]}, is: Var("name"))
-                    .handedness(is: Var("利き手"))
+                    .imasHandedness(is: Var("利き手"))
                     .filter(.CONTAINS(v: Var("name"), sub: "まゆ"))
                     .triples
                     + subject(Var("idol"))
                         .rdfTypeIsImasIdol()
-                        .handedness(is: Var("利き手"))
+                        .imasHandedness(is: Var("利き手"))
                         .schemaName(is: Var("名前"))
                         .triples),
             limit: 10))
@@ -120,9 +120,9 @@ class ViewController: NSViewController {
         let idolNames = Query(select: SelectQuery(
             where: WhereClause(patterns:
                 subject(varS).rdfTypeIsImasIdol()
-                    .nameKana(is: varName)
+                    .imasNameKana(is: varName)
                     .schemaHeight(is: varHeight)
-                    .optional {$0.color(is: Var("color"))}
+                    .optional {$0.imasColor(is: Var("color"))}
                     .triples),
             having: [.logical(varHeight <= 149)],
             order: [.by(.RAND)],
