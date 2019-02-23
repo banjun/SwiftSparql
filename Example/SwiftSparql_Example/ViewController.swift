@@ -169,6 +169,37 @@ class ViewController: NSViewController {
             NSLog("%@", "query response: birthdays = \(idols)")
             }
             .onFailure {NSLog("birthdays: %@", String(describing: $0))}
+
+        let units = Query(select: SelectQuery(
+            capture: .expressions([
+                (Var("name"), Expression(Var("ユニット名"))),
+                (Var("memberNames_concat"), Expression(.groupConcat(distinct: false, expression: Expression(Var("ユニットメンバー名")), separator: ","))),
+                (Var("types_concat"), Expression(.groupConcat(distinct: false, expression: Expression(Var("ユニットメンバー属性")), separator: ",")))]),
+            where: WhereClause(patterns:
+                subject(Var("橘ありす"))
+                    .rdfTypeIsImasIdol()
+                    .schemaName(is: RDFLiteral(string: "橘ありす", lang: "ja"))
+                    .schemaMemberOf(is: Var("ありす参加ユニット"))
+                    .triples
+                    + subject(Var("ありす参加ユニット"))
+                        .rdfTypeIsImasUnit()
+                        .schemaName(is: Var("ユニット名"))
+                        .schemaMember(is: Var("ユニットメンバー"))
+                        .triples
+                    + subject(Var("ユニットメンバー"))
+                        .rdfTypeIsImasIdol()
+                        .schemaName(is: Var("ユニットメンバー名"))
+                        .imasType(is: Var("ユニットメンバー属性"))
+                        .triples),
+            group: [.var(Var("ユニット名"))],
+            order: [.by(.count(distinct: false, expression: Expression(Var("ユニットメンバー"))))],
+            limit: 100))
+        print("units = \n\n\(Serializer.serialize(units))")
+        print("\n\n\n")
+        fetch(units).onSuccess { (units: [Unit]) in
+            print("query response: units = \n\(units.map {$0.description}.joined(separator: "\n"))")
+            }
+            .onFailure {NSLog("units: %@", String(describing: $0))}
     }
 }
 
@@ -184,4 +215,18 @@ struct Idol: Codable {
 struct IdolHeight: Codable {
     var name: String
     var 身長: Double
+}
+
+struct Unit: Codable, CustomStringConvertible {
+    var name: String
+    private var memberNames_concat: String
+    private var types_concat: String
+
+    var members: [(name: String, type: String)] {
+        return Array(zip(memberNames_concat.components(separatedBy: ","),
+                         types_concat.components(separatedBy: ",")))
+    }
+    var description: String {
+        return members.map {$0.name + "(\($0.type))"}.joined(separator: " と ") + " で " + name
+    }
 }
