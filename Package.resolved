@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "BrightFutures",
+        "repositoryURL": "https://github.com/Thomvis/BrightFutures",
+        "state": {
+          "branch": null,
+          "revision": "b86a1d202afff7bfca7adf2423ad1962172ee10a",
+          "version": "7.0.0"
+        }
+      },
+      {
         "package": "FootlessParser",
         "repositoryURL": "https://github.com/kareman/FootlessParser",
         "state": {
