@@ -5,6 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "SwiftSparql",
+    products: [.library(name: "SwiftSparql", targets: ["SwiftSparql"])],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         .package(url: "https://github.com/kareman/FootlessParser", .upToNextMajor(from:"0.5.1")),
