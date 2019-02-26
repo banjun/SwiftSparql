@@ -247,7 +247,15 @@ public struct RDFLiteral {
 /// VAR1      ::=      '?' VARNAME
 /// VAR2      ::=      '$' VARNAME
 /// VARNAME      ::=      ( PN_CHARS_U | [0-9] ) ( PN_CHARS_U | [0-9] | #x00B7 | [#x0300-#x036F] | [#x203F-#x2040] )*
-public typealias Var = String
+public struct Var {
+    /// Variables are prefixed by either "?" or "$"; the "?" or "$" is not part of the variable name
+    public var name: String
+
+    public init(_ varname: String) {
+        // In a query, $abc and ?abc identify the same variable.
+        self.name = String(varname.drop(while: {$0 == "?" || $0 == "$"}))
+    }
+}
 
 /// WhereClause      ::=      'WHERE'? GroupGraphPattern
 public struct WhereClause {

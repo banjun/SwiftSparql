@@ -33,138 +33,125 @@ class ViewController: NSViewController {
         let turtleDoc = try! TurtleDoc(String(contentsOfFile: Bundle.main.path(forResource: "imas-schema", ofType: "ttl")!))
 //        NSLog("%@", "turtleDoc = \(String(describing: turtleDoc))")
 
-        let swiftCodes = turtleDoc.triples.compactMap {SubjectDescription($0)}.map {$0.swiftCode}
-        print(swiftCodes.joined(separator: "\n\n"))
+//        let swiftCodes = turtleDoc.triples.compactMap {SubjectDescription($0)}.map {$0.swiftCode}
+//        print(swiftCodes.joined(separator: "\n\n"))
+//
+//        exit(1)
 
-        exit(1)
-
-        let prologues: [Prologue] = [
-            .prefix(PNameNS(value: "schema"), IRIRef(value: "http://schema.org/")),
-            .prefix(PNameNS(value: "rdf"), IRIRef(value: "http://www.w3.org/1999/02/22-rdf-syntax-ns#")),
-            .prefix(PNameNS(value: "imas"), IRIRef(value: "https://sparql.crssnky.xyz/imasrdf/URIs/imas-schema.ttl#")),
-            ]
-
-        let query = Query(prologues: prologues, select: SelectQuery(
-            where: WhereClause(pattern: GroupGraphPattern.groupGraphPatternSub(GroupGraphPatternSub(
-                first: TriplesBlock(triplesSameSubjectPath: TriplesSameSubjectPath.varOrTerm(
-                    .var("?s"),
-                    PropertyListPathNotEmpty(verb: PropertyListPathNotEmpty.Verb.path([
-                        [PathEltOrInverse.elt(PathElt(primary: PathPrimary.iri(IRI.prefixedName(PrefixedName.ln((PNameNS(value: "rdf"), "type")))), mod: nil))]]),
-                                             objectListPath: [.varOrTerm(.var("?o"))],
-                                             successors: [])),
-                                    triplesBlock: nil),
-                successors: []))),
-            limit: .limit(10)))
+        let query = Query(select: SelectQuery(
+            where: WhereClause(patterns: [
+                .triple(.var(Var("s")), PropertyListPathNotEmpty.Verb.init((PNameNS(value: "rdf"), "type")), [.var(Var("o"))]),
+                ]),
+            limit: 10))
 
         NSLog("%@", "selectQuery = \n\n\(Serializer.serialize(query))")
         print("\n\n\n")
 
-        let heightQuery = Query(prologues: prologues, select: SelectQuery(
-            capture: .vars(["?o", "?h"]),
-            where: WhereClause(
-                first: TriplesBlock(
-                    triplesSameSubjectPath: TriplesSameSubjectPath.varOrTerm(
-                        .var("?s"),
-                        .init(verb: .path((PNameNS(value: "schema"), "name") | (PNameNS(value: "schema"), "alternateName")),
-                              objectListPath: [.varOrTerm(.var("?o"))],
-                              successors: [(.init((PNameNS(value: "schema"), "height")),  [.varOrTerm(.var("?h"))])])),
-                    triplesBlock: nil),
-                successors: []),
-            order: [.asc(.init("?h")), .var("?s")],
-            limit: .limit(10)))
+
+        let heightQuery = Query(select: SelectQuery(
+            capture: .vars([Var("o"), Var("h")]),
+            where: WhereClause(patterns:
+                subject(Var("s"))
+                    .rdfTypeIsImasIdol()
+                    .alternative({[$0.schemaName, $0.schemaAlternateName]}, is: Var("o"))
+                    .schemaHeight(is: Var("h"))
+                    .triples),
+            order: [.asc(v: Var("h")), .by(Var("s"))],
+            limit: 10))
         NSLog("%@", "heightQuery = \n\n\(Serializer.serialize(heightQuery))")
         print("\n\n\n")
 
-        let unitMembers = Query(prologues: prologues, select: SelectQuery(
-            capture: .expressions([
-                ("?ユニット名", nil),
-                ("?メンバー", Expression(BuiltInCall.groupConcat(distinct: false, expression: Expression("?名前"), separator: ", ")))]),
-            where: WhereClause(
-                first: TriplesBlock(
-                    triplesSameSubjectPath: TriplesSameSubjectPath.varOrTerm(
-                        .var("?s"),
-                        .init(verb: .init((PNameNS(value: "rdf"), "type")),
-                              objectListPath: [.varOrTerm(.term(.iri(.prefixedName(.ln((PNameNS(value: "imas"), "Unit"))))))],
-                              successors: [(.init((PNameNS(value: "schema"), "name")),  [.varOrTerm(.var("?ユニット名"))]),
-                                           (.init((PNameNS(value: "schema"), "member")),  [.varOrTerm(.var("?m"))])])),
-                    triplesBlock: TriplesBlock(
-                        triplesSameSubjectPath: .varOrTerm(
-                            .var("?m"), .init(verb: .init((PNameNS(value: "schema"), "name")), objectListPath: [.varOrTerm(.var("?名前"))], successors: [])),
-                        triplesBlock: nil)),
-                successors: []),
-            group: [.var("?ユニット名")],
-            order: [.var("?ユニット名")],
-            limit: .limit(10)))
+        let unitMembers = Query(select: SelectQuery(
+            capture: SelectClause.Capture.expressions([
+                (Var("ユニット名"), nil),
+                (Var("メンバー"), Expression(.groupConcat(distinct: false, expression: Expression(Var("名前")), separator: ", ")))]),
+            where: WhereClause(patterns:
+                subject(Var("s"))
+                    .rdfTypeIsImasUnit()
+                    .schemaName(is: Var("ユニット名"))
+                    .schemaMember(is: Var("m"))
+                    .triples
+                    + subject(Var("m"))
+                        .rdfTypeIsImasIdol()
+                        .schemaName(is: Var("名前"))
+                        .triples),
+            group: [.var(Var("ユニット名"))],
+            order: [.by(Var("ユニット名"))],
+            limit: 10))
         NSLog("%@", "unitMembers = \n\n\(Serializer.serialize(unitMembers))")
         print("\n\n\n")
 
-        let mayukiki = Query(prologues: prologues, select: SelectQuery(
-            capture: .vars(["?利き手", "?名前"]),
-            where: WhereClause(
-                first: TriplesBlock(
-                    triplesSameSubjectPath: .varOrTerm(
-                        .var("?s"),
-                        .init(verb: .path((PNameNS(value: "schema"), "name") | (PNameNS(value: "schema"), "alternateName")), objectListPath: [.varOrTerm(.var("?name"))],
-                              successors: [(.init((PNameNS(value: "imas"), "Handedness")), [.varOrTerm(.var("?利き手"))])])),
-                    triplesBlock: nil),
-                successors: [(.Filter(.builtInCall(.regex(.init(.STR(.init("?name"))), "まゆ", nil))), TriplesBlock(
-                    triplesSameSubjectPath: TriplesSameSubjectPath.varOrTerm(
-                        .var("?idol"),
-                        .init(verb: .init((PNameNS(value: "imas"), "Handedness")), objectListPath: [.varOrTerm(.var("?利き手"))],
-                              successors: [(.init((PNameNS(value: "schema"), "name")), [.varOrTerm(.var("?名前"))])])),
-                    triplesBlock: nil))]),
-            limit: .limit(10)))
+        let mayukiki = Query(select: SelectQuery(
+            capture: .vars([Var("利き手"), Var("名前")]),
+            where: WhereClause(patterns:
+                subject(Var("s"))
+                    .rdfTypeIsImasIdol()
+                    .alternative({[$0.schemaName, $0.schemaAlternateName]}, is: Var("name"))
+                    .handedness(is: Var("利き手"))
+                    .filter(.CONTAINS(v: Var("name"), sub: "まゆ"))
+                    .triples
+                    + subject(Var("idol"))
+                        .rdfTypeIsImasIdol()
+                        .handedness(is: Var("利き手"))
+                        .schemaName(is: Var("名前"))
+                        .triples),
+            limit: 10))
         NSLog("%@", "mayukiki = \n\n\(Serializer.serialize(mayukiki))")
         print("\n\n\n")
 
-        let mayukiki2 = Query(prologues: prologues, select: SelectQuery(
-            capture: .vars(["?利き手", "?名前"]),
-            where: WhereClause(patterns: [
-                .triple(.var("?s"), .path((PNameNS(value: "schema"), "name") | (PNameNS(value: "schema"), "alternateName")), [.varOrTerm(.var("?name"))]),
-                .triple(.var("?s"), .init((PNameNS(value: "imas"), "Handedness")), [.varOrTerm(.var("?利き手"))]),
-                .notTriple(.Filter(.builtInCall(.regex(.init(.STR(.init("?name"))), "まゆ", nil)))),
-                .triple(.var("?idol"), .init((PNameNS(value: "imas"), "Handedness")), [.varOrTerm(.var("?利き手"))]),
-                .triple(.var("?idol"), .init((PNameNS(value: "schema"), "name")), [.varOrTerm(.var("?名前"))]),
-                ]),
-            limit: .limit(10)))
-        NSLog("%@", "mayukiki2 = \n\n\(Serializer.serialize(mayukiki2))")
-        print("\n\n\n")
-
-        let liveSongs = Query(prologues: prologues, select: SelectQuery(
-            capture: .expressions([("?回数", .init(.count(distinct: false, expression: .init("?name")))),
-                                   ("?楽曲名", .init(.sample(distinct: false, expression: .init("?name"))))]),
-            where: WhereClause(
-                first: TriplesBlock(
-                    triplesSameSubjectPath: .varOrTerm(
-                        .var("?s"),
-                        .init(verb: .init((PNameNS(value: "rdf"), "type")), objectListPath: [.varOrTerm(.term(.iri(.prefixedName(.ln((PNameNS(value: "imas"), "SetlistNumer"))))))],
-                              successors: [(.init((PNameNS(value: "schema"), "name")), [.varOrTerm(.var("?name"))])])),
-                    triplesBlock: nil),
-                successors: []),
-            group: [.var("?name")],
-            having: [.logical(NumericExpression("?回数") > 4)],
-            order: [.desc(.init("?回数"))],
-            limit: .limit(10)))
+        let liveSongs = Query(select: SelectQuery(
+            capture: .expressions([(Var("回数"), .init(.count(distinct: false, expression: .init(Var("name"))))),
+                                   (Var("楽曲名"), .init(.sample(distinct: false, expression: .init(Var("name")))))]),
+            where: WhereClause(patterns:
+                subject(Var("s"))
+                    .rdfType(is: ImasSetlistNumber.self)
+                    .name(is: Var("name"))
+                    .triples),
+            group: [.var(Var("name"))],
+            having: [.logical(Var("回数") > 4)],
+            order: [.desc(v: Var("回数"))],
+            limit: 10))
         NSLog("%@", "liveSongs = \n\n\(Serializer.serialize(liveSongs))")
         print("\n\n\n")
 
-        let varS = VarOrTerm.var("?s")
-        let varName = VarOrTerm.var("?name")
-        let varHeight = Var("?身長")
-        let rdfType = PropertyListPathNotEmpty.Verb((PNameNS(value: "rdf"), "type"))
-        let schemaName = PropertyListPathNotEmpty.Verb((PNameNS(value: "schema"), "name"))
-        let schemaHeight = PropertyListPathNotEmpty.Verb((PNameNS(value: "schema"), "height"))
-        let imasIdol = ObjectPath.varOrTerm(.term(.iri(.prefixedName(.ln((PNameNS(value: "imas"), "Idol"))))))
-        let idolNames = Query(prologues: prologues, select: SelectQuery(
-            where: WhereClause(patterns: [
-                .triple(varS, rdfType, [imasIdol]),
-                .triple(varS, schemaName, [.varOrTerm(varName)]),
-                .triple(varS, schemaHeight, [.varOrTerm(.var(varHeight))]),
-                ]),
-            having: [.logical(NumericExpression(varHeight) <= 149)],
-            order: [.constraint(.builtInCall(.RAND))],
-            limit: .limit(10)))
+        let varS = Var("s")
+        let varName = Var("name")
+        let varHeight = Var("身長")
+        let idolNames = Query(select: SelectQuery(
+            where: WhereClause(patterns:
+                subject(varS).rdfTypeIsImasIdol()
+                    .nameKana(is: varName)
+                    .schemaHeight(is: varHeight)
+                    .optional {$0.color(is: Var("color"))}
+                    .triples),
+            having: [.logical(varHeight <= 149)],
+            order: [.by(.RAND)],
+            limit: 10))
         NSLog("%@", "idolNames = \n\n\(Serializer.serialize(idolNames))")
+        print("\n\n\n")
+
+        let today: String = {
+            let df = DateFormatter()
+            df.dateFormat = "MM-dd"
+            return df.string(from: Date())
+        }()
+        let birthdays = Query(select: SelectQuery(
+            capture: .expressions([
+                // NOTE: `sample` aggregation returns `{}` empty hash in bindings on empty result and that cause Decoding error
+                (varName, Expression(.sample(distinct: false, expression: .init(Var("なまえ"))))),
+                (Var("date"), Expression(.sample(distinct: false, expression: .init(Var("誕生日"))))),
+                ]),
+            where: WhereClause(patterns:
+                subject(varS)
+                    .rdfTypeIsImasIdol()
+                    .schemaBirthDate(is: Var("誕生日"))
+                    .alternative({[$0.schemaName, $0.schemaAlternateName]}, is: Var("なまえ"))
+                    .filter(.regex(v: Var("誕生日"), pattern: today))
+                    .triples),
+            group: [.var(Var("なまえ"))],
+            order: [.by(varName)]
+            ))
+        NSLog("%@", "birthdays = \n\n\(Serializer.serialize(birthdays))")
         print("\n\n\n")
 
         fetch(liveSongs).onSuccess { (songs: [LiveSong]) in
@@ -177,6 +164,11 @@ class ViewController: NSViewController {
                 NSLog("%@", "query response: idols = \(idols)")
             }
             .onFailure {NSLog("%@", String(describing: $0))}
+
+        fetch(birthdays).onSuccess{ (idols: [Idol]) in
+            NSLog("%@", "query response: birthdays = \(idols)")
+            }
+            .onFailure {NSLog("birthdays: %@", String(describing: $0))}
     }
 }
 
@@ -185,7 +177,22 @@ struct LiveSong: Codable {
     var 回数: Int
 }
 
+struct Idol: Codable {
+    var name: String
+}
+
 struct IdolHeight: Codable {
     var name: String
     var 身長: Double
+}
+
+enum ImasSetlistNumber: RDFTypeConvertible {
+    typealias Schema = ImasSchema
+    static var rdfType: IRIRef {return Schema.rdfType("SetlistNumber")}
+}
+
+extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == ImasSetlistNumber {
+    func name(is v: Var) -> TripleBuilder<State> {
+        return .init(base: self, appendingVerb: SchemaOrg.verb("name"), value: [.var(v)])
+    }
 }

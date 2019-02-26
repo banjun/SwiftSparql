@@ -30,6 +30,7 @@ struct IdolHeight: Codable {
     var name: String
     var height: Double
     var color: String?
+    var age: String?
 }
 
 class IdolHeightView: NSView {
@@ -41,7 +42,7 @@ class IdolHeightView: NSView {
         layer?.backgroundColor = NSColor.white.cgColor
 
         idols.enumerated().forEach { i, idol in
-            let tf = NSTextField(labelWithString: idol.name)
+            let tf = NSTextField(labelWithString: idol.name + (idol.age.map {" (\($0))"} ?? ""))
             tf.font = NSFont.systemFont(ofSize: 16)
             tf.backgroundColor = .clear
             tf.shadow = NSShadow()
@@ -87,33 +88,37 @@ class IdolHeightView: NSView {
     }
 }
 
-let schema = PNameNS(value: "schema")
-let rdf = PNameNS(value: "rdf")
-let imas = PNameNS(value: "imas")
+let varS = Var("s")
+let varName = Var("name")
+let varHeight = Var("height")
+let varColor = Var("color")
+let varAge = Var("age")
 
-let varS = VarOrTerm.var("?s")
-let varName = VarOrTerm.var("?name")
-let varHeight = VarOrTerm.var("?height")
-let varColor = VarOrTerm.var("?color")
+enum FOAFSchema: IRIBaseProvider {
+    static var base: IRIRef {return IRIRef(value: "http://xmlns.com/foaf/0.1/")}
+}
+extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == ImasIdol {
+    func age(is v: Var) -> TripleBuilder<State> {
+        return .init(base: self, appendingVerb: FOAFSchema.verb("age"), value: [.var(v)])
+    }
+}
 
 let query = Query(
-    prologues: [
-        .prefix(schema, IRIRef(value: "http://schema.org/")),
-        .prefix(rdf, IRIRef(value: "http://www.w3.org/1999/02/22-rdf-syntax-ns#")),
-        .prefix(imas, IRIRef(value: "https://sparql.crssnky.xyz/imasrdf/URIs/imas-schema.ttl#")),
-        ],
     select: SelectQuery(
-        where: WhereClause(patterns: [
-            .triple(varS, .init((rdf, "type")), [.varOrTerm(.term(.iri(.prefixedName(.ln((imas, "Idol"))))))]),
-            .triple(varS, .init((imas, "Title")), [.varOrTerm(.term(.rdf(.init(string: "CinderellaGirls", lang: "en"))))]),
-            .triple(varS, .init((schema, "name")), [.varOrTerm(varName)]),
-            .triple(varS, .init((schema, "height")), [.varOrTerm(varHeight)]),
-            .notTriple(.OptionalGraphPattern(.groupGraphPatternSub(GroupGraphPatternSub(patterns: [
-                .triple(varS, .init((imas, "Color")), [.varOrTerm(varColor)])])))),
-            ]),
-        having: [.logical(NumericExpression("?height") <= 149)],
-        order: [.var("?height")],
-        limit: .limit(100)))
+        where: WhereClause(patterns:
+            subject(varS)
+                .rdfTypeIsImasIdol()
+                .title(is: RDFLiteral(string: "CinderellaGirls", lang: "en"))
+                .alternative({[$0.schemaName, $0.schemaAlternateName]}, is: varName)
+                .schemaHeight(is: varHeight)
+                .optional { $0
+                    .color(is: varColor)
+                    .age(is: varAge)
+                }
+                .triples),
+        having: [.logical(varHeight <= 149)],
+        order: [.by(varHeight)],
+        limit: 100))
 
 print(Serializer.serialize(query))
 

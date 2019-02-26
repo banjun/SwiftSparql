@@ -1,7 +1,7 @@
 
 public extension Query {
     // generic select query
-    public init(prologues: [Prologue], select: SelectQuery) {
+    public init(prologues: [Prologue] = [], select: SelectQuery) {
         self.prologues = prologues
         self.query = .select(select)
         self.valuesClause = ValuesClause()
@@ -67,6 +67,20 @@ public func > (lhs: NumericExpression, rhs: NumericExpression) -> ValueLogical {
 public func <= (lhs: NumericExpression, rhs: NumericExpression) -> ValueLogical { return .lte(lhs, rhs) }
 public func >= (lhs: NumericExpression, rhs: NumericExpression) -> ValueLogical { return .gte(lhs, rhs) }
 
+public func == (lhs: Var, rhs: NumericExpression) -> ValueLogical { return .eq(NumericExpression(lhs), rhs) }
+public func != (lhs: Var, rhs: NumericExpression) -> ValueLogical { return .neq(NumericExpression(lhs), rhs) }
+public func < (lhs: Var, rhs: NumericExpression) -> ValueLogical { return .lt(NumericExpression(lhs), rhs) }
+public func > (lhs: Var, rhs: NumericExpression) -> ValueLogical { return .gt(NumericExpression(lhs), rhs) }
+public func <= (lhs: Var, rhs: NumericExpression) -> ValueLogical { return .lte(NumericExpression(lhs), rhs) }
+public func >= (lhs: Var, rhs: NumericExpression) -> ValueLogical { return .gte(NumericExpression(lhs), rhs) }
+
+public func == (lhs: NumericExpression, rhs: Var) -> ValueLogical { return .eq(lhs, NumericExpression(rhs)) }
+public func != (lhs: NumericExpression, rhs: Var) -> ValueLogical { return .neq(lhs, NumericExpression(rhs)) }
+public func < (lhs: NumericExpression, rhs: Var) -> ValueLogical { return .lt(lhs, NumericExpression(rhs)) }
+public func > (lhs: NumericExpression, rhs: Var) -> ValueLogical { return .gt(lhs, NumericExpression(rhs)) }
+public func <= (lhs: NumericExpression, rhs: Var) -> ValueLogical { return .lte(lhs, NumericExpression(rhs)) }
+public func >= (lhs: NumericExpression, rhs: Var) -> ValueLogical { return .gte(lhs, NumericExpression(rhs)) }
+
 public extension Constraint {
     public static func logical(_ v: ValueLogical) -> Constraint {
         return .brackettedExpression(.init(v))
@@ -81,6 +95,12 @@ public extension NumericExpression {
 extension NumericExpression: ExpressibleByIntegerLiteral {
     public init(integerLiteral value: Int) {
         self = .single((.simple(.numericLiteral(.integer(value))), []))
+    }
+}
+
+extension LimitOffsetClauses: ExpressibleByIntegerLiteral {
+    public init(integerLiteral value: Int) {
+        self = .limit(value)
     }
 }
 
@@ -105,6 +125,10 @@ public extension PathEltOrInverse {
     init(name: PNameLN) {
         self = .elt(.init(primary: .iri(.prefixedName(.ln(name))), mod: nil))
     }
+}
+
+public func | (lhs: PathAlternative, rhs: PathAlternative) -> PathAlternative {
+    return lhs + rhs
 }
 
 public func | (lhs: PathSequence, rhs: PathSequence) -> PathAlternative {
@@ -132,8 +156,12 @@ public func | (lhs: PNameLN, rhs: PNameLN) -> PathAlternative {
 }
 
 public extension PropertyListPathNotEmpty.Verb {
-    public init(_ name: PNameLN) {
+    init(_ name: PNameLN) {
         self = .path([[PathEltOrInverse(name: name)]])
+    }
+
+    init(_ ref: IRIRef) {
+        self = .path(.init([[.elt(.init(primary: .iri(.ref(ref)), mod: nil))]]))
     }
 }
 
@@ -143,4 +171,22 @@ extension RDFLiteral: ExpressibleByStringLiteral {
     }
 }
 
+extension GraphNodePath {
+    public static func `var`(_ v: Var) -> GraphNodePath {
+        return .varOrTerm(.var(v))
+    }
 
+    public static func literal(_ v: RDFLiteral) -> GraphNodePath {
+        return .varOrTerm(.term(.rdf(v)))
+    }
+
+    public static func iriRef(_ r: IRIRef) -> GraphNodePath {
+        return .varOrTerm(.term(.iri(.ref(r))))
+    }
+}
+
+extension GraphNode {
+    public static func `var`(_ v: Var) -> GraphNode {
+        return .varOrTerm(.var(v))
+    }
+}
