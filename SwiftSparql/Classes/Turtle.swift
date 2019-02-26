@@ -147,6 +147,8 @@ extension TurtleDoc {
     }
 
     public init(_ docString: String) throws {
+        let docString = docString.hasPrefix("\u{feff}") ? String(docString.dropFirst()) : docString
+
         // Look-ahead with same class terminator
         func oneOrMoreTerminated <T,A> (_ repeatedParser: Parser<T,A>, terminationParser: Parser<T, A>) -> Parser<T,[A]> {
             return Parser { input in
@@ -650,7 +652,7 @@ public extension TurtleDoc {
 
 public struct SubjectDescription {
     public var subject: TurtleDoc.Subject
-    public var a: IRI?
+    public var a: [IRI] = []
     public var label: String?
     public var comment: String?
 
@@ -671,7 +673,7 @@ public struct SubjectDescription {
                 case .iri: break
                 case .a:
                     for case .iri(let iri) in objects {
-                        self.a = iri
+                        self.a.append(iri)
                     }
                 }
             }

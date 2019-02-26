@@ -190,3 +190,29 @@ extension GraphNode {
         return .varOrTerm(.var(v))
     }
 }
+
+public extension IRIRef {
+    init?(_ prefixedName: PrefixedName, on prologues: [Prologue]) {
+        let ns: PNameNS
+        let local: String?
+        switch prefixedName {
+        case .ln(let n, let l): (ns, local) = (n, l)
+        case .ns(let n): (ns, local) = (n, nil)
+        }
+
+        guard let iri: IRIRef = (prologues.lazy.compactMap {
+            switch $0 {
+            case .prefix(ns, let iri): return iri
+            case .prefix: return nil
+            case .base(let iri): return ns.value == nil ? iri : nil
+            }
+            }.first) else { return nil }
+        self.init(value: iri.value + (local ?? ""))
+    }
+    init?(_ iri: IRI, on prologues: [Prologue]) {
+        switch iri {
+        case .ref(let iri): self.init(value: iri.value)
+        case .prefixedName(let p): self.init(p, on: prologues)
+        }
+    }
+}

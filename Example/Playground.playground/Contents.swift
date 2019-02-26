@@ -94,15 +94,6 @@ let varHeight = Var("height")
 let varColor = Var("color")
 let varAge = Var("age")
 
-enum FOAFSchema: IRIBaseProvider {
-    static var base: IRIRef {return IRIRef(value: "http://xmlns.com/foaf/0.1/")}
-}
-extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == ImasIdol {
-    func age(is v: Var) -> TripleBuilder<State> {
-        return .init(base: self, appendingVerb: FOAFSchema.verb("age"), value: [.var(v)])
-    }
-}
-
 let query = Query(
     select: SelectQuery(
         where: WhereClause(patterns:

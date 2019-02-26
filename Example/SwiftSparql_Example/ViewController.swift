@@ -30,14 +30,6 @@ class ViewController: NSViewController {
         super.viewDidLoad()
         // playground
 
-        let turtleDoc = try! TurtleDoc(String(contentsOfFile: Bundle.main.path(forResource: "imas-schema", ofType: "ttl")!))
-//        NSLog("%@", "turtleDoc = \(String(describing: turtleDoc))")
-
-//        let swiftCodes = turtleDoc.triples.compactMap {SubjectDescription($0)}.map {$0.swiftCode}
-//        print(swiftCodes.joined(separator: "\n\n"))
-//
-//        exit(1)
-
         let query = Query(select: SelectQuery(
             where: WhereClause(patterns: [
                 .triple(.var(Var("s")), PropertyListPathNotEmpty.Verb.init((PNameNS(value: "rdf"), "type")), [.var(Var("o"))]),
