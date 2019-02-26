@@ -216,3 +216,23 @@ public extension IRIRef {
         }
     }
 }
+
+extension GraphTerm: ExpressibleByStringLiteral, ExpressibleByIntegerLiteral, ExpressibleByFloatLiteral {
+    public init(stringLiteral value: String) {
+        self = .rdf(RDFLiteral(stringLiteral: value))
+    }
+
+    public init(integerLiteral value: Int) {
+        self = .numeric(.integer(value))
+    }
+
+    public init(floatLiteral value: Float) {
+        self = .numeric(.double(Double(value)))
+    }
+}
+
+public extension GraphTerm {
+    static func literal(_ string: String, lang: String?) -> GraphTerm {
+        return .rdf(RDFLiteral(string: string, lang: lang))
+    }
+}

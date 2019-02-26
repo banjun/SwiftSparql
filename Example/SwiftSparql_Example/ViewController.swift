@@ -151,7 +151,7 @@ class ViewController: NSViewController {
             where: WhereClause(patterns:
                 subject(Var("橘ありす"))
                     .rdfTypeIsImasIdol()
-                    .schemaName(is: RDFLiteral(string: "橘ありす", lang: "ja"))
+                    .schemaName(is: .literal("橘ありす", lang: "ja"))
                     .schemaMemberOf(is: Var("ありす参加ユニット"))
                     .triples
                     + subject(Var("ありす参加ユニット"))

@@ -29,8 +29,8 @@ enum SwiftCode {
             let funcName = CamelIdentifier(raw: v.prefix + CamelIdentifier(raw: v.local).id).firstLoweredID
             return """
             \(docComment)
-            func \(funcName)(is v: RDFLiteral) -> TripleBuilder<State> {
-                return appended(verb: \(v.schema).verb("\(v.local)"), value: [.literal(v)])
+            func \(funcName)(is v: GraphTerm) -> TripleBuilder<State> {
+                return appended(verb: \(v.schema).verb("\(v.local)"), value: [.varOrTerm(.term(v))])
             }
 
             \(docComment)

@@ -240,8 +240,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
 
 public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == ImasIdol {
     /// owns: Products owned by the organization or person.
-    func schemaOwns(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("owns"), value: [.literal(v)])
+    func schemaOwns(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("owns"), value: [.varOrTerm(.term(v))])
     }
     
     /// owns: Products owned by the organization or person.
@@ -250,8 +250,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// memberOf: An Organization (or ProgramMembership) to which this Person or Organization belongs.
-    func schemaMemberOf(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("memberOf"), value: [.literal(v)])
+    func schemaMemberOf(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("memberOf"), value: [.varOrTerm(.term(v))])
     }
     
     /// memberOf: An Organization (or ProgramMembership) to which this Person or Organization belongs.
@@ -260,8 +260,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// familyName: Family name. In the U.S., the last name of an Person. This can be used along with givenName instead of the name property.
-    func schemaFamilyName(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("familyName"), value: [.literal(v)])
+    func schemaFamilyName(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("familyName"), value: [.varOrTerm(.term(v))])
     }
     
     /// familyName: Family name. In the U.S., the last name of an Person. This can be used along with givenName instead of the name property.
@@ -270,8 +270,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 所属コンテンツ: 所属コンテンツを表すプロパティ
-    func imasTitle(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("Title"), value: [.literal(v)])
+    func imasTitle(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Title"), value: [.varOrTerm(.term(v))])
     }
     
     /// 所属コンテンツ: 所属コンテンツを表すプロパティ
@@ -280,8 +280,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 姓よみがな: 姓のよみがなを表すプロパティ
-    func imasFamilyNameKana(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("familyNameKana"), value: [.literal(v)])
+    func imasFamilyNameKana(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("familyNameKana"), value: [.varOrTerm(.term(v))])
     }
     
     /// 姓よみがな: 姓のよみがなを表すプロパティ
@@ -290,8 +290,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// タイプ: タイプ(Cu,Co,Pa)を表すプロパティ
-    func imasType(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("Type"), value: [.literal(v)])
+    func imasType(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Type"), value: [.varOrTerm(.term(v))])
     }
     
     /// タイプ: タイプ(Cu,Co,Pa)を表すプロパティ
@@ -300,8 +300,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 趣味: 趣味を表すプロパティ
-    func imasHobby(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("Hobby"), value: [.literal(v)])
+    func imasHobby(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Hobby"), value: [.varOrTerm(.term(v))])
     }
     
     /// 趣味: 趣味を表すプロパティ
@@ -310,8 +310,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 担当声優: 担当声優を表すプロパティ
-    func imasCv(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("cv"), value: [.literal(v)])
+    func imasCv(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("cv"), value: [.varOrTerm(.term(v))])
     }
     
     /// 担当声優: 担当声優を表すプロパティ
@@ -320,8 +320,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 胸囲: 胸囲を表すプロパティ
-    func imasBust(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("Bust"), value: [.literal(v)])
+    func imasBust(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Bust"), value: [.varOrTerm(.term(v))])
     }
     
     /// 胸囲: 胸囲を表すプロパティ
@@ -330,8 +330,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 臀囲: 臀囲(尻囲)を表すプロパティ
-    func imasHip(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("Hip"), value: [.literal(v)])
+    func imasHip(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Hip"), value: [.varOrTerm(.term(v))])
     }
     
     /// 臀囲: 臀囲(尻囲)を表すプロパティ
@@ -340,8 +340,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// birthDate: Date of birth.
-    func schemaBirthDate(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("birthDate"), value: [.literal(v)])
+    func schemaBirthDate(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("birthDate"), value: [.varOrTerm(.term(v))])
     }
     
     /// birthDate: Date of birth.
@@ -350,8 +350,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// height: The height of the item.
-    func schemaHeight(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("height"), value: [.literal(v)])
+    func schemaHeight(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("height"), value: [.varOrTerm(.term(v))])
     }
     
     /// height: The height of the item.
@@ -360,8 +360,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// age: The age in years of some agent.
-    func foafAge(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: FoafSchema.verb("age"), value: [.literal(v)])
+    func foafAge(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: FoafSchema.verb("age"), value: [.varOrTerm(.term(v))])
     }
     
     /// age: The age in years of some agent.
@@ -370,8 +370,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// イメージカラー: イメージカラーを表すプロパティ
-    func imasColor(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("Color"), value: [.literal(v)])
+    func imasColor(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Color"), value: [.varOrTerm(.term(v))])
     }
     
     /// イメージカラー: イメージカラーを表すプロパティ
@@ -380,8 +380,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 血液型: 血液型を表すプロパティ
-    func imasBloodType(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("BloodType"), value: [.literal(v)])
+    func imasBloodType(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("BloodType"), value: [.varOrTerm(.term(v))])
     }
     
     /// 血液型: 血液型を表すプロパティ
@@ -390,8 +390,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 腹囲: 腹囲を表すプロパティ
-    func imasWaist(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("Waist"), value: [.literal(v)])
+    func imasWaist(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Waist"), value: [.varOrTerm(.term(v))])
     }
     
     /// 腹囲: 腹囲を表すプロパティ
@@ -400,8 +400,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 聞き手: 聞き手を表すプロパティ
-    func imasHandedness(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("Handedness"), value: [.literal(v)])
+    func imasHandedness(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Handedness"), value: [.varOrTerm(.term(v))])
     }
     
     /// 聞き手: 聞き手を表すプロパティ
@@ -410,8 +410,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// birthPlace: The place where the person was born.
-    func schemaBirthPlace(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("birthPlace"), value: [.literal(v)])
+    func schemaBirthPlace(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("birthPlace"), value: [.varOrTerm(.term(v))])
     }
     
     /// birthPlace: The place where the person was born.
@@ -420,8 +420,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// givenName: Given name. In the U.S., the first name of a Person. This can be used along with familyName instead of the name property.
-    func schemaGivenName(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("givenName"), value: [.literal(v)])
+    func schemaGivenName(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("givenName"), value: [.varOrTerm(.term(v))])
     }
     
     /// givenName: Given name. In the U.S., the first name of a Person. This can be used along with familyName instead of the name property.
@@ -430,8 +430,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 星座: 星座を表すプロパティ
-    func imasConstellation(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("Constellation"), value: [.literal(v)])
+    func imasConstellation(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Constellation"), value: [.varOrTerm(.term(v))])
     }
     
     /// 星座: 星座を表すプロパティ
@@ -440,8 +440,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 
-    func rdfType(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: RdfSchema.verb("type"), value: [.literal(v)])
+    func rdfType(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: RdfSchema.verb("type"), value: [.varOrTerm(.term(v))])
     }
     
     /// 
@@ -450,8 +450,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// weight: The weight of the product or person.
-    func schemaWeight(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("weight"), value: [.literal(v)])
+    func schemaWeight(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("weight"), value: [.varOrTerm(.term(v))])
     }
     
     /// weight: The weight of the product or person.
@@ -460,8 +460,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 名前よみがな: 名前のよみがなを表すプロパティ
-    func imasNameKana(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("nameKana"), value: [.literal(v)])
+    func imasNameKana(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("nameKana"), value: [.varOrTerm(.term(v))])
     }
     
     /// 名前よみがな: 名前のよみがなを表すプロパティ
@@ -470,8 +470,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// name: The name of the item.
-    func schemaName(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("name"), value: [.literal(v)])
+    func schemaName(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("name"), value: [.varOrTerm(.term(v))])
     }
     
     /// name: The name of the item.
@@ -480,8 +480,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// gender: Gender of the person. While http://schema.org/Male and http://schema.org/Female may be used, text strings are also acceptable for people who do not identify as a binary gender.
-    func schemaGender(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("gender"), value: [.literal(v)])
+    func schemaGender(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("gender"), value: [.varOrTerm(.term(v))])
     }
     
     /// gender: Gender of the person. While http://schema.org/Male and http://schema.org/Female may be used, text strings are also acceptable for people who do not identify as a binary gender.
@@ -490,8 +490,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 名よみがな: 名のよみがなを表すプロパティ
-    func imasGivenNameKana(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("givenNameKana"), value: [.literal(v)])
+    func imasGivenNameKana(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("givenNameKana"), value: [.varOrTerm(.term(v))])
     }
     
     /// 名よみがな: 名のよみがなを表すプロパティ
@@ -500,8 +500,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 属性: 属性(Vo,Da,Vi)を表すプロパティ
-    func imasAttribute(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("Attribute"), value: [.literal(v)])
+    func imasAttribute(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Attribute"), value: [.varOrTerm(.term(v))])
     }
     
     /// 属性: 属性(Vo,Da,Vi)を表すプロパティ
@@ -510,8 +510,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 特技: 特技を表すプロパティ
-    func imasTalent(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("Talent"), value: [.literal(v)])
+    func imasTalent(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Talent"), value: [.varOrTerm(.term(v))])
     }
     
     /// 特技: 特技を表すプロパティ
@@ -520,8 +520,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 好きなもの: 好きなものを表すプロパティ
-    func imasFavorite(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("Favorite"), value: [.literal(v)])
+    func imasFavorite(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Favorite"), value: [.varOrTerm(.term(v))])
     }
     
     /// 好きなもの: 好きなものを表すプロパティ
@@ -530,8 +530,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 区分: 区分(Princess・Fairy・Angel)を表すプロパティ
-    func imasDivision(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("Division"), value: [.literal(v)])
+    func imasDivision(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Division"), value: [.varOrTerm(.term(v))])
     }
     
     /// 区分: 区分(Princess・Fairy・Angel)を表すプロパティ
@@ -540,8 +540,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// description: A description of the item.
-    func schemaDescription(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("description"), value: [.literal(v)])
+    func schemaDescription(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("description"), value: [.varOrTerm(.term(v))])
     }
     
     /// description: A description of the item.
@@ -550,8 +550,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// カテゴリ: カテゴリ(メンタル・フィジカル・インテリ)を表すプロパティ
-    func imasCategory(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("Category"), value: [.literal(v)])
+    func imasCategory(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Category"), value: [.varOrTerm(.term(v))])
     }
     
     /// カテゴリ: カテゴリ(メンタル・フィジカル・インテリ)を表すプロパティ
@@ -560,8 +560,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 靴のサイズ: 靴のサイズを表すプロパティ
-    func imasShoeSize(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("ShoeSize"), value: [.literal(v)])
+    func imasShoeSize(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("ShoeSize"), value: [.varOrTerm(.term(v))])
     }
     
     /// 靴のサイズ: 靴のサイズを表すプロパティ
@@ -570,8 +570,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 通称よみがな: 通称のよみがなを表すプロパティ
-    func imasAlternateNameKana(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("alternateNameKana"), value: [.literal(v)])
+    func imasAlternateNameKana(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("alternateNameKana"), value: [.varOrTerm(.term(v))])
     }
     
     /// 通称よみがな: 通称のよみがなを表すプロパティ
@@ -580,8 +580,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// alternateName: An alias for the item.
-    func schemaAlternateName(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("alternateName"), value: [.literal(v)])
+    func schemaAlternateName(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("alternateName"), value: [.varOrTerm(.term(v))])
     }
     
     /// alternateName: An alias for the item.
@@ -592,8 +592,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
 
 public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == ImasStaff {
     /// 
-    func rdfType(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: RdfSchema.verb("type"), value: [.literal(v)])
+    func rdfType(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: RdfSchema.verb("type"), value: [.varOrTerm(.term(v))])
     }
     
     /// 
@@ -602,8 +602,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// age: The age in years of some agent.
-    func foafAge(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: FoafSchema.verb("age"), value: [.literal(v)])
+    func foafAge(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: FoafSchema.verb("age"), value: [.varOrTerm(.term(v))])
     }
     
     /// age: The age in years of some agent.
@@ -612,8 +612,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 名よみがな: 名のよみがなを表すプロパティ
-    func imasGivenNameKana(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("givenNameKana"), value: [.literal(v)])
+    func imasGivenNameKana(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("givenNameKana"), value: [.varOrTerm(.term(v))])
     }
     
     /// 名よみがな: 名のよみがなを表すプロパティ
@@ -622,8 +622,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// familyName: Family name. In the U.S., the last name of an Person. This can be used along with givenName instead of the name property.
-    func schemaFamilyName(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("familyName"), value: [.literal(v)])
+    func schemaFamilyName(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("familyName"), value: [.varOrTerm(.term(v))])
     }
     
     /// familyName: Family name. In the U.S., the last name of an Person. This can be used along with givenName instead of the name property.
@@ -632,8 +632,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 名前よみがな: 名前のよみがなを表すプロパティ
-    func imasNameKana(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("nameKana"), value: [.literal(v)])
+    func imasNameKana(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("nameKana"), value: [.varOrTerm(.term(v))])
     }
     
     /// 名前よみがな: 名前のよみがなを表すプロパティ
@@ -642,8 +642,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 担当声優: 担当声優を表すプロパティ
-    func imasCv(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("cv"), value: [.literal(v)])
+    func imasCv(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("cv"), value: [.varOrTerm(.term(v))])
     }
     
     /// 担当声優: 担当声優を表すプロパティ
@@ -652,8 +652,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 姓よみがな: 姓のよみがなを表すプロパティ
-    func imasFamilyNameKana(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("familyNameKana"), value: [.literal(v)])
+    func imasFamilyNameKana(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("familyNameKana"), value: [.varOrTerm(.term(v))])
     }
     
     /// 姓よみがな: 姓のよみがなを表すプロパティ
@@ -662,8 +662,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// givenName: Given name. In the U.S., the first name of a Person. This can be used along with familyName instead of the name property.
-    func schemaGivenName(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("givenName"), value: [.literal(v)])
+    func schemaGivenName(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("givenName"), value: [.varOrTerm(.term(v))])
     }
     
     /// givenName: Given name. In the U.S., the first name of a Person. This can be used along with familyName instead of the name property.
@@ -672,8 +672,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// position: The position of an item in a series or sequence of items.
-    func schemaPosition(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("position"), value: [.literal(v)])
+    func schemaPosition(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("position"), value: [.varOrTerm(.term(v))])
     }
     
     /// position: The position of an item in a series or sequence of items.
@@ -682,8 +682,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// name: The name of the item.
-    func schemaName(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("name"), value: [.literal(v)])
+    func schemaName(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("name"), value: [.varOrTerm(.term(v))])
     }
     
     /// name: The name of the item.
@@ -692,8 +692,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// memberOf: An Organization (or ProgramMembership) to which this Person or Organization belongs.
-    func schemaMemberOf(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("memberOf"), value: [.literal(v)])
+    func schemaMemberOf(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("memberOf"), value: [.varOrTerm(.term(v))])
     }
     
     /// memberOf: An Organization (or ProgramMembership) to which this Person or Organization belongs.
@@ -702,8 +702,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// gender: Gender of the person. While http://schema.org/Male and http://schema.org/Female may be used, text strings are also acceptable for people who do not identify as a binary gender.
-    func schemaGender(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("gender"), value: [.literal(v)])
+    func schemaGender(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("gender"), value: [.varOrTerm(.term(v))])
     }
     
     /// gender: Gender of the person. While http://schema.org/Male and http://schema.org/Female may be used, text strings are also acceptable for people who do not identify as a binary gender.
@@ -712,8 +712,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// weight: The weight of the product or person.
-    func schemaWeight(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("weight"), value: [.literal(v)])
+    func schemaWeight(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("weight"), value: [.varOrTerm(.term(v))])
     }
     
     /// weight: The weight of the product or person.
@@ -722,8 +722,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 血液型: 血液型を表すプロパティ
-    func imasBloodType(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("BloodType"), value: [.literal(v)])
+    func imasBloodType(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("BloodType"), value: [.varOrTerm(.term(v))])
     }
     
     /// 血液型: 血液型を表すプロパティ
@@ -732,8 +732,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// height: The height of the item.
-    func schemaHeight(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("height"), value: [.literal(v)])
+    func schemaHeight(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("height"), value: [.varOrTerm(.term(v))])
     }
     
     /// height: The height of the item.
@@ -742,8 +742,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 星座: 星座を表すプロパティ
-    func imasConstellation(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("Constellation"), value: [.literal(v)])
+    func imasConstellation(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Constellation"), value: [.varOrTerm(.term(v))])
     }
     
     /// 星座: 星座を表すプロパティ
@@ -752,8 +752,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// birthDate: Date of birth.
-    func schemaBirthDate(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("birthDate"), value: [.literal(v)])
+    func schemaBirthDate(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("birthDate"), value: [.varOrTerm(.term(v))])
     }
     
     /// birthDate: Date of birth.
@@ -762,8 +762,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 趣味: 趣味を表すプロパティ
-    func imasHobby(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("Hobby"), value: [.literal(v)])
+    func imasHobby(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Hobby"), value: [.varOrTerm(.term(v))])
     }
     
     /// 趣味: 趣味を表すプロパティ
@@ -772,8 +772,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// birthPlace: The place where the person was born.
-    func schemaBirthPlace(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("birthPlace"), value: [.literal(v)])
+    func schemaBirthPlace(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("birthPlace"), value: [.varOrTerm(.term(v))])
     }
     
     /// birthPlace: The place where the person was born.
@@ -782,8 +782,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// alternateName: An alias for the item.
-    func schemaAlternateName(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("alternateName"), value: [.literal(v)])
+    func schemaAlternateName(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("alternateName"), value: [.varOrTerm(.term(v))])
     }
     
     /// alternateName: An alias for the item.
@@ -792,8 +792,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// タイプ: タイプ(Cu,Co,Pa)を表すプロパティ
-    func imasType(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("Type"), value: [.literal(v)])
+    func imasType(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Type"), value: [.varOrTerm(.term(v))])
     }
     
     /// タイプ: タイプ(Cu,Co,Pa)を表すプロパティ
@@ -802,8 +802,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 胸囲: 胸囲を表すプロパティ
-    func imasBust(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("Bust"), value: [.literal(v)])
+    func imasBust(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Bust"), value: [.varOrTerm(.term(v))])
     }
     
     /// 胸囲: 胸囲を表すプロパティ
@@ -812,8 +812,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 聞き手: 聞き手を表すプロパティ
-    func imasHandedness(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("Handedness"), value: [.literal(v)])
+    func imasHandedness(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Handedness"), value: [.varOrTerm(.term(v))])
     }
     
     /// 聞き手: 聞き手を表すプロパティ
@@ -822,8 +822,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 腹囲: 腹囲を表すプロパティ
-    func imasWaist(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("Waist"), value: [.literal(v)])
+    func imasWaist(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Waist"), value: [.varOrTerm(.term(v))])
     }
     
     /// 腹囲: 腹囲を表すプロパティ
@@ -832,8 +832,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 臀囲: 臀囲(尻囲)を表すプロパティ
-    func imasHip(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("Hip"), value: [.literal(v)])
+    func imasHip(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Hip"), value: [.varOrTerm(.term(v))])
     }
     
     /// 臀囲: 臀囲(尻囲)を表すプロパティ
@@ -842,8 +842,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 好きなもの: 好きなものを表すプロパティ
-    func imasFavorite(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("Favorite"), value: [.literal(v)])
+    func imasFavorite(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Favorite"), value: [.varOrTerm(.term(v))])
     }
     
     /// 好きなもの: 好きなものを表すプロパティ
@@ -852,8 +852,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 特技: 特技を表すプロパティ
-    func imasTalent(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("Talent"), value: [.literal(v)])
+    func imasTalent(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Talent"), value: [.varOrTerm(.term(v))])
     }
     
     /// 特技: 特技を表すプロパティ
@@ -862,8 +862,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// イメージカラー: イメージカラーを表すプロパティ
-    func imasColor(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("Color"), value: [.literal(v)])
+    func imasColor(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Color"), value: [.varOrTerm(.term(v))])
     }
     
     /// イメージカラー: イメージカラーを表すプロパティ
@@ -872,8 +872,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 靴のサイズ: 靴のサイズを表すプロパティ
-    func imasShoeSize(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("ShoeSize"), value: [.literal(v)])
+    func imasShoeSize(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("ShoeSize"), value: [.varOrTerm(.term(v))])
     }
     
     /// 靴のサイズ: 靴のサイズを表すプロパティ
@@ -884,8 +884,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
 
 public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == ImasUnit {
     /// name: The name of the item.
-    func schemaName(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("name"), value: [.literal(v)])
+    func schemaName(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("name"), value: [.varOrTerm(.term(v))])
     }
     
     /// name: The name of the item.
@@ -894,8 +894,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// member: A member of an Organization or a ProgramMembership. Organizations can be members of organizations; ProgramMembership is typically for individuals.
-    func schemaMember(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("member"), value: [.literal(v)])
+    func schemaMember(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("member"), value: [.varOrTerm(.term(v))])
     }
     
     /// member: A member of an Organization or a ProgramMembership. Organizations can be members of organizations; ProgramMembership is typically for individuals.
@@ -904,8 +904,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 
-    func rdfType(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: RdfSchema.verb("type"), value: [.literal(v)])
+    func rdfType(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: RdfSchema.verb("type"), value: [.varOrTerm(.term(v))])
     }
     
     /// 
@@ -914,8 +914,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// alternateName: An alias for the item.
-    func schemaAlternateName(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("alternateName"), value: [.literal(v)])
+    func schemaAlternateName(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("alternateName"), value: [.varOrTerm(.term(v))])
     }
     
     /// alternateName: An alias for the item.
@@ -924,8 +924,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// イメージカラー: イメージカラーを表すプロパティ
-    func imasColor(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("Color"), value: [.literal(v)])
+    func imasColor(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Color"), value: [.varOrTerm(.term(v))])
     }
     
     /// イメージカラー: イメージカラーを表すプロパティ
@@ -934,8 +934,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// description: A description of the item.
-    func schemaDescription(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("description"), value: [.literal(v)])
+    func schemaDescription(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("description"), value: [.varOrTerm(.term(v))])
     }
     
     /// description: A description of the item.
@@ -946,8 +946,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
 
 public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == ImasEvent {
     /// name: The name of the item.
-    func schemaName(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("name"), value: [.literal(v)])
+    func schemaName(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("name"), value: [.varOrTerm(.term(v))])
     }
     
     /// name: The name of the item.
@@ -956,8 +956,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// actor: An actor, e.g. in tv, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip.
-    func schemaActor(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("actor"), value: [.literal(v)])
+    func schemaActor(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("actor"), value: [.varOrTerm(.term(v))])
     }
     
     /// actor: An actor, e.g. in tv, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip.
@@ -966,8 +966,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 
-    func rdfType(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: RdfSchema.verb("type"), value: [.literal(v)])
+    func rdfType(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: RdfSchema.verb("type"), value: [.varOrTerm(.term(v))])
     }
     
     /// 
@@ -982,8 +982,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
 
 public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == ImasCinderellaRankingResult {
     /// member: A member of an Organization or a ProgramMembership. Organizations can be members of organizations; ProgramMembership is typically for individuals.
-    func schemaMember(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("member"), value: [.literal(v)])
+    func schemaMember(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("member"), value: [.varOrTerm(.term(v))])
     }
     
     /// member: A member of an Organization or a ProgramMembership. Organizations can be members of organizations; ProgramMembership is typically for individuals.
@@ -992,8 +992,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 
-    func rdfType(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: RdfSchema.verb("type"), value: [.literal(v)])
+    func rdfType(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: RdfSchema.verb("type"), value: [.varOrTerm(.term(v))])
     }
     
     /// 
@@ -1002,8 +1002,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 得票数: 得票数を表すプロパティ
-    func imasVoteNumber(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("VoteNumber"), value: [.literal(v)])
+    func imasVoteNumber(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("VoteNumber"), value: [.varOrTerm(.term(v))])
     }
     
     /// 得票数: 得票数を表すプロパティ
@@ -1014,8 +1014,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
 
 public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == ImasLive {
     /// actor: An actor, e.g. in tv, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip.
-    func schemaActor(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("actor"), value: [.literal(v)])
+    func schemaActor(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("actor"), value: [.varOrTerm(.term(v))])
     }
     
     /// actor: An actor, e.g. in tv, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip.
@@ -1024,8 +1024,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// name: The name of the item.
-    func schemaName(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("name"), value: [.literal(v)])
+    func schemaName(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("name"), value: [.varOrTerm(.term(v))])
     }
     
     /// name: The name of the item.
@@ -1034,8 +1034,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// location: The location of for example where the event is happening, an organization is located, or where an action takes place.
-    func schemaLocation(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("location"), value: [.literal(v)])
+    func schemaLocation(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("location"), value: [.varOrTerm(.term(v))])
     }
     
     /// location: The location of for example where the event is happening, an organization is located, or where an action takes place.
@@ -1044,8 +1044,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// startDate: The start date and time of the item (in <a href=\"http://en.wikipedia.org/wiki/ISO_8601\">ISO 8601 date format</a>).
-    func schemaStartDate(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("startDate"), value: [.literal(v)])
+    func schemaStartDate(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("startDate"), value: [.varOrTerm(.term(v))])
     }
     
     /// startDate: The start date and time of the item (in <a href=\"http://en.wikipedia.org/wiki/ISO_8601\">ISO 8601 date format</a>).
@@ -1054,8 +1054,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// endDate: The end date and time of the item (in <a href=\"http://en.wikipedia.org/wiki/ISO_8601\">ISO 8601 date format</a>).
-    func schemaEndDate(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("endDate"), value: [.literal(v)])
+    func schemaEndDate(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("endDate"), value: [.varOrTerm(.term(v))])
     }
     
     /// endDate: The end date and time of the item (in <a href=\"http://en.wikipedia.org/wiki/ISO_8601\">ISO 8601 date format</a>).
@@ -1064,8 +1064,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 披露した曲: 披露した曲を表すプロパティ
-    func imasPerformance(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("Performance"), value: [.literal(v)])
+    func imasPerformance(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Performance"), value: [.varOrTerm(.term(v))])
     }
     
     /// 披露した曲: 披露した曲を表すプロパティ
@@ -1074,8 +1074,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 披露した曲数: 披露した曲数を表すプロパティ
-    func imasNumPerformance(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("NumPerformance"), value: [.literal(v)])
+    func imasNumPerformance(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("NumPerformance"), value: [.varOrTerm(.term(v))])
     }
     
     /// 披露した曲数: 披露した曲数を表すプロパティ
@@ -1084,8 +1084,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 
-    func rdfType(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: RdfSchema.verb("type"), value: [.literal(v)])
+    func rdfType(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: RdfSchema.verb("type"), value: [.varOrTerm(.term(v))])
     }
     
     /// 
@@ -1094,8 +1094,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 披露したアンコール曲数: 披露したアンコール曲数を表すプロパティ
-    func imasNumPerformanceEncore(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("NumPerformanceEncore"), value: [.literal(v)])
+    func imasNumPerformanceEncore(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("NumPerformanceEncore"), value: [.varOrTerm(.term(v))])
     }
     
     /// 披露したアンコール曲数: 披露したアンコール曲数を表すプロパティ
@@ -1104,8 +1104,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// url: URL of the item.
-    func schemaUrl(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("url"), value: [.literal(v)])
+    func schemaUrl(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("url"), value: [.varOrTerm(.term(v))])
     }
     
     /// url: URL of the item.
@@ -1116,8 +1116,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
 
 public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == ImasSetlistNumber {
     /// セットリスト内番号: セットリスト内番号を表すプロパティ
-    func imasTuneNumber(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("TuneNumber"), value: [.literal(v)])
+    func imasTuneNumber(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("TuneNumber"), value: [.varOrTerm(.term(v))])
     }
     
     /// セットリスト内番号: セットリスト内番号を表すプロパティ
@@ -1126,8 +1126,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// actor: An actor, e.g. in tv, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip.
-    func schemaActor(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("actor"), value: [.literal(v)])
+    func schemaActor(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("actor"), value: [.varOrTerm(.term(v))])
     }
     
     /// actor: An actor, e.g. in tv, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip.
@@ -1136,8 +1136,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// name: The name of the item.
-    func schemaName(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("name"), value: [.literal(v)])
+    func schemaName(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("name"), value: [.varOrTerm(.term(v))])
     }
     
     /// name: The name of the item.
@@ -1146,8 +1146,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 
-    func rdfType(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: RdfSchema.verb("type"), value: [.literal(v)])
+    func rdfType(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: RdfSchema.verb("type"), value: [.varOrTerm(.term(v))])
     }
     
     /// 
@@ -1156,8 +1156,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// performer: A performer at the event&#x2014;for example, a presenter, musician, musical group or actor.
-    func schemaPerformer(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("performer"), value: [.literal(v)])
+    func schemaPerformer(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("performer"), value: [.varOrTerm(.term(v))])
     }
     
     /// performer: A performer at the event&#x2014;for example, a presenter, musician, musical group or actor.
@@ -1168,8 +1168,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
 
 public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == ImasScriptText {
     /// 出どころ: 出どころを表すプロパティ
-    func imasSource(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("Source"), value: [.literal(v)])
+    func imasSource(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Source"), value: [.varOrTerm(.term(v))])
     }
     
     /// 出どころ: 出どころを表すプロパティ
@@ -1178,8 +1178,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 発言者表記: 発言者表記を表すプロパティ
-    func imasSpeakerLabel(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("SpeakerLabel"), value: [.literal(v)])
+    func imasSpeakerLabel(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("SpeakerLabel"), value: [.varOrTerm(.term(v))])
     }
     
     /// 発言者表記: 発言者表記を表すプロパティ
@@ -1188,8 +1188,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// text: The textual content of this CreativeWork.
-    func schemaText(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("text"), value: [.literal(v)])
+    func schemaText(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("text"), value: [.varOrTerm(.term(v))])
     }
     
     /// text: The textual content of this CreativeWork.
@@ -1198,8 +1198,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// セリフテキスト番号: セリフテキスト番号を表すプロパティ
-    func imasScriptNumber(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("ScriptNumber"), value: [.literal(v)])
+    func imasScriptNumber(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("ScriptNumber"), value: [.varOrTerm(.term(v))])
     }
     
     /// セリフテキスト番号: セリフテキスト番号を表すプロパティ
@@ -1208,8 +1208,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 
-    func rdfType(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: RdfSchema.verb("type"), value: [.literal(v)])
+    func rdfType(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: RdfSchema.verb("type"), value: [.varOrTerm(.term(v))])
     }
     
     /// 
@@ -1220,8 +1220,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
 
 public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == ImasCommunication {
     /// セリフテキスト: セリフテキストを表すプロパティ
-    func imasScript(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("Script"), value: [.literal(v)])
+    func imasScript(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Script"), value: [.varOrTerm(.term(v))])
     }
     
     /// セリフテキスト: セリフテキストを表すプロパティ
@@ -1230,8 +1230,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// participant: Other co-agents that participated in the action indirectly. e.g. John wrote a book with <em>Steve</em>.
-    func schemaParticipant(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("participant"), value: [.literal(v)])
+    func schemaParticipant(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("participant"), value: [.varOrTerm(.term(v))])
     }
     
     /// participant: Other co-agents that participated in the action indirectly. e.g. John wrote a book with <em>Steve</em>.
@@ -1240,8 +1240,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 
-    func rdfType(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: RdfSchema.verb("type"), value: [.literal(v)])
+    func rdfType(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: RdfSchema.verb("type"), value: [.varOrTerm(.term(v))])
     }
     
     /// 
@@ -1250,8 +1250,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// title: The title of the job.
-    func schemaTitle(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("title"), value: [.literal(v)])
+    func schemaTitle(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("title"), value: [.varOrTerm(.term(v))])
     }
     
     /// title: The title of the job.
@@ -1260,8 +1260,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// location: The location of for example where the event is happening, an organization is located, or where an action takes place.
-    func schemaLocation(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("location"), value: [.literal(v)])
+    func schemaLocation(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("location"), value: [.varOrTerm(.term(v))])
     }
     
     /// location: The location of for example where the event is happening, an organization is located, or where an action takes place.
@@ -1272,8 +1272,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
 
 public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == ImasCallName {
     /// 出どころ: 出どころを表すプロパティ
-    func imasSource(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("Source"), value: [.literal(v)])
+    func imasSource(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Source"), value: [.varOrTerm(.term(v))])
     }
     
     /// 出どころ: 出どころを表すプロパティ
@@ -1282,8 +1282,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// あて先: あて先を表すプロパティ
-    func imasDestination(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("Destination"), value: [.literal(v)])
+    func imasDestination(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Destination"), value: [.varOrTerm(.term(v))])
     }
     
     /// あて先: あて先を表すプロパティ
@@ -1292,8 +1292,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 呼び方: 呼び方を表すプロパティ
-    func imasCalled(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("Called"), value: [.literal(v)])
+    func imasCalled(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Called"), value: [.varOrTerm(.term(v))])
     }
     
     /// 呼び方: 呼び方を表すプロパティ
@@ -1302,8 +1302,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 
-    func rdfType(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: RdfSchema.verb("type"), value: [.literal(v)])
+    func rdfType(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: RdfSchema.verb("type"), value: [.varOrTerm(.term(v))])
     }
     
     /// 
@@ -1314,8 +1314,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
 
 public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == ImasIntroduction {
     /// あて先: あて先を表すプロパティ
-    func imasDestination(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("Destination"), value: [.literal(v)])
+    func imasDestination(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Destination"), value: [.varOrTerm(.term(v))])
     }
     
     /// あて先: あて先を表すプロパティ
@@ -1324,8 +1324,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 出どころ: 出どころを表すプロパティ
-    func imasSource(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("Source"), value: [.literal(v)])
+    func imasSource(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Source"), value: [.varOrTerm(.term(v))])
     }
     
     /// 出どころ: 出どころを表すプロパティ
@@ -1334,8 +1334,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 
-    func rdfType(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: RdfSchema.verb("type"), value: [.literal(v)])
+    func rdfType(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: RdfSchema.verb("type"), value: [.varOrTerm(.term(v))])
     }
     
     /// 
@@ -1344,8 +1344,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// name: The name of the item.
-    func schemaName(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("name"), value: [.literal(v)])
+    func schemaName(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("name"), value: [.varOrTerm(.term(v))])
     }
     
     /// name: The name of the item.
@@ -1354,8 +1354,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// description: A description of the item.
-    func schemaDescription(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("description"), value: [.literal(v)])
+    func schemaDescription(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("description"), value: [.varOrTerm(.term(v))])
     }
     
     /// description: A description of the item.
@@ -1364,8 +1364,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// releaseDate: The release date of a product or product model. This can be used to distinguish the exact variant of a product.
-    func schemaReleaseDate(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("releaseDate"), value: [.literal(v)])
+    func schemaReleaseDate(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("releaseDate"), value: [.varOrTerm(.term(v))])
     }
     
     /// releaseDate: The release date of a product or product model. This can be used to distinguish the exact variant of a product.
@@ -1376,8 +1376,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
 
 public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == ImasClothes {
     /// name: The name of the item.
-    func schemaName(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("name"), value: [.literal(v)])
+    func schemaName(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("name"), value: [.varOrTerm(.term(v))])
     }
     
     /// name: The name of the item.
@@ -1386,8 +1386,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// description: A description of the item.
-    func schemaDescription(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("description"), value: [.literal(v)])
+    func schemaDescription(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("description"), value: [.varOrTerm(.term(v))])
     }
     
     /// description: A description of the item.
@@ -1396,8 +1396,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 所有者: 所有者を表すプロパティ
-    func imasWhose(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("Whose"), value: [.literal(v)])
+    func imasWhose(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Whose"), value: [.varOrTerm(.term(v))])
     }
     
     /// 所有者: 所有者を表すプロパティ
@@ -1406,8 +1406,8 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     }
     
     /// 
-    func rdfType(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: RdfSchema.verb("type"), value: [.literal(v)])
+    func rdfType(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: RdfSchema.verb("type"), value: [.varOrTerm(.term(v))])
     }
     
     /// 
