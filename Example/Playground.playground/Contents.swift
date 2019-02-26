@@ -75,7 +75,7 @@ let query = SelectQuery(
     where: WhereClause(patterns:
         subject(varS)
             .rdfTypeIsImasIdol()
-            .imasTitle(is: RDFLiteral(string: "CinderellaGirls", lang: "en"))
+            .imasTitle(is: .literal("CinderellaGirls", lang: "en"))
             .alternative({[$0.schemaName, $0.schemaAlternateName]}, is: varName)
             .schemaHeight(is: varHeight)
             .optional { $0
