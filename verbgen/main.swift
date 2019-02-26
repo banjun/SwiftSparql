@@ -17,6 +17,10 @@ let turtleDoc = try! TurtleDoc(String(contentsOf: turtleFile))
 //        NSLog("%@", "turtleDoc = \(String(describing: turtleDoc))")
 let subjects = turtleDoc.triples.compactMap {SubjectDescription($0)}
 
+enum _RdfSchema: SwiftSparql.IRIBaseProvider {
+    public static var base: IRIRef {return IRIRef(value: "http://www.w3.org/1999/02/22-rdf-syntax-ns#")}
+}
+
 struct CamelIdentifier {
     var id: String
     var firstLoweredID: String {return (id.first?.lowercased() ?? "") + id.dropFirst()}
@@ -201,7 +205,7 @@ SignalProducer(classes)
                     option: .distinct,
                     capture: .vars([Var("v")]),
                     where: WhereClause(patterns: [
-                        .triple(.var(Var("s")), RDFSyntaxNSSchema.verb("type"), [.varOrTerm(.term(.iri(.ref(iriRef))))]),
+                        .triple(.var(Var("s")), _RdfSchema.verb("type"), [.varOrTerm(.term(.iri(.ref(iriRef))))]),
                         .triple(.var(Var("s")), .simple(Var("v")), [.var(Var("o"))])
                         ])))
             URLSession.shared.dataTask(with: Request(endpoint: endpoint, query: query).request) { (data, response, error) in

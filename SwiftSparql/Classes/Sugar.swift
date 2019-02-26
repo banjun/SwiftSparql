@@ -105,6 +105,10 @@ public extension IRIBaseProvider {
     }
 }
 
+private enum _RdfSchema: IRIBaseProvider {
+    public static var base: IRIRef {return IRIRef(value: "http://www.w3.org/1999/02/22-rdf-syntax-ns#")}
+}
+
 public protocol RDFTypeConvertible {
     associatedtype Schema: IRIBaseProvider
     static var rdfType: IRIRef { get }
@@ -138,7 +142,7 @@ public func subject(_ v: Var) -> TripleBuilder<TripleBuilderStateIncompleteSubje
 
 extension TripleBuilder where State: TripleBuilderStateIncompleteSubjectType {
     public func rdfType<T: RDFTypeConvertible>(is type: T.Type) -> TripleBuilder<TripleBuilderStateRDFTypeBound<T>> {
-        let new = appended(verb: RdfSchema.verb("type"), value: [.iriRef(type.rdfType)])
+        let new = appended(verb: _RdfSchema.verb("type"), value: [.iriRef(type.rdfType)])
         return .init(subject: subject, triples: new.triples)
     }
 }
