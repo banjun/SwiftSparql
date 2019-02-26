@@ -105,6 +105,10 @@ public extension IRIBaseProvider {
     }
 }
 
+private enum _RdfSchema: IRIBaseProvider {
+    public static var base: IRIRef {return IRIRef(value: "http://www.w3.org/1999/02/22-rdf-syntax-ns#")}
+}
+
 public protocol RDFTypeConvertible {
     associatedtype Schema: IRIBaseProvider
     static var rdfType: IRIRef { get }
@@ -136,13 +140,9 @@ public func subject(_ v: Var) -> TripleBuilder<TripleBuilderStateIncompleteSubje
     return .subject(v)
 }
 
-public enum RDFSyntaxNSSchema: IRIBaseProvider {
-    public static var base: IRIRef {return IRIRef(value: "http://www.w3.org/1999/02/22-rdf-syntax-ns#")}
-}
-
 extension TripleBuilder where State: TripleBuilderStateIncompleteSubjectType {
     public func rdfType<T: RDFTypeConvertible>(is type: T.Type) -> TripleBuilder<TripleBuilderStateRDFTypeBound<T>> {
-        let new = appended(verb: RDFSyntaxNSSchema.verb("type"), value: [.iriRef(type.rdfType)])
+        let new = appended(verb: _RdfSchema.verb("type"), value: [.iriRef(type.rdfType)])
         return .init(subject: subject, triples: new.triples)
     }
 }
@@ -190,127 +190,4 @@ public func | (lhs: PropertyListPathNotEmpty.Verb, rhs: PropertyListPathNotEmpty
     case (.path(let l), .path(let r)): return .path(l | r)
     default: fatalError("not yet implemented")
     }
-}
-
-// MARK: - imas:Idol
-
-public enum ImasSchema: IRIBaseProvider {
-    public static var base: IRIRef {return IRIRef(value: "https://sparql.crssnky.xyz/imasrdf/URIs/imas-schema.ttl#")}
-}
-
-public struct ImasIdol: RDFTypeConvertible {
-    public typealias Schema = ImasSchema
-    public static var rdfType: IRIRef {return Schema.rdfType("Idol")}
-}
-
-extension TripleBuilder where State: TripleBuilderStateIncompleteSubjectType {
-    public func rdfTypeIsImasIdol() -> TripleBuilder<TripleBuilderStateRDFTypeBound<ImasIdol>> {return rdfType(is: ImasIdol.self)}
-}
-
-extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == ImasIdol {
-    // MARK: generated functions in form of imas:_
-
-    /// 名前よみがな: 名前のよみがなを表すプロパティ
-    public func nameKana(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: State.RDFType.Schema.verb("nameKana"), value: [.literal(v)])
-    }
-    /// 名前よみがな: 名前のよみがなを表すプロパティ
-    public func nameKana(is v: Var) -> TripleBuilder<State> {
-        return appended(verb: State.RDFType.Schema.verb("nameKana"), value: [.var(v)])
-    }
-
-    ///
-    public func title(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: State.RDFType.Schema.verb("Title"), value: [.literal(v)])
-    }
-    ///
-    public func title(is v: Var) -> TripleBuilder<State> {
-        return appended(verb: State.RDFType.Schema.verb("Title"), value: [.var(v)])
-    }
-
-    ///
-    public func color(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: State.RDFType.Schema.verb("Color"), value: [.literal(v)])
-    }
-    ///
-    public func color(is v: Var) -> TripleBuilder<State> {
-        return appended(verb: State.RDFType.Schema.verb("Color"), value: [.var(v)])
-    }
-
-    public func handedness(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: State.RDFType.Schema.verb("Handedness"), value: [.literal(v)])
-    }
-
-    public func handedness(is v: Var) -> TripleBuilder<State> {
-        return appended(verb: State.RDFType.Schema.verb("Handedness"), value: [.var(v)])
-    }
-
-    // MARK: generated functions in form of schema:_
-
-    public func schemaName(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaOrg.verb("name"), value: [.literal(v)])
-    }
-
-    public func schemaName(is v: Var) -> TripleBuilder<State> {
-        return appended(verb: SchemaOrg.verb("name"), value: [.var(v)])
-    }
-
-    public func schemaAlternateName(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaOrg.verb("alternateName"), value: [.literal(v)])
-    }
-
-    public func schemaAlternateName(is v: Var) -> TripleBuilder<State> {
-        return appended(verb: SchemaOrg.verb("alternateName"), value: [.var(v)])
-    }
-
-    public func schemaBirthDate(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaOrg.verb("birthDate"), value: [.literal(v)])
-    }
-
-    public func schemaBirthDate(is v: Var) -> TripleBuilder<State> {
-        return appended(verb: SchemaOrg.verb("birthDate"), value: [.var(v)])
-    }
-
-    public func schemaHeight(is v: Var) -> TripleBuilder<State> {
-        return appended(verb: SchemaOrg.verb("height"), value: [.var(v)])
-    }
-}
-
-// MARK: - imas:Unit
-
-public struct ImasUnit: RDFTypeConvertible {
-    public typealias Schema = ImasSchema
-    public static var rdfType: IRIRef {return Schema.rdfType("Unit")}
-}
-
-extension TripleBuilder where State: TripleBuilderStateIncompleteSubjectType {
-    public func rdfTypeIsImasUnit() -> TripleBuilder<TripleBuilderStateRDFTypeBound<ImasUnit>> {return rdfType(is: ImasUnit.self)}
-}
-
-public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == ImasUnit {
-    // MARK: generated functions in form of schema:_
-
-    /// member: A member of an Organization or a ProgramMembership. Organizations can be members of organizations; ProgramMembership is typically for individuals.
-    func schemaMember(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaOrg.verb("member"), value: [.literal(v)])
-    }
-
-    /// member: A member of an Organization or a ProgramMembership. Organizations can be members of organizations; ProgramMembership is typically for individuals.
-    func schemaMember(is v: Var) -> TripleBuilder<State> {
-        return appended(verb: SchemaOrg.verb("member"), value: [.var(v)])
-    }
-
-    func schemaName(is v: RDFLiteral) -> TripleBuilder<State> {
-        return appended(verb: SchemaOrg.verb("name"), value: [.literal(v)])
-    }
-
-    func schemaName(is v: Var) -> TripleBuilder<State> {
-        return appended(verb: SchemaOrg.verb("name"), value: [.var(v)])
-    }
-}
-
-// MARK: - schema.org
-
-public enum SchemaOrg: IRIBaseProvider {
-    public static var base: IRIRef {return IRIRef(value: "http://schema.org/")}
 }

@@ -1,4 +1,5 @@
 // https://www.w3.org/TR/sparql11-query/#grammar
+import struct Foundation.Decimal
 
 typealias QueryUnit = Query
 
@@ -30,7 +31,7 @@ public enum Prologue {
 }
 
 /// IRIREF      ::=      '<' ([^<>"{}|^`\]-[#x00-#x20])* '>'
-public struct IRIRef {
+public struct IRIRef: Equatable {
     public var value: String
 
     // public memberwise init

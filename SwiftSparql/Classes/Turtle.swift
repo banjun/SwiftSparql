@@ -147,6 +147,8 @@ extension TurtleDoc {
     }
 
     public init(_ docString: String) throws {
+        let docString = docString.hasPrefix("\u{feff}") ? String(docString.dropFirst()) : docString
+
         // Look-ahead with same class terminator
         func oneOrMoreTerminated <T,A> (_ repeatedParser: Parser<T,A>, terminationParser: Parser<T, A>) -> Parser<T,[A]> {
             return Parser { input in
@@ -183,9 +185,9 @@ extension TurtleDoc {
             <|> string("\\U") *> count(8, HEX)
 
         // [18]    IRIREF    ::=    '<' ([^#x00-#x20<>"{}|^`\] | UCHAR)* '>' /* #x00=NULL #01-#x1F=control codes #x20=space */
-        let IRIREF = extend <^> char("<") <*> (extend <^> ({$0.joined()} <^> zeroOrMore(
+        let IRIREF = char("<") *> ({$0.joined()} <^> zeroOrMore(
             String.init <^> char(CharacterSet(charactersIn: "\u{00}"..."\u{20}").union(CharacterSet(charactersIn: ">\"{}|^`\\")).inverted, name: "[^#x00-#x20<>\"{}|^`\\]")
-                <|> UCHAR)) <*> (String.init <^> char(">")))
+                <|> UCHAR)) <* char(">")
 
         // [163s]    PN_CHARS_BASE    ::=    [A-Z] | [a-z] | [#x00C0-#x00D6] | [#x00D8-#x00F6] | [#x00F8-#x02FF] | [#x0370-#x037D] | [#x037F-#x1FFF] | [#x200C-#x200D] | [#x2070-#x218F] | [#x2C00-#x2FEF] | [#x3001-#xD7FF] | [#xF900-#xFDCF] | [#xFDF0-#xFFFD] | [#x10000-#xEFFFF]
         let PN_CHARS_BASE_charset = [
@@ -316,7 +318,7 @@ extension TurtleDoc {
         let OTHER: Parser<Character, String> = String.init <^> oneOf(";,.[]()")
         
         let spaces: Parser<Character, Token?> = {_ in nil} <^> oneOrMore(char(.whitespacesAndNewlines, name: "spaces"))
-        let string: Parser<Character, Token> =
+        let stringLiteral: Parser<Character, Token> =
             Token.STRING_LITERAL_LONG_QUOTE <^> STRING_LITERAL_LONG_QUOTE
                 <|> Token.STRING_LITERAL_LONG_SINGLE_QUOTE <^> STRING_LITERAL_LONG_SINGLE_QUOTE
                 <|> Token.STRING_LITERAL_QUOTE <^> STRING_LITERAL_QUOTE
@@ -348,7 +350,7 @@ extension TurtleDoc {
                 <|> Token.PN_LOCAL_ESC <^> PN_LOCAL_ESC
                 <|> Token.OTHER <^> OTHER
         let tokenParser: Parser<Character, Token?> =
-        {$0} <^> string
+        {$0} <^> stringLiteral
             <|> {$0} <^> comment
             <|> {$0} <^> token
             <|> {$0} <^> spaces
@@ -529,7 +531,7 @@ extension TurtleDoc.Subject {
     static var parser: Parser<TurtleDoc.Token, TurtleDoc.Subject> {
         return self.iri <^> IRI.parser
             <|> self.blank <^> BlankNode.parser
-            <|> self.collection <^> TurtleDoc.Collection.parser
+            <|> self.collection <^> [TurtleDoc.Object].parser
     }
 }
 
@@ -610,7 +612,8 @@ extension NumericLiteral {
     }
 }
 
-extension TurtleDoc.Collection {
+// extension TurtleDoc.Collection { // Xcode 10.2+
+extension Array where Element == TurtleDoc.Object {
     static var parser: Parser<TurtleDoc.Token, TurtleDoc.Collection> {
         return TokenParsers.OTHER("(") *> zeroOrMore(TurtleDoc.Object.parser) <* TokenParsers.OTHER(")")
     }
@@ -650,6 +653,7 @@ public extension TurtleDoc {
 
 public struct SubjectDescription {
     public var subject: TurtleDoc.Subject
+    public var a: [IRI] = []
     public var label: String?
     public var comment: String?
 
@@ -668,7 +672,10 @@ public struct SubjectDescription {
                         self.comment = l.string
                     }
                 case .iri: break
-                case .a: break
+                case .a:
+                    for case .iri(let iri) in objects {
+                        self.a.append(iri)
+                    }
                 }
             }
         case .blank: return nil

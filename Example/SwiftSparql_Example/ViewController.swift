@@ -30,14 +30,6 @@ class ViewController: NSViewController {
         super.viewDidLoad()
         // playground
 
-        let turtleDoc = try! TurtleDoc(String(contentsOfFile: Bundle.main.path(forResource: "imas-schema", ofType: "ttl")!))
-//        NSLog("%@", "turtleDoc = \(String(describing: turtleDoc))")
-
-//        let swiftCodes = turtleDoc.triples.compactMap {SubjectDescription($0)}.map {$0.swiftCode}
-//        print(swiftCodes.joined(separator: "\n\n"))
-//
-//        exit(1)
-
         let query = Query(select: SelectQuery(
             where: WhereClause(patterns: [
                 .triple(.var(Var("s")), PropertyListPathNotEmpty.Verb.init((PNameNS(value: "rdf"), "type")), [.var(Var("o"))]),
@@ -87,12 +79,12 @@ class ViewController: NSViewController {
                 subject(Var("s"))
                     .rdfTypeIsImasIdol()
                     .alternative({[$0.schemaName, $0.schemaAlternateName]}, is: Var("name"))
-                    .handedness(is: Var("利き手"))
+                    .imasHandedness(is: Var("利き手"))
                     .filter(.CONTAINS(v: Var("name"), sub: "まゆ"))
                     .triples
                     + subject(Var("idol"))
                         .rdfTypeIsImasIdol()
-                        .handedness(is: Var("利き手"))
+                        .imasHandedness(is: Var("利き手"))
                         .schemaName(is: Var("名前"))
                         .triples),
             limit: 10))
@@ -104,8 +96,8 @@ class ViewController: NSViewController {
                                    (Var("楽曲名"), .init(.sample(distinct: false, expression: .init(Var("name")))))]),
             where: WhereClause(patterns:
                 subject(Var("s"))
-                    .rdfType(is: ImasSetlistNumber.self)
-                    .name(is: Var("name"))
+                    .rdfTypeIsImasSetlistNumber()
+                    .schemaName(is: Var("name"))
                     .triples),
             group: [.var(Var("name"))],
             having: [.logical(Var("回数") > 4)],
@@ -120,9 +112,9 @@ class ViewController: NSViewController {
         let idolNames = Query(select: SelectQuery(
             where: WhereClause(patterns:
                 subject(varS).rdfTypeIsImasIdol()
-                    .nameKana(is: varName)
+                    .imasNameKana(is: varName)
                     .schemaHeight(is: varHeight)
-                    .optional {$0.color(is: Var("color"))}
+                    .optional {$0.imasColor(is: Var("color"))}
                     .triples),
             having: [.logical(varHeight <= 149)],
             order: [.by(.RAND)],
@@ -169,6 +161,37 @@ class ViewController: NSViewController {
             NSLog("%@", "query response: birthdays = \(idols)")
             }
             .onFailure {NSLog("birthdays: %@", String(describing: $0))}
+
+        let units = Query(select: SelectQuery(
+            capture: .expressions([
+                (Var("name"), Expression(Var("ユニット名"))),
+                (Var("memberNames_concat"), Expression(.groupConcat(distinct: false, expression: Expression(Var("ユニットメンバー名")), separator: ","))),
+                (Var("types_concat"), Expression(.groupConcat(distinct: false, expression: Expression(Var("ユニットメンバー属性")), separator: ",")))]),
+            where: WhereClause(patterns:
+                subject(Var("橘ありす"))
+                    .rdfTypeIsImasIdol()
+                    .schemaName(is: RDFLiteral(string: "橘ありす", lang: "ja"))
+                    .schemaMemberOf(is: Var("ありす参加ユニット"))
+                    .triples
+                    + subject(Var("ありす参加ユニット"))
+                        .rdfTypeIsImasUnit()
+                        .schemaName(is: Var("ユニット名"))
+                        .schemaMember(is: Var("ユニットメンバー"))
+                        .triples
+                    + subject(Var("ユニットメンバー"))
+                        .rdfTypeIsImasIdol()
+                        .schemaName(is: Var("ユニットメンバー名"))
+                        .imasType(is: Var("ユニットメンバー属性"))
+                        .triples),
+            group: [.var(Var("ユニット名"))],
+            order: [.by(.count(distinct: false, expression: Expression(Var("ユニットメンバー"))))],
+            limit: 100))
+        print("units = \n\n\(Serializer.serialize(units))")
+        print("\n\n\n")
+        fetch(units).onSuccess { (units: [Unit]) in
+            print("query response: units = \n\(units.map {$0.description}.joined(separator: "\n"))")
+            }
+            .onFailure {NSLog("units: %@", String(describing: $0))}
     }
 }
 
@@ -186,13 +209,16 @@ struct IdolHeight: Codable {
     var 身長: Double
 }
 
-enum ImasSetlistNumber: RDFTypeConvertible {
-    typealias Schema = ImasSchema
-    static var rdfType: IRIRef {return Schema.rdfType("SetlistNumber")}
-}
+struct Unit: Codable, CustomStringConvertible {
+    var name: String
+    private var memberNames_concat: String
+    private var types_concat: String
 
-extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == ImasSetlistNumber {
-    func name(is v: Var) -> TripleBuilder<State> {
-        return .init(base: self, appendingVerb: SchemaOrg.verb("name"), value: [.var(v)])
+    var members: [(name: String, type: String)] {
+        return Array(zip(memberNames_concat.components(separatedBy: ","),
+                         types_concat.components(separatedBy: ",")))
+    }
+    var description: String {
+        return members.map {$0.name + "(\($0.type))"}.joined(separator: " と ") + " で " + name
     }
 }
