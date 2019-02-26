@@ -30,6 +30,14 @@ class ViewController: NSViewController {
         super.viewDidLoad()
         // playground
 
+        let turtleDoc = try! TurtleDoc(String(contentsOfFile: Bundle.main.path(forResource: "imas-schema", ofType: "ttl")!))
+//        NSLog("%@", "turtleDoc = \(String(describing: turtleDoc))")
+
+        let swiftCodes = turtleDoc.triples.compactMap {SubjectDescription($0)}.map {$0.swiftCode}
+        print(swiftCodes.joined(separator: "\n\n"))
+
+        exit(1)
+
         let prologues: [Prologue] = [
             .prefix(PNameNS(value: "schema"), IRIRef(value: "http://schema.org/")),
             .prefix(PNameNS(value: "rdf"), IRIRef(value: "http://www.w3.org/1999/02/22-rdf-syntax-ns#")),

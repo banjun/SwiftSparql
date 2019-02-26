@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		62025271D0885D556233A206 /* Pods_SwiftSparql_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 918436E336259CEF3DA3444D /* Pods_SwiftSparql_Example.framework */; };
 		814637AF9FEF4AD3EC051EBD /* Pods_SwiftSparql_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48D78951E61B506F290B86BD /* Pods_SwiftSparql_Tests.framework */; };
+		EAB8834E2218713500B7EE0B /* imas-schema.ttl in Resources */ = {isa = PBXBuildFile; fileRef = EAB8834C2218713500B7EE0B /* imas-schema.ttl */; };
+		EAB8834F2218713500B7EE0B /* schema.ttl in Resources */ = {isa = PBXBuildFile; fileRef = EAB8834D2218713500B7EE0B /* schema.ttl */; };
 		ED83F67C20348A760038D96B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED83F67B20348A760038D96B /* AppDelegate.swift */; };
 		ED83F67E20348A760038D96B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED83F67D20348A760038D96B /* ViewController.swift */; };
 		ED83F68020348A760038D96B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED83F67F20348A760038D96B /* Assets.xcassets */; };
@@ -37,6 +39,8 @@
 		D0F695DB9E57B078F03712A3 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		E40959316123E42210979F59 /* Pods-SwiftSparql_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftSparql_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftSparql_Tests/Pods-SwiftSparql_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		EA37DEB821ECDE4E005B4CC2 /* Playground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Playground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		EAB8834C2218713500B7EE0B /* imas-schema.ttl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "imas-schema.ttl"; sourceTree = "<group>"; };
+		EAB8834D2218713500B7EE0B /* schema.ttl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = schema.ttl; sourceTree = "<group>"; };
 		ED83F67820348A760038D96B /* SwiftSparql_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftSparql_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED83F67B20348A760038D96B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ED83F67D20348A760038D96B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -79,12 +83,22 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		EAB8834B2218713500B7EE0B /* Vocabularies */ = {
+			isa = PBXGroup;
+			children = (
+				EAB8834C2218713500B7EE0B /* imas-schema.ttl */,
+				EAB8834D2218713500B7EE0B /* schema.ttl */,
+			);
+			path = Vocabularies;
+			sourceTree = "<group>";
+		};
 		ED83F66F20348A760038D96B = {
 			isa = PBXGroup;
 			children = (
 				EA37DEB821ECDE4E005B4CC2 /* Playground.playground */,
 				ED83F69A20348B650038D96B /* Podspec Metadata */,
 				ED83F67A20348A760038D96B /* SwiftSparql_Example */,
+				EAB8834B2218713500B7EE0B /* Vocabularies */,
 				ED83F68D20348A760038D96B /* Tests */,
 				ED83F67920348A760038D96B /* Products */,
 				35F57A701D7927BFB5774AB5 /* Pods */,
@@ -233,6 +247,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EAB8834E2218713500B7EE0B /* imas-schema.ttl in Resources */,
+				EAB8834F2218713500B7EE0B /* schema.ttl in Resources */,
 				ED83F68020348A760038D96B /* Assets.xcassets in Resources */,
 				ED83F68320348A760038D96B /* Main.storyboard in Resources */,
 			);
@@ -280,6 +296,7 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-SwiftSparql_Example/Pods-SwiftSparql_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/BrightFutures/BrightFutures.framework",
+				"${BUILT_PRODUCTS_DIR}/FootlessParser/FootlessParser.framework",
 				"${BUILT_PRODUCTS_DIR}/Result/Result.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftSparql/SwiftSparql.framework",
 			);
@@ -288,6 +305,7 @@
 			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BrightFutures.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FootlessParser.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftSparql.framework",
 			);

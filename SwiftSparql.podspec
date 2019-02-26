@@ -14,4 +14,6 @@ Pod::Spec.new do |s|
   s.osx.deployment_target = "10.12"
   s.swift_version = "4.2"
   s.source_files = 'SwiftSparql/Classes/**/*'
+  
+  s.dependency 'FootlessParser', '~> 0.5'
 end
