@@ -318,7 +318,7 @@ extension TurtleDoc {
         let OTHER: Parser<Character, String> = String.init <^> oneOf(";,.[]()")
         
         let spaces: Parser<Character, Token?> = {_ in nil} <^> oneOrMore(char(.whitespacesAndNewlines, name: "spaces"))
-        let string: Parser<Character, Token> =
+        let stringLiteral: Parser<Character, Token> =
             Token.STRING_LITERAL_LONG_QUOTE <^> STRING_LITERAL_LONG_QUOTE
                 <|> Token.STRING_LITERAL_LONG_SINGLE_QUOTE <^> STRING_LITERAL_LONG_SINGLE_QUOTE
                 <|> Token.STRING_LITERAL_QUOTE <^> STRING_LITERAL_QUOTE
@@ -350,7 +350,7 @@ extension TurtleDoc {
                 <|> Token.PN_LOCAL_ESC <^> PN_LOCAL_ESC
                 <|> Token.OTHER <^> OTHER
         let tokenParser: Parser<Character, Token?> =
-        {$0} <^> string
+        {$0} <^> stringLiteral
             <|> {$0} <^> comment
             <|> {$0} <^> token
             <|> {$0} <^> spaces
@@ -531,7 +531,7 @@ extension TurtleDoc.Subject {
     static var parser: Parser<TurtleDoc.Token, TurtleDoc.Subject> {
         return self.iri <^> IRI.parser
             <|> self.blank <^> BlankNode.parser
-            <|> self.collection <^> TurtleDoc.Collection.parser
+            <|> self.collection <^> [TurtleDoc.Object].parser
     }
 }
 
@@ -612,7 +612,8 @@ extension NumericLiteral {
     }
 }
 
-extension TurtleDoc.Collection {
+// extension TurtleDoc.Collection { // Xcode 10.2+
+extension Array where Element == TurtleDoc.Object {
     static var parser: Parser<TurtleDoc.Token, TurtleDoc.Collection> {
         return TokenParsers.OTHER("(") *> zeroOrMore(TurtleDoc.Object.parser) <* TokenParsers.OTHER(")")
     }

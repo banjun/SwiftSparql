@@ -278,7 +278,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-SwiftSparql_Example/Pods-SwiftSparql_Example-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-SwiftSparql_Example/Pods-SwiftSparql_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/BrightFutures/BrightFutures.framework",
 				"${BUILT_PRODUCTS_DIR}/FootlessParser/FootlessParser.framework",
 				"${BUILT_PRODUCTS_DIR}/Result/Result.framework",
@@ -295,7 +295,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SwiftSparql_Example/Pods-SwiftSparql_Example-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SwiftSparql_Example/Pods-SwiftSparql_Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		EAE9688C5079EF2B1F91C840 /* [CP] Check Pods Manifest.lock */ = {

@@ -1,9 +1,9 @@
 Pod::Spec.new do |s|
   s.name             = 'SwiftSparql'
   s.version          = '0.1.0'
-  s.summary          = 'Typed SPARQL query generator'
+  s.summary          = 'Typed SPARQL query generator / decodable parser'
   s.description      = <<-DESC
-  generates SPARQL query with Swift structures
+  generates SPARQL query with Swift structures / parse query response using Decodable
                        DESC
   s.homepage         = 'https://github.com/banjun/SwiftSparql'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
