@@ -1,9 +1,15 @@
 PODS:
-  - BrightFutures (6.0.1):
-    - Result (~> 3.2.4)
+  - BrightFutures (7.0.0):
+    - Result (~> 4.0.0)
   - FootlessParser (0.5.1)
-  - Result (3.2.4)
+  - Result (4.0.1)
   - SwiftSparql (0.1.0):
+    - SwiftSparql/BrightFutures (= 0.1.0)
+    - SwiftSparql/Core (= 0.1.0)
+  - SwiftSparql/BrightFutures (0.1.0):
+    - BrightFutures (~> 7.0)
+    - SwiftSparql/Core
+  - SwiftSparql/Core (0.1.0):
     - FootlessParser (~> 0.5)
 
 DEPENDENCIES:
@@ -21,10 +27,10 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  BrightFutures: 9c03dab79e73ffe504b7bafc15c5bfdaeee54890
+  BrightFutures: 7d7436e937dfc83d814c11920f157fc2a53f5bd5
   FootlessParser: d59a9266ec55ed5a801fb171e25be43abfb42927
-  Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
-  SwiftSparql: 51ae7f6ae3bc947461915ef737247c0d875f2a1a
+  Result: a6e784bebf48b471d59cddc1adb81f41f678c487
+  SwiftSparql: 7c5691dd33d81920d264785e0ea6772d315c85bf
 
 PODFILE CHECKSUM: 122f6671843723138f7c1d09984dd890976a18a7
 

@@ -9,6 +9,10 @@ public struct Request {
         self.query = query
     }
 
+    public init(endpoint: URL, select: SelectQuery) {
+        self.init(endpoint: endpoint, query: Query(select: select))
+    }
+
     public var request: URLRequest {
         let u = URL(string: "?query=" + Serializer.serialize(query).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!,
                     relativeTo: endpoint)!

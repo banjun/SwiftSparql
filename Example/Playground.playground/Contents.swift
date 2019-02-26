@@ -3,29 +3,6 @@ import SwiftSparql
 import BrightFutures
 import PlaygroundSupport
 
-enum QueryError: Error {
-    case urlSession(Error?)
-    case decode(Error)
-}
-
-private func fetch<T: Codable>(_ query: Query) -> Future<[T], QueryError> {
-    let endpoint = URL(string: "https://sparql.crssnky.xyz/spql/imas/query")!
-    return Future<[T], QueryError> { resolve in
-        URLSession.shared.dataTask(with: Request(endpoint: endpoint, query: query).request) { data, response, error in
-            guard let data = data else {
-                return resolve(.failure(.urlSession(error)))
-            }
-
-            do {
-                let r = try SRJBindingsDecoder().decode(T.self, from: data)
-                resolve(.success(r))
-            } catch {
-                return resolve(.failure(.decode(error)))
-            }
-            }.resume()
-    }
-}
-
 struct IdolHeight: Codable {
     var name: String
     var height: Double
@@ -94,26 +71,26 @@ let varHeight = Var("height")
 let varColor = Var("color")
 let varAge = Var("age")
 
-let query = Query(
-    select: SelectQuery(
-        where: WhereClause(patterns:
-            subject(varS)
-                .rdfTypeIsImasIdol()
-                .imasTitle(is: RDFLiteral(string: "CinderellaGirls", lang: "en"))
-                .alternative({[$0.schemaName, $0.schemaAlternateName]}, is: varName)
-                .schemaHeight(is: varHeight)
-                .optional { $0
-                    .imasColor(is: varColor)
-                    .foafAge(is: varAge)
-                }
-                .triples),
-        having: [.logical(varHeight <= 149)],
-        order: [.by(varHeight)],
-        limit: 100))
+let query = SelectQuery(
+    where: WhereClause(patterns:
+        subject(varS)
+            .rdfTypeIsImasIdol()
+            .imasTitle(is: RDFLiteral(string: "CinderellaGirls", lang: "en"))
+            .alternative({[$0.schemaName, $0.schemaAlternateName]}, is: varName)
+            .schemaHeight(is: varHeight)
+            .optional { $0
+                .imasColor(is: varColor)
+                .foafAge(is: varAge)
+            }
+            .triples),
+    having: [.logical(varHeight <= 149)],
+    order: [.by(varHeight)],
+    limit: 100)
 
 print(Serializer.serialize(query))
 
-fetch(query)
+Request(endpoint: URL(string: "https://sparql.crssnky.xyz/spql/imas/query")!, select: query)
+    .fetch()
     .onSuccess { (idols: [IdolHeight]) in
         PlaygroundPage.current.liveView = IdolHeightView(idols: idols)
         print(idols)

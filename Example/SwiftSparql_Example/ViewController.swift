@@ -2,27 +2,8 @@ import Cocoa
 import SwiftSparql
 import BrightFutures
 
-enum QueryError: Error {
-    case urlSession(Error?)
-    case decode(Error)
-}
-
-private func fetch<T: Codable>(_ query: Query) -> Future<[T], QueryError> {
-    let endpoint = URL(string: "https://sparql.crssnky.xyz/spql/imas/query")!
-    return Future<[T], QueryError> { resolve in
-        URLSession.shared.dataTask(with: Request(endpoint: endpoint, query: query).request) { data, response, error in
-            guard let data = data else {
-                return resolve(.failure(.urlSession(error)))
-            }
-
-            do {
-                let r = try SRJBindingsDecoder().decode(T.self, from: data)
-                resolve(.success(r))
-            } catch {
-                return resolve(.failure(.decode(error)))
-            }
-            }.resume()
-    }
+func fetch<T: Decodable>(_ select: SelectQuery) -> Future<[T], QueryError> {
+    return Request(endpoint: URL(string: "https://sparql.crssnky.xyz/spql/imas/query")!, select: select).fetch()
 }
 
 class ViewController: NSViewController {
@@ -91,7 +72,7 @@ class ViewController: NSViewController {
         NSLog("%@", "mayukiki = \n\n\(Serializer.serialize(mayukiki))")
         print("\n\n\n")
 
-        let liveSongs = Query(select: SelectQuery(
+        let liveSongs = SelectQuery(
             capture: .expressions([(Var("回数"), .init(.count(distinct: false, expression: .init(Var("name"))))),
                                    (Var("楽曲名"), .init(.sample(distinct: false, expression: .init(Var("name")))))]),
             where: WhereClause(patterns:
@@ -102,14 +83,14 @@ class ViewController: NSViewController {
             group: [.var(Var("name"))],
             having: [.logical(Var("回数") > 4)],
             order: [.desc(v: Var("回数"))],
-            limit: 10))
+            limit: 10)
         NSLog("%@", "liveSongs = \n\n\(Serializer.serialize(liveSongs))")
         print("\n\n\n")
 
         let varS = Var("s")
         let varName = Var("name")
         let varHeight = Var("身長")
-        let idolNames = Query(select: SelectQuery(
+        let idolNames = SelectQuery(
             where: WhereClause(patterns:
                 subject(varS).rdfTypeIsImasIdol()
                     .imasNameKana(is: varName)
@@ -118,7 +99,7 @@ class ViewController: NSViewController {
                     .triples),
             having: [.logical(varHeight <= 149)],
             order: [.by(.RAND)],
-            limit: 10))
+            limit: 10)
         NSLog("%@", "idolNames = \n\n\(Serializer.serialize(idolNames))")
         print("\n\n\n")
 
@@ -127,7 +108,7 @@ class ViewController: NSViewController {
             df.dateFormat = "MM-dd"
             return df.string(from: Date())
         }()
-        let birthdays = Query(select: SelectQuery(
+        let birthdays = SelectQuery(
             capture: .expressions([
                 // NOTE: `sample` aggregation returns `{}` empty hash in bindings on empty result and that cause Decoding error
                 (varName, Expression(.sample(distinct: false, expression: .init(Var("なまえ"))))),
@@ -142,7 +123,7 @@ class ViewController: NSViewController {
                     .triples),
             group: [.var(Var("なまえ"))],
             order: [.by(varName)]
-            ))
+            )
         NSLog("%@", "birthdays = \n\n\(Serializer.serialize(birthdays))")
         print("\n\n\n")
 
@@ -162,7 +143,7 @@ class ViewController: NSViewController {
             }
             .onFailure {NSLog("birthdays: %@", String(describing: $0))}
 
-        let units = Query(select: SelectQuery(
+        let units = SelectQuery(
             capture: .expressions([
                 (Var("name"), Expression(Var("ユニット名"))),
                 (Var("memberNames_concat"), Expression(.groupConcat(distinct: false, expression: Expression(Var("ユニットメンバー名")), separator: ","))),
@@ -185,7 +166,7 @@ class ViewController: NSViewController {
                         .triples),
             group: [.var(Var("ユニット名"))],
             order: [.by(.count(distinct: false, expression: Expression(Var("ユニットメンバー"))))],
-            limit: 100))
+            limit: 100)
         print("units = \n\n\(Serializer.serialize(units))")
         print("\n\n\n")
         fetch(units).onSuccess { (units: [Unit]) in
