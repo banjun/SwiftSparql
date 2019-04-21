@@ -12,7 +12,7 @@ let package = Package(
         // Dependencies declare other packages that this package depends on.
         .package(url: "https://github.com/kareman/FootlessParser", .upToNextMajor(from:"0.5.1")),
         .package(url: "https://github.com/ReactiveCocoa/ReactiveSwift", .upToNextMajor(from:"4.0.0")),
-        .package(url: "https://github.com/Thomvis/BrightFutures", .upToNextMajor(from:"7.0.0")),
+        .package(url: "https://github.com/slessans/BrightFutures", .branch("bug-swift5pm")),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
