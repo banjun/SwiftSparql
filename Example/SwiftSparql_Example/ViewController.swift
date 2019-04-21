@@ -6,10 +6,39 @@ func fetch<T: Decodable>(_ select: SelectQuery) -> Future<[T], QueryError> {
     return Request(endpoint: URL(string: "https://sparql.crssnky.xyz/spql/imas/query")!, select: select).fetch()
 }
 
+
+/////
+
+
+
+/////
+
 class ViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // playground
+
+        let q = Query(select: SelectQuery(
+            option: .distinct,
+            where: WhereClause(patterns:
+                subject(Var("s"))
+                    .rdfTypeIsImasIdol()
+                    .imasCv(is: Var("cv"))
+                    .triples
+                    + [.notTriple(.ServiceGraphPattern(
+                        silent: false,
+                        .iri(.ref(.init(value: "http://ja.dbpedia.org/sparql"))),
+                        .groupGraphPatternSub(.init(patterns: [
+                            .triple(.var(Var("ss")), .simple(VerbSimple("a")), [.var(Var("cv"))]),
+                            .notTriple(.Bind(Expression(.CONCAT(["http://ja.dbpedia.org/resource/", Expression(.STR(.init(Var("cv"))))])),
+                                             Var("cvs"))),
+                            .notTriple(.Filter(.logical(.single((.simple(.builtInCall(.STR(.init(Var("ss"))))), [])) == .init(Var("cvs"))))),
+                            ]))))]),
+            order: [.by(Var("cv"))]))
+        NSLog("%@", "selectQuery = \n\n\(Serializer.serialize(q))")
+        print("\n\n\n")
+        return
+
 
         let query = Query(select: SelectQuery(
             where: WhereClause(patterns: [

@@ -307,7 +307,7 @@ public enum Serializer {
         case .CEIL(let e): return "CEIL(\(serialize(e))))"
         case .FLOOR(let e): return "FLOOR(\(serialize(e))))"
         case .ROUND(let e): return "ROUND(\(serialize(e))))"
-        case .CONCAT(let el): return "CONCAT(\(el.map(serialize).joined(separator: ", "))))"
+        case .CONCAT(let el): return "CONCAT(\(el.map(serialize).joined(separator: ", ")))"
         case .substr(let e1, let e2, let e3): return "SUBSTR(\([serialize(e1), serialize(e2), e3.map(serialize)].compactMap {$0}.joined(separator: ", ")))"
         case .STRLEN(let e): return "STRLEN(\(serialize(e))))"
         case .replace(let e1, let e2, let e3, let e4): return "REPLACE(\([serialize(e1), serialize(e2), serialize(e3), e4.map(serialize)].compactMap {$0}.joined(separator: ", ")))"
@@ -385,7 +385,7 @@ public enum Serializer {
         case .GraphGraphPattern(let v, let p): return ["GRAPH", serialize(v), serialize(p)].joined(separator: " ")
         case .ServiceGraphPattern(let silent, let v, let p): return ["SERVICE", silent ? "SILENT": "", serialize(v), serialize(p)].joined(separator: " ")
         case .Filter(let c): return "FILTER(\(serialize(c)))"
-        case .Bind(let e, let v): return ["BIND", serialize(e), "AS", serialize(v)].joined(separator: " ")
+        case .Bind(let e, let v): return "BIND(\(serialize(e)) AS \(serialize(v)))"
         case .InlineData(let v): return ["VALUES", serialize(v)].joined(separator: " ")
         }
     }
