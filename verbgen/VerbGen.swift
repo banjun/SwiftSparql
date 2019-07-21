@@ -41,6 +41,7 @@ struct VerbGen {
             $0.a.contains {
                 switch $0 {
                 case .prefixedName(.ln((PNameNS(value: "rdf"), "Property"))): return true
+                case .ref(IRIRef(value: "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property")): return true
                 default: return false
                 }
             }
