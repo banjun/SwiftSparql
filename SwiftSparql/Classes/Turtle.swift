@@ -640,7 +640,7 @@ extension PNameNS {
 
 // MARK: - convenience methods
 
-public extension TurtleDoc {
+extension TurtleDoc {
     public var triples: [Triple] {
         return statements.compactMap {
             switch $0 {
