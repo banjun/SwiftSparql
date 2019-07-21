@@ -1,5 +1,6 @@
 import Foundation
 import SwiftSparql
+import BrightFutures
 
 guard CommandLine.argc >= 2 else {
     print("usage: \(CommandLine.arguments[0]) (output_dir)")
@@ -14,20 +15,44 @@ if #available(OSX 10.11, *) {
     fatalError()
 }
 
-// generate defined verbs with this endpoint
-private let endpoint = URL(string: "https://sparql.crssnky.xyz/spql/imas/query")!
-
-TurtleFetcher(urls: [
-    URL(string: "https://sparql.crssnky.xyz/imasrdf/URIs/imas-schema.ttl")!,
-    URL(string: "https://schema.org/version/latest/schema.ttl")!,
-    URL(string: "https://gist.githubusercontent.com/baskaufs/fefa1bfbff14a9efc174/raw/389e4b003ef5cbd6901dd8ab8a692b501bc9370e/foaf.ttl")!, // NOTE: cannot find the official foaf schema in turtle
-    ]).fetch { docs in
-        VerbGen(target: docs.first!, references: docs, endpoint: endpoint).gen { swiftCode in
-            let outFile = outDir.appendingPathComponent("imasparql.swift")
-            print("writing swift file to \(outFile)")
-            try! swiftCode.data(using: .utf8)!.write(to: outFile)
-            exit(0)
+/// generate defined verbs from turtle urls, with specified endpoint
+func fetchAndGenCode(endpoint: URL, additionalDirectives: [IRIBaseProvider] = [], urls: [URL], generatedFilename: String) -> Future<Void, Error> {
+    return Future { resolve in
+        TurtleFetcher(urls: urls).fetch { docs in
+            VerbGen(target: docs.first!, references: docs, endpoint: endpoint).gen(additionalDirectives: additionalDirectives) { swiftCode in
+                let outFile = outDir.appendingPathComponent(generatedFilename)
+                print("writing swift file to \(outFile)")
+                try! swiftCode.data(using: .utf8)!.write(to: outFile)
+                resolve(.success(()))
+            }
         }
+    }
 }
+
+let futures = [
+    fetchAndGenCode(
+        endpoint: URL(string: "https://prismdb.takanakahiko.me/sparql")!,
+        additionalDirectives: [
+            // NOTE: all prefixes should be resolved to short prefix forms
+            IRIBaseProvider(name: PNameNS(value: "prism"), iri: IRIRef(value: "https://prismdb.takanakahiko.me/prism-schema.ttl#")),
+            IRIBaseProvider(name: PNameNS(value: "rdf"), iri: IRIRef(value: "http://www.w3.org/1999/02/22-rdf-syntax-ns#")),
+        ],
+        urls: [
+            URL(string: "https://prismdb.takanakahiko.me/prism-schema.ttl")!,
+        ],
+        generatedFilename: "prismdb.swift"),
+    fetchAndGenCode(
+        endpoint: URL(string: "https://sparql.crssnky.xyz/spql/imas/query")!,
+        urls: [
+            URL(string: "https://sparql.crssnky.xyz/imasrdf/URIs/imas-schema.ttl")!,
+            URL(string: "https://schema.org/version/latest/schema.ttl")!,
+            URL(string: "https://gist.githubusercontent.com/baskaufs/fefa1bfbff14a9efc174/raw/389e4b003ef5cbd6901dd8ab8a692b501bc9370e/foaf.ttl")!, // NOTE: cannot find the official foaf schema in turtle
+        ],
+        generatedFilename: "imasparql.swift"),
+]
+
+futures
+    .sequence()
+    .onComplete {_ in exit(0)}
 
 dispatchMain()

@@ -15,7 +15,11 @@ struct RDFTypeConvertible {
                 self.type = CamelIdentifier(raw: Serializer.serialize(iri))
                 self.local = local
             case .prefixedName(.ns): return nil
-            case .ref: return nil
+            case .ref(let ref):
+                let local = ref.value.replacingOccurrences(of: d.iri.value, with: "")
+                let iri = IRI.prefixedName(.ln((schema.name, local)))
+                self.type = CamelIdentifier(raw: Serializer.serialize(iri))
+                self.local = local
             }
         default: return nil
         }

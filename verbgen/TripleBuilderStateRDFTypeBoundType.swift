@@ -6,7 +6,15 @@ struct TripleBuilderStateRDFTypeBoundType {
 
     init?(subject: TurtleDoc.Subject, verbs: [String], directives: [IRIBaseProvider], properties: [SubjectDescription], prologues: [Prologue]) {
         switch subject {
-        case .iri(let v): type = CamelIdentifier(raw: Serializer.serialize(v))
+        case .iri(let iri):
+            switch iri {
+            case .prefixedName: type = CamelIdentifier(raw: Serializer.serialize(iri))
+            case .ref(let ref):
+                guard let d = (directives.first {ref.value.hasPrefix($0.iri.value)}) else { return nil }
+                let local = ref.value.replacingOccurrences(of: d.iri.value, with: "")
+                let iri = IRI.prefixedName(.ln((d.name, local)))
+                type = CamelIdentifier(raw: Serializer.serialize(iri))
+            }
         default: return nil
         }
         self.verbs = verbs.map { v in

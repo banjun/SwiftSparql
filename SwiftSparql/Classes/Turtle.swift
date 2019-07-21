@@ -663,11 +663,13 @@ public struct SubjectDescription {
             self.subject = s
             for (verb, objects) in (po.list.map {($0.0, $0.1.list)}) {
                 switch verb {
-                case .iri(IRI.prefixedName(.ln((PNameNS(value: "rdfs"), "label")))):
+                case .iri(IRI.prefixedName(.ln((PNameNS(value: "rdfs"), "label")))),
+                     .iri(.ref(IRIRef(value: "http://www.w3.org/2000/01/rdf-schema#label"))):
                     for case .literal(.rdf(let l)) in objects {
                         self.label = l.string
                     }
-                case .iri(IRI.prefixedName(.ln((PNameNS(value: "rdfs"), "comment")))):
+                case .iri(IRI.prefixedName(.ln((PNameNS(value: "rdfs"), "comment")))),
+                     .iri(.ref(IRIRef(value: "http://www.w3.org/2000/01/rdf-schema#comment"))):
                     for case .literal(.rdf(let l)) in objects {
                         self.comment = l.string
                     }

@@ -9,6 +9,15 @@ struct IdolHeight: Codable {
     var color: String?
     var age: String?
 }
+extension IdolHeight {
+    var nsColor: NSColor? {
+        guard let hex = (color.flatMap {Int($0, radix: 16)}) else { return nil }
+        return NSColor(
+            calibratedRed: CGFloat(hex >> 16 & 0xff) / 255,
+            green: CGFloat(hex >> 8 & 0xff) / 255,
+            blue: CGFloat(hex >> 0 & 0xff) / 255,
+            alpha: 1)}
+}
 
 class IdolHeightView: NSView {
     let idols: [IdolHeight]
@@ -25,12 +34,7 @@ class IdolHeightView: NSView {
             tf.shadow = NSShadow()
             tf.shadow?.shadowBlurRadius = 0.25
             tf.shadow?.shadowColor = .black
-            let hexColor = idol.color.flatMap {Int($0, radix: 16)}
-            tf.textColor = hexColor.map {NSColor(
-                calibratedRed: CGFloat($0 >> 16 & 0xff) / 255,
-                green: CGFloat($0 >> 8 & 0xff) / 255,
-                blue: CGFloat($0 >> 0 & 0xff) / 255,
-                alpha: 1) } ?? .black
+            tf.textColor = idol.nsColor ?? .black
             tf.wantsLayer = true
             tf.sizeToFit()
             tf.setFrameOrigin(NSPoint(

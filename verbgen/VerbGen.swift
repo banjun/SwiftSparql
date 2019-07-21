@@ -17,7 +17,7 @@ struct VerbGen {
         self.endpoint = endpoint
     }
     
-    func gen(completion: @escaping (String) -> Void) {
+    func gen(additionalDirectives: [IRIBaseProvider] = [], completion: @escaping (String) -> Void) {
         let subjects = turtleDoc.triples.compactMap {SubjectDescription($0)}
         
         let directives: [IRIBaseProvider] = turtleDoc.statements.compactMap {
@@ -25,12 +25,13 @@ struct VerbGen {
             case .directive(.prefixID(let name, let iri)): return IRIBaseProvider(name: name, iri: iri)
             case .directive, .triple: return nil
             }
-        }
+        } + additionalDirectives
         
         let classes = subjects.filter {
             $0.a.contains {
                 switch $0 {
                 case .prefixedName(.ln((PNameNS(value: "rdfs"), "Class"))): return true
+                case .ref(IRIRef(value: "http://www.w3.org/2000/01/rdf-schema#Class")): return true
                 default: return false
                 }
             }
@@ -40,6 +41,7 @@ struct VerbGen {
             $0.a.contains {
                 switch $0 {
                 case .prefixedName(.ln((PNameNS(value: "rdf"), "Property"))): return true
+                case .ref(IRIRef(value: "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property")): return true
                 default: return false
                 }
             }
