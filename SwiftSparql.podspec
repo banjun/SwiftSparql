@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'SwiftSparql'
-  s.version          = '0.2.0'
+  s.version          = '0.3.0'
   s.summary          = 'Typed SPARQL query generator / decodable parser'
   s.description      = <<-DESC
   generates SPARQL query with Swift structures / parse query response using Decodable
@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
   s.social_media_url = 'https://twitter.com/banjun'
   s.ios.deployment_target = "12.0"
   s.osx.deployment_target = "10.12"
-  s.swift_version = "4.2"
+  s.swift_version = "5.0"
   
   s.subspec 'Core' do |ss|
     ss.source_files = 'SwiftSparql/Classes/**/*'
@@ -22,6 +22,6 @@ Pod::Spec.new do |s|
   s.subspec 'BrightFutures' do |ss|
     ss.source_files = 'SwiftSparql/BrightFutures/**/*'
     ss.dependency 'SwiftSparql/Core'
-    ss.dependency 'BrightFutures', '~> 7.0'
+    ss.dependency 'BrightFutures', '~> 8.0'
   end
 end
