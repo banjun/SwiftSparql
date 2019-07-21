@@ -14,7 +14,8 @@ public struct Request {
     }
 
     public var request: URLRequest {
-        let u = URL(string: "?query=" + Serializer.serialize(query).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!,
+        let u = URL(string: "?query=" + Serializer.serialize(query).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+            + "&format=application%2Fsparql-results%2Bjson",
                     relativeTo: endpoint)!
         return URLRequest(url: u)
     }
