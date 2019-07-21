@@ -39,7 +39,7 @@ public extension OrderCondition {
     }
 }
 
-public extension WhereClause {
+extension WhereClause {
     public init(patterns: [GroupGraphPatternSubType]) {
         self.init(pattern: .groupGraphPatternSub(.init(patterns: patterns)))
     }
