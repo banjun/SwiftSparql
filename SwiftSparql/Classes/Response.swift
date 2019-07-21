@@ -51,7 +51,7 @@ enum RDFTerm: Codable {
         switch raw.type {
         case "uri":
             self = .iri(.ref(IRIRef(value: raw.value)))
-        case "literal":
+        case "literal", "typed-literal":
             if let datatype = raw.datatype {
                 self = .typed(value: raw.value, datatype: datatype)
             } else {
