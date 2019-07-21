@@ -25,7 +25,6 @@ private enum _RdfSchema: IRIBaseProvider {
 }
 
 public protocol RDFTypeConvertible {
-    associatedtype Schema: IRIBaseProvider
     static var rdfType: IRIRef { get }
 }
 

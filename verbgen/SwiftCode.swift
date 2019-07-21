@@ -1,8 +1,8 @@
 enum SwiftCode {
     static func gen(_ v: IRIBaseProvider) -> String {
         return """
-        public enum \(v.typeName): IRIBaseProvider {
-            public static var base: IRIRef {return IRIRef(value: "\(v.iri.value)")}
+        fileprivate enum \(v.typeName): IRIBaseProvider {
+            static var base: IRIRef {return IRIRef(value: "\(v.iri.value)")}
         }
         """
     }
@@ -10,8 +10,7 @@ enum SwiftCode {
     static func gen(_ v: RDFTypeConvertible) -> String {
         return """
         public struct \(v.type.id): RDFTypeConvertible {
-            public typealias Schema = \(v.schema.typeName)
-            public static var rdfType: IRIRef {return Schema.rdfType("\(v.local)")}
+            public static var rdfType: IRIRef {return \(v.schema.typeName).rdfType("\(v.local)")}
         }
 
         extension TripleBuilder where State: TripleBuilderStateIncompleteSubjectType {
