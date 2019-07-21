@@ -1,7 +1,6 @@
 import SwiftSparql
 import struct Foundation.URL
 import ReactiveSwift
-import enum Result.NoError
 
 enum _RdfSchema: SwiftSparql.IRIBaseProvider {
     public static var base: IRIRef {return IRIRef(value: "http://www.w3.org/1999/02/22-rdf-syntax-ns#")}
@@ -50,7 +49,7 @@ struct VerbGen {
         
         SignalProducer(classes)
             .flatMap(.concat) { subjectDescription in
-                SignalProducer<[VerbQuery.Response], NoError> { observer, lifetime in
+                SignalProducer<[VerbQuery.Response], Never> { observer, lifetime in
                     VerbQuery(subjectDescription, endpoint: self.endpoint, prologues: prologues).fetch {
                         observer.send(value: $0)
                         observer.sendCompleted()
