@@ -23,12 +23,12 @@ class ViewController: NSViewController {
 
         let heightQuery = Query(select: SelectQuery(
             capture: .vars([Var("o"), Var("h")]),
-            where: WhereClause(patterns:
+            where: WhereClause {
                 subject(Var("s"))
                     .rdfTypeIsImasIdol()
                     .rdfsLabel(is: Var("o"))
                     .schemaHeight(is: Var("h"))
-                    .triples),
+            },
             order: [.asc(v: Var("h")), .by(Var("s"))],
             limit: 10))
         NSLog("%@", "heightQuery = \n\n\(Serializer.serialize(heightQuery))")
@@ -38,16 +38,15 @@ class ViewController: NSViewController {
             capture: SelectClause.Capture.expressions([
                 (Var("ユニット名"), nil),
                 (Var("メンバー"), Expression(.groupConcat(distinct: false, expression: Expression(Var("名前")), separator: ", ")))]),
-            where: WhereClause(patterns:
+            where: WhereClause {
                 subject(Var("s"))
                     .rdfTypeIsImasUnit()
                     .schemaName(is: Var("ユニット名"))
                     .schemaMember(is: Var("m"))
-                    .triples
-                    + subject(Var("m"))
-                        .rdfTypeIsImasIdol()
-                        .rdfsLabel(is: Var("名前"))
-                        .triples),
+                subject(Var("m"))
+                    .rdfTypeIsImasIdol()
+                    .rdfsLabel(is: Var("名前"))
+            },
             group: [.var(Var("ユニット名"))],
             order: [.by(Var("ユニット名"))],
             limit: 10))
@@ -56,18 +55,17 @@ class ViewController: NSViewController {
 
         let mayukiki = Query(select: SelectQuery(
             capture: .vars([Var("利き手"), Var("名前")]),
-            where: WhereClause(patterns:
+            where: WhereClause {
                 subject(Var("s"))
                     .rdfTypeIsImasIdol()
                     .rdfsLabel(is: Var("name"))
                     .imasHandedness(is: Var("利き手"))
                     .filter(.CONTAINS(v: Var("name"), sub: "まゆ"))
-                    .triples
-                    + subject(Var("idol"))
-                        .rdfTypeIsImasIdol()
-                        .imasHandedness(is: Var("利き手"))
-                        .rdfsLabel(is: Var("名前"))
-                        .triples),
+                subject(Var("idol"))
+                    .rdfTypeIsImasIdol()
+                    .imasHandedness(is: Var("利き手"))
+                    .rdfsLabel(is: Var("名前"))
+            },
             limit: 10))
         NSLog("%@", "mayukiki = \n\n\(Serializer.serialize(mayukiki))")
         print("\n\n\n")
@@ -75,11 +73,11 @@ class ViewController: NSViewController {
         let liveSongs = SelectQuery(
             capture: .expressions([(Var("回数"), .init(.count(distinct: false, expression: .init(Var("name"))))),
                                    (Var("楽曲名"), .init(.sample(distinct: false, expression: .init(Var("name")))))]),
-            where: WhereClause(patterns:
+            where: WhereClause {
                 subject(Var("s"))
                     .rdfTypeIsImasSetlistNumber()
                     .schemaName(is: Var("name"))
-                    .triples),
+            },
             group: [.var(Var("name"))],
             having: [.logical(Var("回数") > 4)],
             order: [.desc(v: Var("回数"))],
@@ -91,12 +89,12 @@ class ViewController: NSViewController {
         let varName = Var("name")
         let varHeight = Var("身長")
         let idolNames = SelectQuery(
-            where: WhereClause(patterns:
+            where: WhereClause {
                 subject(varS).rdfTypeIsImasIdol()
                     .imasNameKana(is: varName)
                     .schemaHeight(is: varHeight)
                     .optional {$0.imasColor(is: Var("color"))}
-                    .triples),
+            },
             having: [.logical(varHeight <= 149)],
             order: [.by(.RAND)],
             limit: 10)
@@ -114,13 +112,13 @@ class ViewController: NSViewController {
                 (varName, Expression(.sample(distinct: false, expression: .init(Var("なまえ"))))),
                 (Var("date"), Expression(.sample(distinct: false, expression: .init(Var("誕生日"))))),
                 ]),
-            where: WhereClause(patterns:
+            where: WhereClause {
                 subject(varS)
                     .rdfTypeIsImasIdol()
                     .schemaBirthDate(is: Var("誕生日"))
                     .rdfsLabel(is: Var("なまえ"))
                     .filter(.regex(v: Var("誕生日"), pattern: today))
-                    .triples),
+            },
             group: [.var(Var("なまえ"))],
             order: [.by(varName)]
             )
@@ -148,22 +146,20 @@ class ViewController: NSViewController {
                 (Var("name"), Expression(Var("ユニット名"))),
                 (Var("memberNames_concat"), Expression(.groupConcat(distinct: false, expression: Expression(Var("ユニットメンバー名")), separator: ","))),
                 (Var("types_concat"), Expression(.groupConcat(distinct: false, expression: Expression(Var("ユニットメンバー属性")), separator: ",")))]),
-            where: WhereClause(patterns:
+            where: WhereClause {
                 subject(Var("橘ありす"))
                     .rdfTypeIsImasIdol()
                     .rdfsLabel(is: "橘ありす")
                     .schemaMemberOf(is: Var("ありす参加ユニット"))
-                    .triples
-                    + subject(Var("ありす参加ユニット"))
-                        .rdfTypeIsImasUnit()
-                        .schemaName(is: Var("ユニット名"))
-                        .schemaMember(is: Var("ユニットメンバー"))
-                        .triples
-                    + subject(Var("ユニットメンバー"))
-                        .rdfTypeIsImasIdol()
-                        .rdfsLabel(is: Var("ユニットメンバー名"))
-                        .imasType(is: Var("ユニットメンバー属性"))
-                        .triples),
+                subject(Var("ありす参加ユニット"))
+                    .rdfTypeIsImasUnit()
+                    .schemaName(is: Var("ユニット名"))
+                    .schemaMember(is: Var("ユニットメンバー"))
+                subject(Var("ユニットメンバー"))
+                    .rdfTypeIsImasIdol()
+                    .rdfsLabel(is: Var("ユニットメンバー名"))
+                    .imasType(is: Var("ユニットメンバー属性"))
+            },
             group: [.var(Var("ユニット名"))],
             order: [.by(.count(distinct: false, expression: Expression(Var("ユニットメンバー"))))],
             limit: 100)
