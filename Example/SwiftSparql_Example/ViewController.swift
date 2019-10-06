@@ -26,7 +26,7 @@ class ViewController: NSViewController {
             where: WhereClause(patterns:
                 subject(Var("s"))
                     .rdfTypeIsImasIdol()
-                    .alternative({[$0.schemaName, $0.schemaAlternateName]}, is: Var("o"))
+                    .rdfsLabel(is: Var("o"))
                     .schemaHeight(is: Var("h"))
                     .triples),
             order: [.asc(v: Var("h")), .by(Var("s"))],
@@ -46,7 +46,7 @@ class ViewController: NSViewController {
                     .triples
                     + subject(Var("m"))
                         .rdfTypeIsImasIdol()
-                        .schemaName(is: Var("名前"))
+                        .rdfsLabel(is: Var("名前"))
                         .triples),
             group: [.var(Var("ユニット名"))],
             order: [.by(Var("ユニット名"))],
@@ -59,14 +59,14 @@ class ViewController: NSViewController {
             where: WhereClause(patterns:
                 subject(Var("s"))
                     .rdfTypeIsImasIdol()
-                    .alternative({[$0.schemaName, $0.schemaAlternateName]}, is: Var("name"))
+                    .rdfsLabel(is: Var("name"))
                     .imasHandedness(is: Var("利き手"))
                     .filter(.CONTAINS(v: Var("name"), sub: "まゆ"))
                     .triples
                     + subject(Var("idol"))
                         .rdfTypeIsImasIdol()
                         .imasHandedness(is: Var("利き手"))
-                        .schemaName(is: Var("名前"))
+                        .rdfsLabel(is: Var("名前"))
                         .triples),
             limit: 10))
         NSLog("%@", "mayukiki = \n\n\(Serializer.serialize(mayukiki))")
@@ -118,7 +118,7 @@ class ViewController: NSViewController {
                 subject(varS)
                     .rdfTypeIsImasIdol()
                     .schemaBirthDate(is: Var("誕生日"))
-                    .alternative({[$0.schemaName, $0.schemaAlternateName]}, is: Var("なまえ"))
+                    .rdfsLabel(is: Var("なまえ"))
                     .filter(.regex(v: Var("誕生日"), pattern: today))
                     .triples),
             group: [.var(Var("なまえ"))],
@@ -151,7 +151,7 @@ class ViewController: NSViewController {
             where: WhereClause(patterns:
                 subject(Var("橘ありす"))
                     .rdfTypeIsImasIdol()
-                    .schemaName(is: .literal("橘ありす", lang: "ja"))
+                    .rdfsLabel(is: "橘ありす")
                     .schemaMemberOf(is: Var("ありす参加ユニット"))
                     .triples
                     + subject(Var("ありす参加ユニット"))
@@ -161,7 +161,7 @@ class ViewController: NSViewController {
                         .triples
                     + subject(Var("ユニットメンバー"))
                         .rdfTypeIsImasIdol()
-                        .schemaName(is: Var("ユニットメンバー名"))
+                        .rdfsLabel(is: Var("ユニットメンバー名"))
                         .imasType(is: Var("ユニットメンバー属性"))
                         .triples),
             group: [.var(Var("ユニット名"))],
