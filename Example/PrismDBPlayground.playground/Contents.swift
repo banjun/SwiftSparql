@@ -3,28 +3,6 @@ import SwiftSparql
 import BrightFutures
 import PlaygroundSupport
 
-protocol TriplesBuildable {
-    var triples: [GroupGraphPatternSubType] { get }
-}
-extension TripleBuilder: TriplesBuildable {}
-struct TriplesList: TriplesBuildable {
-    var builders: [TriplesBuildable]
-    var triples: [GroupGraphPatternSubType] {builders.flatMap {$0.triples}}
-}
-
-@_functionBuilder
-struct WhereClauseBuilder {
-    static func buildBlock(_ builders: TriplesBuildable...) -> TriplesBuildable {
-        TriplesList(builders: builders)
-    }
-}
-
-extension WhereClause {
-    init(@WhereClauseBuilder builder: () -> TriplesBuildable) {
-        self.init(patterns: builder().triples)
-    }
-}
-
 struct EpisodeSong: Codable {
     var n: String
     var st: String

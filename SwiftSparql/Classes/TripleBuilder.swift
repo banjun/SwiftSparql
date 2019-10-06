@@ -105,3 +105,27 @@ public func | (lhs: PropertyListPathNotEmpty.Verb, rhs: PropertyListPathNotEmpty
     default: fatalError("not yet implemented")
     }
 }
+
+// MARK: - Function Builders
+
+public protocol TriplesBuildable {
+    var triples: [GroupGraphPatternSubType] { get }
+}
+extension TripleBuilder: TriplesBuildable {}
+struct TriplesList: TriplesBuildable {
+    var builders: [TriplesBuildable]
+    var triples: [GroupGraphPatternSubType] {builders.flatMap {$0.triples}}
+}
+
+@_functionBuilder
+public struct WhereClauseBuilder {
+    public static func buildBlock(_ builders: TriplesBuildable...) -> TriplesBuildable {
+        TriplesList(builders: builders)
+    }
+}
+
+extension WhereClause {
+    public init(@WhereClauseBuilder builder: () -> TriplesBuildable) {
+        self.init(patterns: builder().triples)
+    }
+}
