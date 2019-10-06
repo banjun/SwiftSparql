@@ -36,9 +36,11 @@ let futures = [
             // NOTE: all prefixes should be resolved to short prefix forms
             IRIBaseProvider(name: PNameNS(value: "prism"), iri: IRIRef(value: "https://prismdb.takanakahiko.me/prism-schema.ttl#")),
             IRIBaseProvider(name: PNameNS(value: "rdf"), iri: IRIRef(value: "http://www.w3.org/1999/02/22-rdf-syntax-ns#")),
+            IRIBaseProvider(name: PNameNS(value: "rdfs"), iri: IRIRef(value: "http://www.w3.org/2000/01/rdf-schema#")),
         ],
         urls: [
-            URL(string: "https://prismdb.takanakahiko.me/prism-schema.ttl")!,
+        URL(string: "https://prismdb.takanakahiko.me/prism-schema.ttl")!,
+        URL(string: "https://www.w3.org/2000/01/rdf-schema")!,
         ],
         generatedFilename: "prismdb.swift"),
     fetchAndGenCode(
