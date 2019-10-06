@@ -49,6 +49,7 @@ let futures = [
         urls: [
             URL(string: "https://sparql.crssnky.xyz/imasrdf/URIs/imas-schema.ttl")!,
             URL(string: "https://schema.org/version/latest/schema.ttl")!,
+            URL(string: "https://www.w3.org/2000/01/rdf-schema")!,
             URL(string: "https://www.w3.org/1999/02/22-rdf-syntax-ns")!,
             URL(string: "https://gist.githubusercontent.com/baskaufs/fefa1bfbff14a9efc174/raw/389e4b003ef5cbd6901dd8ab8a692b501bc9370e/foaf.ttl")!, // NOTE: cannot find the official foaf schema in turtle
         ],

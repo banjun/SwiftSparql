@@ -80,7 +80,7 @@ let query = SelectQuery(
         subject(varS)
             .rdfTypeIsImasIdol()
             .imasTitle(is: .literal("CinderellaGirls", lang: "en"))
-            .alternative({[$0.schemaName, $0.schemaAlternateName]}, is: varName)
+            .rdfsLabel(is: varName)
             .schemaHeight(is: varHeight)
             .optional { $0
                 .imasColor(is: varColor)

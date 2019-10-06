@@ -355,12 +355,12 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: RdfSchema.verb("type"), value: [.var(v)])
     }
     
-    /// 
+    /// label: A human-readable name for the subject.
     func rdfsLabel(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: RdfsSchema.verb("label"), value: [.varOrTerm(.term(v))])
     }
     
-    /// 
+    /// label: A human-readable name for the subject.
     func rdfsLabel(is v: Var) -> TripleBuilder<State> {
         return appended(verb: RdfsSchema.verb("label"), value: [.var(v)])
     }
@@ -707,12 +707,12 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: RdfSchema.verb("type"), value: [.var(v)])
     }
     
-    /// 
+    /// label: A human-readable name for the subject.
     func rdfsLabel(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: RdfsSchema.verb("label"), value: [.varOrTerm(.term(v))])
     }
     
-    /// 
+    /// label: A human-readable name for the subject.
     func rdfsLabel(is v: Var) -> TripleBuilder<State> {
         return appended(verb: RdfsSchema.verb("label"), value: [.var(v)])
     }
