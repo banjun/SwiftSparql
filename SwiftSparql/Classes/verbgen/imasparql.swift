@@ -345,12 +345,12 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: SchemaSchema.verb("weight"), value: [.var(v)])
     }
     
-    /// 
+    /// type: The subject is an instance of a class.
     func rdfType(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: RdfSchema.verb("type"), value: [.varOrTerm(.term(v))])
     }
     
-    /// 
+    /// type: The subject is an instance of a class.
     func rdfType(is v: Var) -> TripleBuilder<State> {
         return appended(verb: RdfSchema.verb("type"), value: [.var(v)])
     }
@@ -697,12 +697,12 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: SchemaSchema.verb("weight"), value: [.var(v)])
     }
     
-    /// 
+    /// type: The subject is an instance of a class.
     func rdfType(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: RdfSchema.verb("type"), value: [.varOrTerm(.term(v))])
     }
     
-    /// 
+    /// type: The subject is an instance of a class.
     func rdfType(is v: Var) -> TripleBuilder<State> {
         return appended(verb: RdfSchema.verb("type"), value: [.var(v)])
     }
@@ -929,12 +929,12 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: SchemaSchema.verb("name"), value: [.var(v)])
     }
     
-    /// 
+    /// type: The subject is an instance of a class.
     func rdfType(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: RdfSchema.verb("type"), value: [.varOrTerm(.term(v))])
     }
     
-    /// 
+    /// type: The subject is an instance of a class.
     func rdfType(is v: Var) -> TripleBuilder<State> {
         return appended(verb: RdfSchema.verb("type"), value: [.var(v)])
     }
@@ -971,12 +971,12 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: SchemaSchema.verb("name"), value: [.var(v)])
     }
     
-    /// 
+    /// type: The subject is an instance of a class.
     func rdfType(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: RdfSchema.verb("type"), value: [.varOrTerm(.term(v))])
     }
     
-    /// 
+    /// type: The subject is an instance of a class.
     func rdfType(is v: Var) -> TripleBuilder<State> {
         return appended(verb: RdfSchema.verb("type"), value: [.var(v)])
     }
@@ -997,12 +997,12 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: SchemaSchema.verb("member"), value: [.var(v)])
     }
     
-    /// 
+    /// type: The subject is an instance of a class.
     func rdfType(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: RdfSchema.verb("type"), value: [.varOrTerm(.term(v))])
     }
     
-    /// 
+    /// type: The subject is an instance of a class.
     func rdfType(is v: Var) -> TripleBuilder<State> {
         return appended(verb: RdfSchema.verb("type"), value: [.var(v)])
     }
@@ -1079,12 +1079,12 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: SchemaSchema.verb("url"), value: [.var(v)])
     }
     
-    /// 
+    /// type: The subject is an instance of a class.
     func rdfType(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: RdfSchema.verb("type"), value: [.varOrTerm(.term(v))])
     }
     
-    /// 
+    /// type: The subject is an instance of a class.
     func rdfType(is v: Var) -> TripleBuilder<State> {
         return appended(verb: RdfSchema.verb("type"), value: [.var(v)])
     }
@@ -1151,12 +1151,12 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: SchemaSchema.verb("performer"), value: [.var(v)])
     }
     
-    /// 
+    /// type: The subject is an instance of a class.
     func rdfType(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: RdfSchema.verb("type"), value: [.varOrTerm(.term(v))])
     }
     
-    /// 
+    /// type: The subject is an instance of a class.
     func rdfType(is v: Var) -> TripleBuilder<State> {
         return appended(verb: RdfSchema.verb("type"), value: [.var(v)])
     }
@@ -1183,12 +1183,12 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: SchemaSchema.verb("text"), value: [.var(v)])
     }
     
-    /// 
+    /// type: The subject is an instance of a class.
     func rdfType(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: RdfSchema.verb("type"), value: [.varOrTerm(.term(v))])
     }
     
-    /// 
+    /// type: The subject is an instance of a class.
     func rdfType(is v: Var) -> TripleBuilder<State> {
         return appended(verb: RdfSchema.verb("type"), value: [.var(v)])
     }
@@ -1255,12 +1255,12 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: SchemaSchema.verb("title"), value: [.var(v)])
     }
     
-    /// 
+    /// type: The subject is an instance of a class.
     func rdfType(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: RdfSchema.verb("type"), value: [.varOrTerm(.term(v))])
     }
     
-    /// 
+    /// type: The subject is an instance of a class.
     func rdfType(is v: Var) -> TripleBuilder<State> {
         return appended(verb: RdfSchema.verb("type"), value: [.var(v)])
     }
@@ -1277,12 +1277,12 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
 }
 
 public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == ImasCallName {
-    /// 
+    /// type: The subject is an instance of a class.
     func rdfType(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: RdfSchema.verb("type"), value: [.varOrTerm(.term(v))])
     }
     
-    /// 
+    /// type: The subject is an instance of a class.
     func rdfType(is v: Var) -> TripleBuilder<State> {
         return appended(verb: RdfSchema.verb("type"), value: [.var(v)])
     }
@@ -1349,12 +1349,12 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: SchemaSchema.verb("releaseDate"), value: [.var(v)])
     }
     
-    /// 
+    /// type: The subject is an instance of a class.
     func rdfType(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: RdfSchema.verb("type"), value: [.varOrTerm(.term(v))])
     }
     
-    /// 
+    /// type: The subject is an instance of a class.
     func rdfType(is v: Var) -> TripleBuilder<State> {
         return appended(verb: RdfSchema.verb("type"), value: [.var(v)])
     }
@@ -1401,12 +1401,12 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: SchemaSchema.verb("name"), value: [.var(v)])
     }
     
-    /// 
+    /// type: The subject is an instance of a class.
     func rdfType(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: RdfSchema.verb("type"), value: [.varOrTerm(.term(v))])
     }
     
-    /// 
+    /// type: The subject is an instance of a class.
     func rdfType(is v: Var) -> TripleBuilder<State> {
         return appended(verb: RdfSchema.verb("type"), value: [.var(v)])
     }
