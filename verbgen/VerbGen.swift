@@ -76,7 +76,7 @@ struct VerbGen {
                 let verbExtensions = values.compactMap { subjectDescription, verbs in
                     TripleBuilderStateRDFTypeBoundType(
                         subject: subjectDescription.subject,
-                        verbs: verbs.map {$0.v},
+                        verbs: verbs.map {$0.v}.sorted(),
                         directives: directives,
                         properties: properties,
                         prologues: prologues)
