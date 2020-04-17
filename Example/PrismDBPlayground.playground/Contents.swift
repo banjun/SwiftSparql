@@ -11,20 +11,17 @@ struct EpisodeSong: Codable {
 
 let query = SelectQuery(
     capture: .vars([Var("n"), Var("st"), Var("title")]),
-    where: WhereClause(patterns:
+    where: WhereClause {
         subject(Var("live")).rdfTypeIsPrismLive()
             .prismPerformer(is: "solami_smile")
             .prismSongPerformed(is: Var("song"))
             .prismLiveOfEpisode(is: Var("ep"))
-            .triples
-            + subject(Var("song")).rdfTypeIsPrismSong()
-                .prismName(is: Var("title"))
-                .triples
-            + subject(Var("ep")).rdfTypeIsPrismEpisode()
-                .prism話数(is: Var("n"))
-                .prismサブタイトル(is: Var("st"))
-                .triples
-    ),
+        subject(Var("song")).rdfTypeIsPrismSong()
+            .prismName(is: Var("title"))
+        subject(Var("ep")).rdfTypeIsPrismEpisode()
+            .prism話数(is: Var("n"))
+            .prismサブタイトル(is: Var("st"))
+    },
     order: [.by(Var("n"))],
     limit: 100)
 

@@ -76,7 +76,7 @@ let varColor = Var("color")
 let varAge = Var("age")
 
 let query = SelectQuery(
-    where: WhereClause(patterns:
+    where: WhereClause {
         subject(varS)
             .rdfTypeIsImasIdol()
             .imasTitle(is: .literal("CinderellaGirls", lang: "en"))
@@ -86,7 +86,7 @@ let query = SelectQuery(
                 .imasColor(is: varColor)
                 .foafAge(is: varAge)
             }
-            .triples),
+    },
     having: [.logical(varHeight <= 149)],
     order: [.by(varHeight)],
     limit: 100)
