@@ -68,6 +68,22 @@ extension TripleBuilder where State: TripleBuilderStateIncompleteSubjectType {
     public func rdfTypeIsPrismShop() -> TripleBuilder<TripleBuilderStateRDFTypeBound<PrismShop>> {return rdfType(is: PrismShop.self)}
 }
 
+public struct PrismTeam: RDFTypeConvertible {
+    public static var rdfType: IRIRef {return PrismSchema.rdfType("Team")}
+}
+
+extension TripleBuilder where State: TripleBuilderStateIncompleteSubjectType {
+    public func rdfTypeIsPrismTeam() -> TripleBuilder<TripleBuilderStateRDFTypeBound<PrismTeam>> {return rdfType(is: PrismTeam.self)}
+}
+
+public struct PrismBrand: RDFTypeConvertible {
+    public static var rdfType: IRIRef {return PrismSchema.rdfType("Brand")}
+}
+
+extension TripleBuilder where State: TripleBuilderStateIncompleteSubjectType {
+    public func rdfTypeIsPrismBrand() -> TripleBuilder<TripleBuilderStateRDFTypeBound<PrismBrand>> {return rdfType(is: PrismBrand.self)}
+}
+
 public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == PrismCharacter {
     /// type: The subject is an instance of a class.
     func rdfType(is v: GraphTerm) -> TripleBuilder<State> {
@@ -109,16 +125,6 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: PrismSchema.verb("blood_type"), value: [.var(v)])
     }
     
-    /// ブランド: ブランド
-    func prismBrand(is v: GraphTerm) -> TripleBuilder<State> {
-        return appended(verb: PrismSchema.verb("brand"), value: [.varOrTerm(.term(v))])
-    }
-    
-    /// ブランド: ブランド
-    func prismBrand(is v: Var) -> TripleBuilder<State> {
-        return appended(verb: PrismSchema.verb("brand"), value: [.var(v)])
-    }
-    
     /// チャーム: チャーム
     func prismCharm(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: PrismSchema.verb("charm"), value: [.varOrTerm(.term(v))])
@@ -137,6 +143,16 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     /// 声優: 声優
     func prismCv(is v: Var) -> TripleBuilder<State> {
         return appended(verb: PrismSchema.verb("cv"), value: [.var(v)])
+    }
+    
+    /// 好きなブランド: 好きなブランド
+    func prismFavorite_brand(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: PrismSchema.verb("favorite_brand"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// 好きなブランド: 好きなブランド
+    func prismFavorite_brand(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: PrismSchema.verb("favorite_brand"), value: [.var(v)])
     }
     
     /// 好きな食べ物: 好きな食べ物
@@ -159,6 +175,16 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: PrismSchema.verb("height"), value: [.var(v)])
     }
     
+    /// チームのメンバー: チームのメンバー
+    func prismMemberOf(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: PrismSchema.verb("memberOf"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// チームのメンバー: チームのメンバー
+    func prismMemberOf(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: PrismSchema.verb("memberOf"), value: [.var(v)])
+    }
+    
     /// 名前: 名前
     func prismName(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: PrismSchema.verb("name"), value: [.varOrTerm(.term(v))])
@@ -177,6 +203,16 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     /// 名前(かな): 名前(かな)
     func prismName_kana(is v: Var) -> TripleBuilder<State> {
         return appended(verb: PrismSchema.verb("name_kana"), value: [.var(v)])
+    }
+    
+    /// 演者をしたライブ: 演者をしたライブ
+    func prismPerformerIn(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: PrismSchema.verb("performerIn"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// 演者をしたライブ: 演者をしたライブ
+    func prismPerformerIn(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: PrismSchema.verb("performerIn"), value: [.var(v)])
     }
     
     /// タイプ: タイプ
@@ -219,6 +255,16 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     /// 名前: 名前
     func prismName(is v: Var) -> TripleBuilder<State> {
         return appended(verb: PrismSchema.verb("name"), value: [.var(v)])
+    }
+    
+    /// 名前(かな): 名前(かな)
+    func prismName_kana(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: PrismSchema.verb("name_kana"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// 名前(かな): 名前(かな)
+    func prismName_kana(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: PrismSchema.verb("name_kana"), value: [.var(v)])
     }
     
     /// performedInLive: performedInLive
@@ -509,16 +555,6 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: RdfsSchema.verb("label"), value: [.var(v)])
     }
     
-    /// ブランド: ブランド
-    func prismBrand(is v: GraphTerm) -> TripleBuilder<State> {
-        return appended(verb: PrismSchema.verb("brand"), value: [.varOrTerm(.term(v))])
-    }
-    
-    /// ブランド: ブランド
-    func prismBrand(is v: Var) -> TripleBuilder<State> {
-        return appended(verb: PrismSchema.verb("brand"), value: [.var(v)])
-    }
-    
     /// カテゴリー: カテゴリー
     func prismCategory(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: PrismSchema.verb("category"), value: [.varOrTerm(.term(v))])
@@ -557,6 +593,16 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     /// アイテムID: アイテムID
     func prismItem_id(is v: Var) -> TripleBuilder<State> {
         return appended(verb: PrismSchema.verb("item_id"), value: [.var(v)])
+    }
+    
+    /// アイテムのブランド
+    func prismItem_of(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: PrismSchema.verb("item_of"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// アイテムのブランド
+    func prismItem_of(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: PrismSchema.verb("item_of"), value: [.var(v)])
     }
     
     /// いいね: いいね
@@ -699,5 +745,139 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     /// 都道府県: 都道府県
     func prismPrefecture(is v: Var) -> TripleBuilder<State> {
         return appended(verb: PrismSchema.verb("prefecture"), value: [.var(v)])
+    }
+    
+    /// シリーズ: シリーズ
+    func prismSeries(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: PrismSchema.verb("series"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// シリーズ: シリーズ
+    func prismSeries(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: PrismSchema.verb("series"), value: [.var(v)])
+    }
+}
+
+public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == PrismTeam {
+    /// type: The subject is an instance of a class.
+    func rdfType(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: RdfSchema.verb("type"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// type: The subject is an instance of a class.
+    func rdfType(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: RdfSchema.verb("type"), value: [.var(v)])
+    }
+    
+    /// label: A human-readable name for the subject.
+    func rdfsLabel(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: RdfsSchema.verb("label"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// label: A human-readable name for the subject.
+    func rdfsLabel(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: RdfsSchema.verb("label"), value: [.var(v)])
+    }
+    
+    /// メンバー: メンバー
+    func prismMember(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: PrismSchema.verb("member"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// メンバー: メンバー
+    func prismMember(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: PrismSchema.verb("member"), value: [.var(v)])
+    }
+    
+    /// 名前: 名前
+    func prismName(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: PrismSchema.verb("name"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// 名前: 名前
+    func prismName(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: PrismSchema.verb("name"), value: [.var(v)])
+    }
+    
+    /// 名前(かな): 名前(かな)
+    func prismName_kana(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: PrismSchema.verb("name_kana"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// 名前(かな): 名前(かな)
+    func prismName_kana(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: PrismSchema.verb("name_kana"), value: [.var(v)])
+    }
+    
+    /// 演者をしたライブ: 演者をしたライブ
+    func prismPerformerIn(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: PrismSchema.verb("performerIn"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// 演者をしたライブ: 演者をしたライブ
+    func prismPerformerIn(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: PrismSchema.verb("performerIn"), value: [.var(v)])
+    }
+}
+
+public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == PrismBrand {
+    /// type: The subject is an instance of a class.
+    func rdfType(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: RdfSchema.verb("type"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// type: The subject is an instance of a class.
+    func rdfType(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: RdfSchema.verb("type"), value: [.var(v)])
+    }
+    
+    /// label: A human-readable name for the subject.
+    func rdfsLabel(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: RdfsSchema.verb("label"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// label: A human-readable name for the subject.
+    func rdfsLabel(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: RdfsSchema.verb("label"), value: [.var(v)])
+    }
+    
+    /// ブランドのアイテム
+    func prismBrand_item(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: PrismSchema.verb("brand_item"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// ブランドのアイテム
+    func prismBrand_item(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: PrismSchema.verb("brand_item"), value: [.var(v)])
+    }
+    
+    /// 名前: 名前
+    func prismName(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: PrismSchema.verb("name"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// 名前: 名前
+    func prismName(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: PrismSchema.verb("name"), value: [.var(v)])
+    }
+    
+    /// 名前(かな): 名前(かな)
+    func prismName_kana(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: PrismSchema.verb("name_kana"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// 名前(かな): 名前(かな)
+    func prismName_kana(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: PrismSchema.verb("name_kana"), value: [.var(v)])
+    }
+    
+    /// 名前(カタカナ): 名前(カタカナ)
+    func prismName_katakana(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: PrismSchema.verb("name_katakana"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// 名前(カタカナ): 名前(カタカナ)
+    func prismName_katakana(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: PrismSchema.verb("name_katakana"), value: [.var(v)])
     }
 }
