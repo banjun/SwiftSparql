@@ -51,8 +51,8 @@ public extension GroupGraphPatternSub {
 
         patterns.forEach { e in
             switch e {
-            case .triple(let t):
-                let tssp = TriplesSameSubjectPath.varOrTerm(t.0, .init(verb: t.1, objectListPath: t.2, successors: []))
+            case .triple(let s, let v, let o):
+                let tssp = TriplesSameSubjectPath.varOrTerm(s, .init(verb: v, objectListPath: o, successors: []))
                 var x = intermediates.popLast() ?? (nil, [])
                 x.1.append(tssp)
                 intermediates.append(x)
