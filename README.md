@@ -1,6 +1,6 @@
 # SwiftSparql
 
-[![CI Status](https://img.shields.io/travis/banjun/SwiftSparql.svg?style=flat)](https://travis-ci.org/banjun/SwiftSparql)
+![CI](https://github.com/banjun/SwiftSparql/workflows/CI/badge.svg)
 [![Version](https://img.shields.io/cocoapods/v/SwiftSparql.svg?style=flat)](https://cocoapods.org/pods/SwiftSparql)
 [![License](https://img.shields.io/cocoapods/l/SwiftSparql.svg?style=flat)](https://cocoapods.org/pods/SwiftSparql)
 [![Platform](https://img.shields.io/cocoapods/p/SwiftSparql.svg?style=flat)](https://cocoapods.org/pods/SwiftSparql)
