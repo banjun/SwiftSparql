@@ -1,0 +1,23 @@
+name: verbgen
+
+on:
+  push:
+    branches: [ m@ster ]
+  schedule:
+    - cron: '0 */12 * * *'
+
+jobs:
+  re-generate:
+    runs-on: macOS-latest
+    steps:
+    - uses: actions/checkout@v2
+    - run: swift run -c release verbgen SwiftSparql/Classes/verbgen
+    - uses: peter-evans/create-pull-request@v2
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        commit-message: "🤖 Automatically update verbgen results"
+        author: ${{ secrets.EMAIL }}
+        title: 'Update the verbgen results'
+        body: |
+            Automatically update verbgen results
+        branch: auto-verbgen
