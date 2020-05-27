@@ -15,7 +15,7 @@ DEPENDENCIES:
   - SwiftSparql (from `../`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  trunk:
     - BrightFutures
     - FootlessParser
 
@@ -28,6 +28,6 @@ SPEC CHECKSUMS:
   FootlessParser: 521916d592fa6cba06cfca6f4b5d4f5a2d49175a
   SwiftSparql: 68c5e9c7cc05d4e326aeb60f600e4c5ccf98e640
 
-PODFILE CHECKSUM: 122f6671843723138f7c1d09984dd890976a18a7
+PODFILE CHECKSUM: dc3a5a954902d6319621d572bd63e9d7c084dcc1
 
-COCOAPODS: 1.7.5
+COCOAPODS: 1.9.2
