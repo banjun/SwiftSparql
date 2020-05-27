@@ -1,6 +1,7 @@
 # SwiftSparql
 
 ![CI](https://github.com/banjun/SwiftSparql/workflows/CI/badge.svg)
+![verbgen](https://github.com/banjun/SwiftSparql/workflows/verbgen/badge.svg)
 [![Version](https://img.shields.io/cocoapods/v/SwiftSparql.svg?style=flat)](https://cocoapods.org/pods/SwiftSparql)
 [![License](https://img.shields.io/cocoapods/l/SwiftSparql.svg?style=flat)](https://cocoapods.org/pods/SwiftSparql)
 [![Platform](https://img.shields.io/cocoapods/p/SwiftSparql.svg?style=flat)](https://cocoapods.org/pods/SwiftSparql)
