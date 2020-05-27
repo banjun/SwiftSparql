@@ -1,8 +1,6 @@
 name: verbgen
 
 on:
-  push:
-    branches: [ m@ster ]
   schedule:
     - cron: '0 */12 * * *'
 
