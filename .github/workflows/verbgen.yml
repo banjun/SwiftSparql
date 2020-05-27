@@ -16,7 +16,7 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         commit-message: "🤖 Automatically update verbgen results"
-        author: 'banjun@gmail.com'
+        author: ${{ secrets.AUTHOR }}
         title: 'Update the verbgen results'
         body: |
             Automatically update verbgen results
