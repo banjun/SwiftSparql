@@ -196,7 +196,7 @@ public extension IRIRef {
         let ns: PNameNS
         let local: String?
         switch prefixedName {
-        case .ln(let n, let l): (ns, local) = (n, l)
+        case .ln((let n, let l)): (ns, local) = (n, l)
         case .ns(let n): (ns, local) = (n, nil)
         }
 
