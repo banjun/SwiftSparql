@@ -44,6 +44,14 @@ extension TripleBuilder where State: TripleBuilderStateIncompleteSubjectType {
     public func rdfTypeIsVlueprintCompany() -> TripleBuilder<TripleBuilderStateRDFTypeBound<VlueprintCompany>> {return rdfType(is: VlueprintCompany.self)}
 }
 
+public struct VlueprintKeyword: RDFTypeConvertible {
+    public static var rdfType: IRIRef {return VlueprintSchema.rdfType("Keyword")}
+}
+
+extension TripleBuilder where State: TripleBuilderStateIncompleteSubjectType {
+    public func rdfTypeIsVlueprintKeyword() -> TripleBuilder<TripleBuilderStateRDFTypeBound<VlueprintKeyword>> {return rdfType(is: VlueprintKeyword.self)}
+}
+
 public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == VlueprintVirtualBeing {
     /// type: The subject is an instance of a class.
     func rdfType(is v: GraphTerm) -> TripleBuilder<State> {
@@ -93,6 +101,16 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     /// Twitterアカウント
     func vlueprintTwitterAccount(is v: Var) -> TripleBuilder<State> {
         return appended(verb: VlueprintSchema.verb("twitterAccount"), value: [.var(v)])
+    }
+    
+    /// よみ(IME)
+    func vlueprintYomi(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: VlueprintSchema.verb("yomi"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// よみ(IME)
+    func vlueprintYomi(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: VlueprintSchema.verb("yomi"), value: [.var(v)])
     }
     
     /// YoutubeチャンネルID: チャンネルURLに関しては省略します
@@ -167,6 +185,16 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: VlueprintSchema.verb("twitterAccount"), value: [.var(v)])
     }
     
+    /// よみ(IME)
+    func vlueprintYomi(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: VlueprintSchema.verb("yomi"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// よみ(IME)
+    func vlueprintYomi(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: VlueprintSchema.verb("yomi"), value: [.var(v)])
+    }
+    
     /// YoutubeチャンネルID: チャンネルURLに関しては省略します
     func vlueprintYoutubeChannelId(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: VlueprintSchema.verb("youtubeChannelId"), value: [.varOrTerm(.term(v))])
@@ -239,6 +267,16 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: VlueprintSchema.verb("twitterAccount"), value: [.var(v)])
     }
     
+    /// よみ(IME)
+    func vlueprintYomi(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: VlueprintSchema.verb("yomi"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// よみ(IME)
+    func vlueprintYomi(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: VlueprintSchema.verb("yomi"), value: [.var(v)])
+    }
+    
     /// YoutubeチャンネルID: チャンネルURLに関しては省略します
     func vlueprintYoutubeChannelId(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: VlueprintSchema.verb("youtubeChannelId"), value: [.varOrTerm(.term(v))])
@@ -279,5 +317,47 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     /// label: A human-readable name for the subject.
     func rdfsLabel(is v: Var) -> TripleBuilder<State> {
         return appended(verb: RdfsSchema.verb("label"), value: [.var(v)])
+    }
+    
+    /// よみ(IME)
+    func vlueprintYomi(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: VlueprintSchema.verb("yomi"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// よみ(IME)
+    func vlueprintYomi(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: VlueprintSchema.verb("yomi"), value: [.var(v)])
+    }
+}
+
+public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == VlueprintKeyword {
+    /// type: The subject is an instance of a class.
+    func rdfType(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: RdfSchema.verb("type"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// type: The subject is an instance of a class.
+    func rdfType(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: RdfSchema.verb("type"), value: [.var(v)])
+    }
+    
+    /// label: A human-readable name for the subject.
+    func rdfsLabel(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: RdfsSchema.verb("label"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// label: A human-readable name for the subject.
+    func rdfsLabel(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: RdfsSchema.verb("label"), value: [.var(v)])
+    }
+    
+    /// よみ(IME)
+    func vlueprintYomi(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: VlueprintSchema.verb("yomi"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// よみ(IME)
+    func vlueprintYomi(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: VlueprintSchema.verb("yomi"), value: [.var(v)])
     }
 }
