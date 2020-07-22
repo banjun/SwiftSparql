@@ -1,5 +1,4 @@
 import Foundation
-import OSLog
 
 public struct TurtleDoc {
     public enum Token: Equatable {
@@ -364,12 +363,10 @@ extension TurtleDoc {
                 do {
                     let result = try tokenParser.parse(AnyCollection(remainder))
                     if let token = result.output {
-                        if #available(OSX 10.12, *) { os_log("read token (%d): %@", type: .debug, remainder.count, String(describing: token)) }
-                        else { NSLog("read token (\(remainder.count)): \(token)") }
+                        // NSLog("%@", "read token (\(remainder.count)): \(token)")
                         tokens.append(token)
                     } else {
-                        if #available(OSX 10.12, *) { os_log("skipped characters: %d", type: .debug, remainder.count - result.remainder.count) }
-                        else { NSLog("skipped characters: \(remainder.count - result.remainder.count)") }
+                        // NSLog("%@", "skipped characters: \(remainder.count - result.remainder.count)")
                     }
                     remainder = String(result.remainder)
                 } catch {
@@ -384,8 +381,6 @@ extension TurtleDoc {
             try partial($0)
         }
         tokens.removeLast()
-        if #available(OSX 10.12, *) { os_log("%d tokens parsed", type: .debug, tokens.count) }
-
 
 //        let tokens = try parse(oneOrMore(tokenParser), docString).compactMap {$0}
 //        let tokens = try oneOrMore(tokenParser).parse(docString).output
