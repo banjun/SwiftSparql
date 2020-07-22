@@ -1,4 +1,5 @@
 import Foundation
+import OSLog
 
 public struct TurtleDoc {
     public enum Token: Equatable {
@@ -323,7 +324,7 @@ extension TurtleDoc {
                 <|> Token.STRING_LITERAL_LONG_SINGLE_QUOTE <^> STRING_LITERAL_LONG_SINGLE_QUOTE
                 <|> Token.STRING_LITERAL_QUOTE <^> STRING_LITERAL_QUOTE
                 <|> Token.STRING_LITERAL_SINGLE_QUOTE <^> STRING_LITERAL_SINGLE_QUOTE
-        let comment: Parser<Character, Token?> = {_ in nil} <^> (char("#") *> zeroOrMore(noneOf("\n\r\r\n")) <* oneOf("\n\r\r\n"))
+        let comment: Parser<Character, Token?> = {_ in nil} <^> (char("#") *> zeroOrMore(noneOf("\n\r\r\n")) <* ({_ in} <^> oneOf("\n\r\r\n") <|> eof()))
         let token: Parser<Character, Token> =
             Token.IRIREF <^> IRIREF
                 <|> Token.KEYWORD <^> KEYWORD
@@ -363,10 +364,12 @@ extension TurtleDoc {
                 do {
                     let result = try tokenParser.parse(AnyCollection(remainder))
                     if let token = result.output {
-                        // NSLog("%@", "read token (\(remainder.count)): \(token)")
+                        if #available(OSX 10.12, *) { os_log("read token (%d): %@", type: .debug, remainder.count, String(describing: token)) }
+                        else { NSLog("read token (\(remainder.count)): \(token)") }
                         tokens.append(token)
                     } else {
-                        // NSLog("%@", "skipped characters: \(remainder.count - result.remainder.count)")
+                        if #available(OSX 10.12, *) { os_log("skipped characters: %d", type: .debug, remainder.count - result.remainder.count) }
+                        else { NSLog("skipped characters: \(remainder.count - result.remainder.count)") }
                     }
                     remainder = String(result.remainder)
                 } catch {
@@ -377,10 +380,12 @@ extension TurtleDoc {
         }
         // FootlessParser is slow when parsing large string.
         // dirty workaround for speed
-        try docString.components(separatedBy: ".\n\n").map {$0 + "."}.forEach {
+        try docString.components(separatedBy: " .\n\n").map {$0 + " ."}.forEach {
             try partial($0)
         }
         tokens.removeLast()
+        if #available(OSX 10.12, *) { os_log("%d tokens parsed", type: .debug, tokens.count) }
+
 
 //        let tokens = try parse(oneOrMore(tokenParser), docString).compactMap {$0}
 //        let tokens = try oneOrMore(tokenParser).parse(docString).output
@@ -649,6 +654,43 @@ extension TurtleDoc {
             }
         }
     }
+    public var directives: [Directive] {
+        return statements.compactMap {
+            switch $0 {
+            case .triple: return nil
+            case .directive(let d): return d
+            }
+        }
+    }
+}
+
+extension TurtleDoc.Object {
+    init(_ object: TurtleDoc.Object, directives: [TurtleDoc.Directive]) {
+        switch object {
+        case .iri(let iri): self = .iri(IRI(iri: iri, basePrefixedBy: directives) ?? iri)
+        case .blankNode: self = object
+        case .collection(let c): self = .collection(c.map {.init($0, directives: directives)})
+        case .blankNodePropertyList: self = object
+        case .literal: self = object
+        }
+    }
+}
+
+extension IRI {
+    init?(iri: IRI, basePrefixedBy directives: [TurtleDoc.Directive]) {
+        guard let ref: IRIRef = (directives.lazy.compactMap {
+            switch $0 {
+            case .base(let ref), .sparqlBase(let ref): return ref
+            case .prefixID(let prefix, let ref), .sparqlPrefix(let prefix, let ref): return (prefix.value?.isEmpty ?? true) ? ref : nil
+            }
+        }.first) else { return nil }
+
+        switch iri {
+        case .prefixedName(.ln((let ns, let local))) where (ns.value?.isEmpty ?? true): self = .ref(.init(value: ref.value + local))
+        case .prefixedName: self = iri
+        case .ref: self = iri
+        }
+    }
 }
 
 public struct SubjectDescription {
@@ -657,10 +699,16 @@ public struct SubjectDescription {
     public var label: String?
     public var comment: String?
 
-    public init?(_ t: TurtleDoc.Triple) {
+    public init?(_ t: TurtleDoc.Triple, directives: [TurtleDoc.Directive]) {
         switch t {
         case .subject(let s, let po):
-            self.subject = s
+            self.subject = {
+                switch s {
+                case .iri(let iri): return .iri(IRI(iri: iri, basePrefixedBy: directives) ?? iri)
+                case .collection(let c): return .collection(c.map {.init($0, directives: directives)})
+                case .blank(let b): return .blank(b)
+                }
+            }()
             for (verb, objects) in (po.list.map {($0.0, $0.1.list)}) {
                 switch verb {
                 case .iri(IRI.prefixedName(.ln((PNameNS(value: "rdfs"), "label")))),
