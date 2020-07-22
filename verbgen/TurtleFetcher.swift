@@ -16,18 +16,19 @@ struct TurtleFetcher {
                 SignalProducer<Data, Never> { observer, lifetime in
                     URLSession.shared.dataTask(with: url) { data, response, error in
                         guard let data = data else { fatalError(String(describing: error)) }
+                        print("fetched \(url)")
                         observer.send(value: data)
                         observer.sendCompleted()
                         }
                         .resume()
-                }
+                }.map {(url, $0)}
             }
-            .on(value: {print("parsing \($0.count) bytes")})
-            .map {
+            .on(value: {print("parsing \($1.count) bytes from: \($0)")})
+            .map { url, data in
                 do {
-                    return try TurtleDoc(String(data: $0, encoding: .utf8)!)
+                    return try TurtleDoc(String(data: data, encoding: .utf8)!)
                 } catch {
-                    fatalError(String(describing: error))
+                    fatalError("error while parsing \(url): \(String(describing: error))")
                 }
             }
             .collect()

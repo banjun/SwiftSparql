@@ -227,12 +227,12 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: SchemaSchema.verb("familyName"), value: [.var(v)])
     }
     
-    /// 
+    /// gender: Gender of something, typically a [[Person]], but possibly also fictional characters, animals, etc. While http://schema.org/Male and http://schema.org/Female may be used, text strings are also acceptable for people who do not identify as a binary gender. The [[gender]] property can also be used in an extended sense to cover e.g. the gender of sports teams. As with the gender of individuals, we do not try to enumerate all possibilities. A mixed-gender [[SportsTeam]] can be indicated with a text value of \"Mixed\".
     func schemaGender(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: SchemaSchema.verb("gender"), value: [.varOrTerm(.term(v))])
     }
     
-    /// 
+    /// gender: Gender of something, typically a [[Person]], but possibly also fictional characters, animals, etc. While http://schema.org/Male and http://schema.org/Female may be used, text strings are also acceptable for people who do not identify as a binary gender. The [[gender]] property can also be used in an extended sense to cover e.g. the gender of sports teams. As with the gender of individuals, we do not try to enumerate all possibilities. A mixed-gender [[SportsTeam]] can be indicated with a text value of \"Mixed\".
     func schemaGender(is v: Var) -> TripleBuilder<State> {
         return appended(verb: SchemaSchema.verb("gender"), value: [.var(v)])
     }
@@ -569,12 +569,12 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: SchemaSchema.verb("familyName"), value: [.var(v)])
     }
     
-    /// 
+    /// gender: Gender of something, typically a [[Person]], but possibly also fictional characters, animals, etc. While http://schema.org/Male and http://schema.org/Female may be used, text strings are also acceptable for people who do not identify as a binary gender. The [[gender]] property can also be used in an extended sense to cover e.g. the gender of sports teams. As with the gender of individuals, we do not try to enumerate all possibilities. A mixed-gender [[SportsTeam]] can be indicated with a text value of \"Mixed\".
     func schemaGender(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: SchemaSchema.verb("gender"), value: [.varOrTerm(.term(v))])
     }
     
-    /// 
+    /// gender: Gender of something, typically a [[Person]], but possibly also fictional characters, animals, etc. While http://schema.org/Male and http://schema.org/Female may be used, text strings are also acceptable for people who do not identify as a binary gender. The [[gender]] property can also be used in an extended sense to cover e.g. the gender of sports teams. As with the gender of individuals, we do not try to enumerate all possibilities. A mixed-gender [[SportsTeam]] can be indicated with a text value of \"Mixed\".
     func schemaGender(is v: Var) -> TripleBuilder<State> {
         return appended(verb: SchemaSchema.verb("gender"), value: [.var(v)])
     }
@@ -821,12 +821,12 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: SchemaSchema.verb("familyName"), value: [.var(v)])
     }
     
-    /// 
+    /// gender: Gender of something, typically a [[Person]], but possibly also fictional characters, animals, etc. While http://schema.org/Male and http://schema.org/Female may be used, text strings are also acceptable for people who do not identify as a binary gender. The [[gender]] property can also be used in an extended sense to cover e.g. the gender of sports teams. As with the gender of individuals, we do not try to enumerate all possibilities. A mixed-gender [[SportsTeam]] can be indicated with a text value of \"Mixed\".
     func schemaGender(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: SchemaSchema.verb("gender"), value: [.varOrTerm(.term(v))])
     }
     
-    /// 
+    /// gender: Gender of something, typically a [[Person]], but possibly also fictional characters, animals, etc. While http://schema.org/Male and http://schema.org/Female may be used, text strings are also acceptable for people who do not identify as a binary gender. The [[gender]] property can also be used in an extended sense to cover e.g. the gender of sports teams. As with the gender of individuals, we do not try to enumerate all possibilities. A mixed-gender [[SportsTeam]] can be indicated with a text value of \"Mixed\".
     func schemaGender(is v: Var) -> TripleBuilder<State> {
         return appended(verb: SchemaSchema.verb("gender"), value: [.var(v)])
     }
@@ -1235,12 +1235,12 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: SchemaSchema.verb("actor"), value: [.var(v)])
     }
     
-    /// endDate: The end date and time of the item (in <a href=\"http://en.wikipedia.org/wiki/ISO_8601\">ISO 8601 date format</a>).
+    /// endDate: The end date and time of the item (in [ISO 8601 date format](http://en.wikipedia.org/wiki/ISO_8601)).
     func schemaEndDate(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: SchemaSchema.verb("endDate"), value: [.varOrTerm(.term(v))])
     }
     
-    /// endDate: The end date and time of the item (in <a href=\"http://en.wikipedia.org/wiki/ISO_8601\">ISO 8601 date format</a>).
+    /// endDate: The end date and time of the item (in [ISO 8601 date format](http://en.wikipedia.org/wiki/ISO_8601)).
     func schemaEndDate(is v: Var) -> TripleBuilder<State> {
         return appended(verb: SchemaSchema.verb("endDate"), value: [.var(v)])
     }
@@ -1275,12 +1275,12 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: SchemaSchema.verb("name"), value: [.var(v)])
     }
     
-    /// startDate: The start date and time of the item (in <a href=\"http://en.wikipedia.org/wiki/ISO_8601\">ISO 8601 date format</a>).
+    /// startDate: The start date and time of the item (in [ISO 8601 date format](http://en.wikipedia.org/wiki/ISO_8601)).
     func schemaStartDate(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: SchemaSchema.verb("startDate"), value: [.varOrTerm(.term(v))])
     }
     
-    /// startDate: The start date and time of the item (in <a href=\"http://en.wikipedia.org/wiki/ISO_8601\">ISO 8601 date format</a>).
+    /// startDate: The start date and time of the item (in [ISO 8601 date format](http://en.wikipedia.org/wiki/ISO_8601)).
     func schemaStartDate(is v: Var) -> TripleBuilder<State> {
         return appended(verb: SchemaSchema.verb("startDate"), value: [.var(v)])
     }
@@ -1451,12 +1451,12 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: SchemaSchema.verb("location"), value: [.var(v)])
     }
     
-    /// participant: Other co-agents that participated in the action indirectly. e.g. John wrote a book with <em>Steve</em>.
+    /// participant: Other co-agents that participated in the action indirectly. e.g. John wrote a book with *Steve*.
     func schemaParticipant(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: SchemaSchema.verb("participant"), value: [.varOrTerm(.term(v))])
     }
     
-    /// participant: Other co-agents that participated in the action indirectly. e.g. John wrote a book with <em>Steve</em>.
+    /// participant: Other co-agents that participated in the action indirectly. e.g. John wrote a book with *Steve*.
     func schemaParticipant(is v: Var) -> TripleBuilder<State> {
         return appended(verb: SchemaSchema.verb("participant"), value: [.var(v)])
     }

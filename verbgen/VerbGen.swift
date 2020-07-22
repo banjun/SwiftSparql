@@ -18,7 +18,7 @@ struct VerbGen {
     }
     
     func gen(additionalDirectives: [IRIBaseProvider] = [], completion: @escaping (String) -> Void) {
-        let subjects = turtleDoc.triples.compactMap {SubjectDescription($0)}
+        let subjects = turtleDoc.triples.compactMap {SubjectDescription($0, directives: turtleDoc.directives)}
         
         let directives: [IRIBaseProvider] = turtleDoc.statements.compactMap {
             switch $0 {
@@ -37,7 +37,7 @@ struct VerbGen {
             }
         }
         
-        let properties = references.map {$0.triples.compactMap {SubjectDescription($0)}}.joined().filter {
+        let properties = references.map {doc in doc.triples.compactMap {SubjectDescription($0, directives: doc.directives)}}.joined().filter {
             $0.a.contains {
                 switch $0 {
                 case .prefixedName(.ln((PNameNS(value: "rdf"), "Property"))): return true
