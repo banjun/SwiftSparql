@@ -116,6 +116,14 @@ extension TripleBuilder where State: TripleBuilderStateIncompleteSubjectType {
     public func rdfTypeIsImasCinderellaRankingResult() -> TripleBuilder<TripleBuilderStateRDFTypeBound<ImasCinderellaRankingResult>> {return rdfType(is: ImasCinderellaRankingResult.self)}
 }
 
+public struct ImasCinderellaVoiceIdolAudition: RDFTypeConvertible {
+    public static var rdfType: IRIRef {return ImasSchema.rdfType("CinderellaVoiceIdolAudition")}
+}
+
+extension TripleBuilder where State: TripleBuilderStateIncompleteSubjectType {
+    public func rdfTypeIsImasCinderellaVoiceIdolAudition() -> TripleBuilder<TripleBuilderStateRDFTypeBound<ImasCinderellaVoiceIdolAudition>> {return rdfType(is: ImasCinderellaVoiceIdolAudition.self)}
+}
+
 public struct ImasLive: RDFTypeConvertible {
     public static var rdfType: IRIRef {return ImasSchema.rdfType("Live")}
 }
@@ -1193,6 +1201,38 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
 }
 
 public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == ImasCinderellaRankingResult {
+    /// member: A member of an Organization or a ProgramMembership. Organizations can be members of organizations; ProgramMembership is typically for individuals.
+    func schemaMember(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("member"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// member: A member of an Organization or a ProgramMembership. Organizations can be members of organizations; ProgramMembership is typically for individuals.
+    func schemaMember(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("member"), value: [.var(v)])
+    }
+    
+    /// type: The subject is an instance of a class.
+    func rdfType(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: RdfSchema.verb("type"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// type: The subject is an instance of a class.
+    func rdfType(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: RdfSchema.verb("type"), value: [.var(v)])
+    }
+    
+    /// 得票数: 得票数を表すプロパティ
+    func imasVoteNumber(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("VoteNumber"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// 得票数: 得票数を表すプロパティ
+    func imasVoteNumber(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("VoteNumber"), value: [.var(v)])
+    }
+}
+
+public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == ImasCinderellaVoiceIdolAudition {
     /// member: A member of an Organization or a ProgramMembership. Organizations can be members of organizations; ProgramMembership is typically for individuals.
     func schemaMember(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: SchemaSchema.verb("member"), value: [.varOrTerm(.term(v))])
