@@ -445,6 +445,16 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: ImasSchema.verb("Hobby"), value: [.var(v)])
     }
     
+    /// アイドル名鑑URL: アイドル名鑑のアイドル毎URL
+    func imasIdolListURL(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("IdolListURL"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// アイドル名鑑URL: アイドル名鑑のアイドル毎URL
+    func imasIdolListURL(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("IdolListURL"), value: [.var(v)])
+    }
+    
     /// 靴のサイズ: 靴のサイズを表すプロパティ
     func imasShoeSize(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: ImasSchema.verb("ShoeSize"), value: [.varOrTerm(.term(v))])
@@ -715,6 +725,16 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     /// 趣味: 趣味を表すプロパティ
     func imasHobby(is v: Var) -> TripleBuilder<State> {
         return appended(verb: ImasSchema.verb("Hobby"), value: [.var(v)])
+    }
+    
+    /// アイドル名鑑URL: アイドル名鑑のアイドル毎URL
+    func imasIdolListURL(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("IdolListURL"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// アイドル名鑑URL: アイドル名鑑のアイドル毎URL
+    func imasIdolListURL(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("IdolListURL"), value: [.var(v)])
     }
     
     /// 特技: 特技を表すプロパティ
