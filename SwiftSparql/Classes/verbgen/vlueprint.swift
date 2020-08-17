@@ -351,6 +351,16 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: RdfsSchema.verb("label"), value: [.var(v)])
     }
     
+    /// Twitterアカウント
+    func vlueprintTwitterAccount(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: VlueprintSchema.verb("twitterAccount"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// Twitterアカウント
+    func vlueprintTwitterAccount(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: VlueprintSchema.verb("twitterAccount"), value: [.var(v)])
+    }
+    
     /// よみ(IME)
     func vlueprintYomi(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: VlueprintSchema.verb("yomi"), value: [.varOrTerm(.term(v))])
@@ -359,5 +369,25 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     /// よみ(IME)
     func vlueprintYomi(is v: Var) -> TripleBuilder<State> {
         return appended(verb: VlueprintSchema.verb("yomi"), value: [.var(v)])
+    }
+    
+    /// YoutubeチャンネルID: チャンネルURLに関しては省略します
+    func vlueprintYoutubeChannelId(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: VlueprintSchema.verb("youtubeChannelId"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// YoutubeチャンネルID: チャンネルURLに関しては省略します
+    func vlueprintYoutubeChannelId(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: VlueprintSchema.verb("youtubeChannelId"), value: [.var(v)])
+    }
+    
+    /// Youtubeチャンネル名
+    func vlueprintYoutubeChannelName(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: VlueprintSchema.verb("youtubeChannelName"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// Youtubeチャンネル名
+    func vlueprintYoutubeChannelName(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: VlueprintSchema.verb("youtubeChannelName"), value: [.var(v)])
     }
 }
