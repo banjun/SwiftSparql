@@ -225,12 +225,12 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: SchemaSchema.verb("description"), value: [.var(v)])
     }
     
-    /// familyName: Family name. In the U.S., the last name of an Person. This can be used along with givenName instead of the name property.
+    /// familyName: Family name. In the U.S., the last name of a Person.
     func schemaFamilyName(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: SchemaSchema.verb("familyName"), value: [.varOrTerm(.term(v))])
     }
     
-    /// familyName: Family name. In the U.S., the last name of an Person. This can be used along with givenName instead of the name property.
+    /// familyName: Family name. In the U.S., the last name of a Person.
     func schemaFamilyName(is v: Var) -> TripleBuilder<State> {
         return appended(verb: SchemaSchema.verb("familyName"), value: [.var(v)])
     }
@@ -245,12 +245,12 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: SchemaSchema.verb("gender"), value: [.var(v)])
     }
     
-    /// givenName: Given name. In the U.S., the first name of a Person. This can be used along with familyName instead of the name property.
+    /// givenName: Given name. In the U.S., the first name of a Person.
     func schemaGivenName(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: SchemaSchema.verb("givenName"), value: [.varOrTerm(.term(v))])
     }
     
-    /// givenName: Given name. In the U.S., the first name of a Person. This can be used along with familyName instead of the name property.
+    /// givenName: Given name. In the U.S., the first name of a Person.
     func schemaGivenName(is v: Var) -> TripleBuilder<State> {
         return appended(verb: SchemaSchema.verb("givenName"), value: [.var(v)])
     }
@@ -577,12 +577,12 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: SchemaSchema.verb("birthDate"), value: [.var(v)])
     }
     
-    /// familyName: Family name. In the U.S., the last name of an Person. This can be used along with givenName instead of the name property.
+    /// familyName: Family name. In the U.S., the last name of a Person.
     func schemaFamilyName(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: SchemaSchema.verb("familyName"), value: [.varOrTerm(.term(v))])
     }
     
-    /// familyName: Family name. In the U.S., the last name of an Person. This can be used along with givenName instead of the name property.
+    /// familyName: Family name. In the U.S., the last name of a Person.
     func schemaFamilyName(is v: Var) -> TripleBuilder<State> {
         return appended(verb: SchemaSchema.verb("familyName"), value: [.var(v)])
     }
@@ -597,12 +597,12 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: SchemaSchema.verb("gender"), value: [.var(v)])
     }
     
-    /// givenName: Given name. In the U.S., the first name of a Person. This can be used along with familyName instead of the name property.
+    /// givenName: Given name. In the U.S., the first name of a Person.
     func schemaGivenName(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: SchemaSchema.verb("givenName"), value: [.varOrTerm(.term(v))])
     }
     
-    /// givenName: Given name. In the U.S., the first name of a Person. This can be used along with familyName instead of the name property.
+    /// givenName: Given name. In the U.S., the first name of a Person.
     func schemaGivenName(is v: Var) -> TripleBuilder<State> {
         return appended(verb: SchemaSchema.verb("givenName"), value: [.var(v)])
     }
@@ -839,12 +839,12 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: SchemaSchema.verb("birthPlace"), value: [.var(v)])
     }
     
-    /// familyName: Family name. In the U.S., the last name of an Person. This can be used along with givenName instead of the name property.
+    /// familyName: Family name. In the U.S., the last name of a Person.
     func schemaFamilyName(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: SchemaSchema.verb("familyName"), value: [.varOrTerm(.term(v))])
     }
     
-    /// familyName: Family name. In the U.S., the last name of an Person. This can be used along with givenName instead of the name property.
+    /// familyName: Family name. In the U.S., the last name of a Person.
     func schemaFamilyName(is v: Var) -> TripleBuilder<State> {
         return appended(verb: SchemaSchema.verb("familyName"), value: [.var(v)])
     }
@@ -859,12 +859,12 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: SchemaSchema.verb("gender"), value: [.var(v)])
     }
     
-    /// givenName: Given name. In the U.S., the first name of a Person. This can be used along with familyName instead of the name property.
+    /// givenName: Given name. In the U.S., the first name of a Person.
     func schemaGivenName(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: SchemaSchema.verb("givenName"), value: [.varOrTerm(.term(v))])
     }
     
-    /// givenName: Given name. In the U.S., the first name of a Person. This can be used along with familyName instead of the name property.
+    /// givenName: Given name. In the U.S., the first name of a Person.
     func schemaGivenName(is v: Var) -> TripleBuilder<State> {
         return appended(verb: SchemaSchema.verb("givenName"), value: [.var(v)])
     }
