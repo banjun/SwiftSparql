@@ -455,6 +455,16 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: ImasSchema.verb("IdolListURL"), value: [.var(v)])
     }
     
+    /// 属性: 属性(ポップリンクス)を表すプロパティ
+    func imasPopLinksAttribute(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("PopLinksAttribute"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// 属性: 属性(ポップリンクス)を表すプロパティ
+    func imasPopLinksAttribute(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("PopLinksAttribute"), value: [.var(v)])
+    }
+    
     /// 靴のサイズ: 靴のサイズを表すプロパティ
     func imasShoeSize(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: ImasSchema.verb("ShoeSize"), value: [.varOrTerm(.term(v))])
@@ -1303,6 +1313,16 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     /// endDate: The end date and time of the item (in [ISO 8601 date format](http://en.wikipedia.org/wiki/ISO_8601)).
     func schemaEndDate(is v: Var) -> TripleBuilder<State> {
         return appended(verb: SchemaSchema.verb("endDate"), value: [.var(v)])
+    }
+    
+    /// eventAttendanceMode: The eventAttendanceMode of an event indicates whether it occurs online, offline, or a mix.
+    func schemaEventAttendanceMode(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("eventAttendanceMode"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// eventAttendanceMode: The eventAttendanceMode of an event indicates whether it occurs online, offline, or a mix.
+    func schemaEventAttendanceMode(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("eventAttendanceMode"), value: [.var(v)])
     }
     
     /// eventStatus: An eventStatus of an event represents its status; particularly useful when an event is cancelled or rescheduled.
