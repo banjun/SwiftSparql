@@ -121,12 +121,12 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: VlueprintSchema.verb("twitterAccount"), value: [.var(v)])
     }
     
-    /// タグ: Tag を目的語に持つ Property
+    /// タグ: User Local の ID
     func vlueprintUserlocalID(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: VlueprintSchema.verb("userlocalID"), value: [.varOrTerm(.term(v))])
     }
     
-    /// タグ: Tag を目的語に持つ Property
+    /// タグ: User Local の ID
     func vlueprintUserlocalID(is v: Var) -> TripleBuilder<State> {
         return appended(verb: VlueprintSchema.verb("userlocalID"), value: [.var(v)])
     }
