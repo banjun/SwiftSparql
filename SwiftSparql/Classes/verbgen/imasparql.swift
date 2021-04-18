@@ -355,6 +355,16 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: ImasSchema.verb("BloodType"), value: [.var(v)])
     }
     
+    /// 所属ブランド: 所属ブランドを表すプロパティ
+    func imasBrand(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Brand"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// 所属ブランド: 所属ブランドを表すプロパティ
+    func imasBrand(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Brand"), value: [.var(v)])
+    }
+    
     /// 胸囲: 胸囲を表すプロパティ
     func imasBust(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: ImasSchema.verb("Bust"), value: [.varOrTerm(.term(v))])
@@ -483,16 +493,6 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     /// 特技: 特技を表すプロパティ
     func imasTalent(is v: Var) -> TripleBuilder<State> {
         return appended(verb: ImasSchema.verb("Talent"), value: [.var(v)])
-    }
-    
-    /// 所属コンテンツ: 所属コンテンツを表すプロパティ
-    func imasTitle(is v: GraphTerm) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("Title"), value: [.varOrTerm(.term(v))])
-    }
-    
-    /// 所属コンテンツ: 所属コンテンツを表すプロパティ
-    func imasTitle(is v: Var) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("Title"), value: [.var(v)])
     }
     
     /// タイプ: タイプ(Cu,Co,Pa)を表すプロパティ
@@ -627,6 +627,16 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: SchemaSchema.verb("height"), value: [.var(v)])
     }
     
+    /// memberOf: An Organization (or ProgramMembership) to which this Person or Organization belongs.
+    func schemaMemberOf(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("memberOf"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// memberOf: An Organization (or ProgramMembership) to which this Person or Organization belongs.
+    func schemaMemberOf(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("memberOf"), value: [.var(v)])
+    }
+    
     /// name: The name of the item.
     func schemaName(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: SchemaSchema.verb("name"), value: [.varOrTerm(.term(v))])
@@ -685,6 +695,16 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     /// 血液型: 血液型を表すプロパティ
     func imasBloodType(is v: Var) -> TripleBuilder<State> {
         return appended(verb: ImasSchema.verb("BloodType"), value: [.var(v)])
+    }
+    
+    /// 所属ブランド: 所属ブランドを表すプロパティ
+    func imasBrand(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Brand"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// 所属ブランド: 所属ブランドを表すプロパティ
+    func imasBrand(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Brand"), value: [.var(v)])
     }
     
     /// 胸囲: 胸囲を表すプロパティ
@@ -755,16 +775,6 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     /// 特技: 特技を表すプロパティ
     func imasTalent(is v: Var) -> TripleBuilder<State> {
         return appended(verb: ImasSchema.verb("Talent"), value: [.var(v)])
-    }
-    
-    /// 所属コンテンツ: 所属コンテンツを表すプロパティ
-    func imasTitle(is v: GraphTerm) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("Title"), value: [.varOrTerm(.term(v))])
-    }
-    
-    /// 所属コンテンツ: 所属コンテンツを表すプロパティ
-    func imasTitle(is v: Var) -> TripleBuilder<State> {
-        return appended(verb: ImasSchema.verb("Title"), value: [.var(v)])
     }
     
     /// 腹囲: 腹囲を表すプロパティ
@@ -929,6 +939,16 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: SchemaSchema.verb("weight"), value: [.var(v)])
     }
     
+    /// workLocation: A contact location for a person's place of work.
+    func schemaWorkLocation(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("workLocation"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// workLocation: A contact location for a person's place of work.
+    func schemaWorkLocation(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("workLocation"), value: [.var(v)])
+    }
+    
     /// type: The subject is an instance of a class.
     func rdfType(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: RdfSchema.verb("type"), value: [.varOrTerm(.term(v))])
@@ -967,6 +987,16 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     /// 血液型: 血液型を表すプロパティ
     func imasBloodType(is v: Var) -> TripleBuilder<State> {
         return appended(verb: ImasSchema.verb("BloodType"), value: [.var(v)])
+    }
+    
+    /// 所属ブランド: 所属ブランドを表すプロパティ
+    func imasBrand(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Brand"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// 所属ブランド: 所属ブランドを表すプロパティ
+    func imasBrand(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("Brand"), value: [.var(v)])
     }
     
     /// 胸囲: 胸囲を表すプロパティ
@@ -1223,11 +1253,77 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
 }
 
 public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == ImasFacility {
+    /// name: The name of the item.
+    func schemaName(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("name"), value: [.varOrTerm(.term(v))])
+    }
     
+    /// name: The name of the item.
+    func schemaName(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("name"), value: [.var(v)])
+    }
+    
+    /// type: The subject is an instance of a class.
+    func rdfType(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: RdfSchema.verb("type"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// type: The subject is an instance of a class.
+    func rdfType(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: RdfSchema.verb("type"), value: [.var(v)])
+    }
+    
+    /// label: A human-readable name for the subject.
+    func rdfsLabel(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: RdfsSchema.verb("label"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// label: A human-readable name for the subject.
+    func rdfsLabel(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: RdfsSchema.verb("label"), value: [.var(v)])
+    }
 }
 
 public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == ImasProduction {
+    /// location: The location of, for example, where an event is happening, where an organization is located, or where an action takes place.
+    func schemaLocation(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("location"), value: [.varOrTerm(.term(v))])
+    }
     
+    /// location: The location of, for example, where an event is happening, where an organization is located, or where an action takes place.
+    func schemaLocation(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("location"), value: [.var(v)])
+    }
+    
+    /// name: The name of the item.
+    func schemaName(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("name"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// name: The name of the item.
+    func schemaName(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("name"), value: [.var(v)])
+    }
+    
+    /// type: The subject is an instance of a class.
+    func rdfType(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: RdfSchema.verb("type"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// type: The subject is an instance of a class.
+    func rdfType(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: RdfSchema.verb("type"), value: [.var(v)])
+    }
+    
+    /// label: A human-readable name for the subject.
+    func rdfsLabel(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: RdfsSchema.verb("label"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// label: A human-readable name for the subject.
+    func rdfsLabel(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: RdfsSchema.verb("label"), value: [.var(v)])
+    }
 }
 
 public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == ImasCinderellaRankingResult {
