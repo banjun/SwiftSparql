@@ -1209,6 +1209,16 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: RdfSchema.verb("type"), value: [.var(v)])
     }
     
+    /// label: A human-readable name for the subject.
+    func rdfsLabel(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: RdfsSchema.verb("label"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// label: A human-readable name for the subject.
+    func rdfsLabel(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: RdfsSchema.verb("label"), value: [.var(v)])
+    }
+    
     /// イメージカラー: イメージカラーを表すプロパティ
     func imasColor(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: ImasSchema.verb("Color"), value: [.varOrTerm(.term(v))])
