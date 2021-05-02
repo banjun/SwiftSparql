@@ -1228,6 +1228,16 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     func imasColor(is v: Var) -> TripleBuilder<State> {
         return appended(verb: ImasSchema.verb("Color"), value: [.var(v)])
     }
+    
+    /// 名前よみがな: 名前のよみがなを表すプロパティ
+    func imasNameKana(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("nameKana"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// 名前よみがな: 名前のよみがなを表すプロパティ
+    func imasNameKana(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("nameKana"), value: [.var(v)])
+    }
 }
 
 public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == ImasEvent {
