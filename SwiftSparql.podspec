@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'SwiftSparql'
-  s.version          = '0.10.0'
+  s.version          = '0.11.0'
   s.summary          = 'Typed SPARQL query generator / decodable parser'
   s.description      = <<-DESC
   generates SPARQL query with Swift structures / parse query response using Decodable
