@@ -797,6 +797,16 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: ImasSchema.verb("IdolListURL"), value: [.var(v)])
     }
     
+    /// 学年: 学年を表すプロパティ
+    func imasSchoolGrade(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("SchoolGrade"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// 学年: 学年を表すプロパティ
+    func imasSchoolGrade(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("SchoolGrade"), value: [.var(v)])
+    }
+    
     /// 特技: 特技を表すプロパティ
     func imasTalent(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: ImasSchema.verb("Talent"), value: [.varOrTerm(.term(v))])
