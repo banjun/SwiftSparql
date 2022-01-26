@@ -285,16 +285,6 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: SchemaSchema.verb("name"), value: [.var(v)])
     }
     
-    /// owns: Products owned by the organization or person.
-    func schemaOwns(is v: GraphTerm) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("owns"), value: [.varOrTerm(.term(v))])
-    }
-    
-    /// owns: Products owned by the organization or person.
-    func schemaOwns(is v: Var) -> TripleBuilder<State> {
-        return appended(verb: SchemaSchema.verb("owns"), value: [.var(v)])
-    }
-    
     /// sibling: A sibling of the person.
     func schemaSibling(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: SchemaSchema.verb("sibling"), value: [.varOrTerm(.term(v))])
