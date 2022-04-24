@@ -1531,6 +1531,16 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: SchemaSchema.verb("name"), value: [.var(v)])
     }
     
+    /// previousStartDate: Used in conjunction with eventStatus for rescheduled or cancelled events. This property contains the previously scheduled start date. For rescheduled events, the startDate property should be used for the newly scheduled start date. In the (rare) case of an event that has been postponed and rescheduled multiple times, this field may be repeated.
+    func schemaPreviousStartDate(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("previousStartDate"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// previousStartDate: Used in conjunction with eventStatus for rescheduled or cancelled events. This property contains the previously scheduled start date. For rescheduled events, the startDate property should be used for the newly scheduled start date. In the (rare) case of an event that has been postponed and rescheduled multiple times, this field may be repeated.
+    func schemaPreviousStartDate(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("previousStartDate"), value: [.var(v)])
+    }
+    
     /// startDate: The start date and time of the item (in [ISO 8601 date format](http://en.wikipedia.org/wiki/ISO_8601)).
     func schemaStartDate(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: SchemaSchema.verb("startDate"), value: [.varOrTerm(.term(v))])
