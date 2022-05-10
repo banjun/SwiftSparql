@@ -19,4 +19,9 @@ public struct Request {
                     relativeTo: endpoint)!
         return URLRequest(url: u)
     }
+
+    @available(macOS 12.0, iOS 15.0, *)
+    public func fetch<T: Decodable>() async throws -> [T] {
+        try await SRJBindingsDecoder().decode(T.self, from: URLSession.shared.data(for: request).0)
+    }
 }

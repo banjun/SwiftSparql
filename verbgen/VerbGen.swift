@@ -16,7 +16,13 @@ struct VerbGen {
         self.references = references
         self.endpoint = endpoint
     }
-    
+
+    @available(macOS 10.15, *)
+    func gen(additionalDirectives: [IRIBaseProvider] = []) async -> String {
+        await withUnsafeContinuation {
+            gen(additionalDirectives: additionalDirectives, completion: $0.resume)
+        }
+    }
     func gen(additionalDirectives: [IRIBaseProvider] = [], completion: @escaping (String) -> Void) {
         let subjects = turtleDoc.triples.compactMap {SubjectDescription($0, directives: turtleDoc.directives)}
         
