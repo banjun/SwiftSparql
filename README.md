@@ -40,21 +40,24 @@ swift package init --type executable
 Edit generated `Package.swift`:
 
 ```swift
-// swift-tools-version:4.2
+// swift-tools-version: 5.6
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
 
 let package = Package(
-    name: "sparql",
+    name: "SwiftSparqlCLI",
+    platforms: [.macOS("12.0")],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
-        .package(url: "https://github.com/banjun/SwiftSparql", from: "0.2.0"),
+        .package(url: "https://github.com/banjun/SwiftSparql", from: "0.12.0"),
     ],
     targets: [
-        .target(
-            name: "sparql",
-            dependencies: ["SwiftSparql"])
+        // Targets are the basic building blocks of a package. A target can define a module or a test suite.
+        // Targets can depend on other targets in this package, and on products in packages this package depends on.
+        .executableTarget(
+            name: "SwiftSparqlCLI",
+            dependencies: ["SwiftSparql"]),
     ]
 )
 ```
@@ -93,15 +96,15 @@ struct Idol: Codable {
     var height: Double
 }
 
-// request query to the endpoint URL
-Request(endpoint: URL(string: "https://sparql.crssnky.xyz/spql/imas/query")!, select: q)
-    .fetch()
-    .onSuccess { (idols: [Idol]) in // Codable type annotation for being decoded by fetch()
-        idols.forEach { idol in
-            print("\(idol.name) (\(idol.height)cm)")
-        }
-        exit(0)
-    }.onFailure {fatalError(String(describing: $0))}
+Task {
+    // request query to the endpoint URL
+    // Codable type annotation for being decoded by fetch()
+    let idols: [Idol] = try! await Request(endpoint: URL(string: "https://sparql.crssnky.xyz/spql/imas/query")!, select: q).fetch()
+    idols.forEach { idol in
+        print("\(idol.name) (\(idol.height)cm)")
+    }
+    exit(0)
+}
 
 dispatchMain()
 ```
