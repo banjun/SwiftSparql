@@ -32,8 +32,8 @@ pod 'SwiftSparql'
 Step by step:
 
 ```
-mkdir sparql
-cd sparql
+mkdir SwiftSparqlCLI
+cd SwiftSparqlCLI
 swift package init --type executable
 ```
 
@@ -62,12 +62,7 @@ let package = Package(
 )
 ```
 
-```
-swift package generate-xcodeproj
-open sparql.xcodeproj
-```
-
-Edit `main.swift` & Run with macOS destination.
+Edit `main.swift` & execute by `swift run`.
 
 ```swift
 import Foundation
