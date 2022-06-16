@@ -1,6 +1,5 @@
 import Cocoa
 import SwiftSparql
-import BrightFutures
 import PlaygroundSupport
 
 struct EpisodeSong: Codable {
@@ -33,14 +32,12 @@ let query = SelectQuery(
 
 print(Serializer.serialize(query))
 
-Request(endpoint: URL(string: "https://prismdb.takanakahiko.me/sparql/")!, select: query)
-    .fetch()
-    .onSuccess { (results: [EpisodeSong]) in
-        results
-        print("\nSoLaMi♡SMILE has...\n")
-        results.forEach {
-            print("performed \($0.title) in ep \($0.n) 「\($0.st)」 ")
-        }
-    }.onFailure {print($0)}
+do {
+    let results: [EpisodeSong] = try await Request(endpoint: URL(string: "https://prismdb.takanakahiko.me/sparql/")!, select: query).fetch()
+    print("\nSoLaMi♡SMILE has...\n")
+    results.forEach {
+        print("performed \($0.title) in ep \($0.n) 「\($0.st)」 ")
+    }
+} catch {print(error)}
 
 PlaygroundPage.current.needsIndefiniteExecution = true
