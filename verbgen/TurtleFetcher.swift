@@ -9,6 +9,10 @@ struct TurtleFetcher {
         self.urls = urls
     }
 
+    @available(macOS 10.15, *)
+    func fetch() async -> [TurtleDoc] {
+        await withUnsafeContinuation { fetch(completion: $0.resume) }
+    }
     func fetch(completion: @escaping ([TurtleDoc]) -> Void) {
         SignalProducer(urls)
             .on(value: {print("fetching \($0)")})

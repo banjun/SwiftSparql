@@ -1,6 +1,5 @@
 import Cocoa
 import SwiftSparql
-import BrightFutures
 import PlaygroundSupport
 
 struct IdolHeight: Codable {
@@ -79,7 +78,7 @@ let query = SelectQuery(
     where: WhereClause(patterns:
         subject(varS)
             .rdfTypeIsImasIdol()
-            .imasTitle(is: .literal("CinderellaGirls", lang: "en"))
+            .imasBrand(is: .literal("CinderellaGirls", lang: "en"))
             .rdfsLabel(is: varName)
             .schemaHeight(is: varHeight)
             .optional { $0
@@ -93,12 +92,14 @@ let query = SelectQuery(
 
 print(Serializer.serialize(query))
 
-Request(endpoint: URL(string: "https://sparql.crssnky.xyz/spql/imas/query")!, select: query)
-    .fetch()
-    .onSuccess { (idols: [IdolHeight]) in
-        PlaygroundPage.current.liveView = IdolHeightView(idols: idols)
-        print(idols)
-    }.onFailure {print($0)}
-
+do {
+    let idols: [IdolHeight] = try await Request(endpoint: URL(string: "https://sparql.crssnky.xyz/spql/imas/query")!, select: query).fetch()
+    print(idols)
+    let view = IdolHeightView(idols: idols)
+    view
+//    PlaygroundPage.current.liveView = view // NOTE: not shown in Xcode 14
+} catch {
+    print(error)
+}
 
 PlaygroundPage.current.needsIndefiniteExecution = true

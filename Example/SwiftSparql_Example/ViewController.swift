@@ -1,9 +1,8 @@
 import Cocoa
 import SwiftSparql
-import BrightFutures
 
-func fetch<T: Decodable>(_ select: SelectQuery) -> Future<[T], QueryError> {
-    return Request(endpoint: URL(string: "https://sparql.crssnky.xyz/spql/imas/query")!, select: select).fetch()
+func fetch<T: Decodable>(_ select: SelectQuery) async throws -> [T] {
+    try await Request(endpoint: URL(string: "https://sparql.crssnky.xyz/spql/imas/query")!, select: select).fetch()
 }
 
 class ViewController: NSViewController {
@@ -127,52 +126,61 @@ class ViewController: NSViewController {
         NSLog("%@", "birthdays = \n\n\(Serializer.serialize(birthdays))")
         print("\n\n\n")
 
-        fetch(liveSongs).onSuccess { (songs: [LiveSong]) in
-            NSLog("%@", "query response: songs = \(songs)")
+        Task {
+            do {
+                let songs: [LiveSong] = try await fetch(liveSongs)
+                NSLog("%@", "query response: songs = \(songs)")
+            } catch {
+                NSLog("%@", String(describing: error))
             }
-            .onFailure {NSLog("%@", String(describing: $0))}
 
-        fetch(idolNames)
-            .onSuccess { (idols: [IdolHeight]) in
+            do {
+                let idols: [IdolHeight] = try await fetch(idolNames)
                 NSLog("%@", "query response: idols = \(idols)")
+            } catch {
+                NSLog("%@", String(describing: error))
             }
-            .onFailure {NSLog("%@", String(describing: $0))}
 
-        fetch(birthdays).onSuccess{ (idols: [Idol]) in
-            NSLog("%@", "query response: birthdays = \(idols)")
+            do {
+                let idols: [Idol] = try await fetch(birthdays)
+                NSLog("%@", "query response: birthdays = \(idols)")
+            } catch {
+                NSLog("%@", String(describing: error))
             }
-            .onFailure {NSLog("birthdays: %@", String(describing: $0))}
 
-        let units = SelectQuery(
-            capture: .expressions([
-                (Var("name"), Expression(Var("ユニット名"))),
-                (Var("memberNames_concat"), Expression(.groupConcat(distinct: false, expression: Expression(Var("ユニットメンバー名")), separator: ","))),
-                (Var("types_concat"), Expression(.groupConcat(distinct: false, expression: Expression(Var("ユニットメンバー属性")), separator: ",")))]),
-            where: WhereClause(patterns:
-                subject(Var("橘ありす"))
+            let units = SelectQuery(
+                capture: .expressions([
+                    (Var("name"), Expression(Var("ユニット名"))),
+                    (Var("memberNames_concat"), Expression(.groupConcat(distinct: false, expression: Expression(Var("ユニットメンバー名")), separator: ","))),
+                    (Var("types_concat"), Expression(.groupConcat(distinct: false, expression: Expression(Var("ユニットメンバー属性")), separator: ",")))]),
+                where: WhereClause(patterns:
+                                    subject(Var("橘ありす"))
                     .rdfTypeIsImasIdol()
                     .rdfsLabel(is: "橘ありす")
                     .schemaMemberOf(is: Var("ありす参加ユニット"))
                     .triples
-                    + subject(Var("ありす参加ユニット"))
-                        .rdfTypeIsImasUnit()
-                        .schemaName(is: Var("ユニット名"))
-                        .schemaMember(is: Var("ユニットメンバー"))
-                        .triples
-                    + subject(Var("ユニットメンバー"))
-                        .rdfTypeIsImasIdol()
-                        .rdfsLabel(is: Var("ユニットメンバー名"))
-                        .imasType(is: Var("ユニットメンバー属性"))
-                        .triples),
-            group: [.var(Var("ユニット名"))],
-            order: [.by(.count(distinct: false, expression: Expression(Var("ユニットメンバー"))))],
-            limit: 100)
-        print("units = \n\n\(Serializer.serialize(units))")
-        print("\n\n\n")
-        fetch(units).onSuccess { (units: [Unit]) in
-            print("query response: units = \n\(units.map {$0.description}.joined(separator: "\n"))")
+                                   + subject(Var("ありす参加ユニット"))
+                    .rdfTypeIsImasUnit()
+                    .schemaName(is: Var("ユニット名"))
+                    .schemaMember(is: Var("ユニットメンバー"))
+                    .triples
+                                   + subject(Var("ユニットメンバー"))
+                    .rdfTypeIsImasIdol()
+                    .rdfsLabel(is: Var("ユニットメンバー名"))
+                    .imasType(is: Var("ユニットメンバー属性"))
+                    .triples),
+                group: [.var(Var("ユニット名"))],
+                order: [.by(.count(distinct: false, expression: Expression(Var("ユニットメンバー"))))],
+                limit: 100)
+            print("units = \n\n\(Serializer.serialize(units))")
+            print("\n\n\n")
+            do {
+                let units: [Unit] = try await fetch(units)
+                print("query response: units = \n\(units.map {$0.description}.joined(separator: "\n"))")
+            } catch {
+                NSLog("units: %@", String(describing: error))
             }
-            .onFailure {NSLog("units: %@", String(describing: $0))}
+        }
     }
 }
 
