@@ -727,6 +727,16 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: PrismSchema.verb("address"), value: [.var(v)])
     }
     
+    /// グループ: グループ
+    func prismGroup(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: PrismSchema.verb("group"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// グループ: グループ
+    func prismGroup(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: PrismSchema.verb("group"), value: [.var(v)])
+    }
+    
     /// 緯度: 緯度
     func prismLatitude(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: PrismSchema.verb("latitude"), value: [.varOrTerm(.term(v))])
