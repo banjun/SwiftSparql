@@ -132,6 +132,14 @@ extension TripleBuilder where State: TripleBuilderStateIncompleteSubjectType {
     public func rdfTypeIsImasCinderellaDreamUnitResult() -> TripleBuilder<TripleBuilderStateRDFTypeBound<ImasCinderellaDreamUnitResult>> {return rdfType(is: ImasCinderellaDreamUnitResult.self)}
 }
 
+public struct ImasStageForCinderellaResult: RDFTypeConvertible {
+    public static var rdfType: IRIRef {return ImasSchema.rdfType("StageForCinderellaResult")}
+}
+
+extension TripleBuilder where State: TripleBuilderStateIncompleteSubjectType {
+    public func rdfTypeIsImasStageForCinderellaResult() -> TripleBuilder<TripleBuilderStateRDFTypeBound<ImasStageForCinderellaResult>> {return rdfType(is: ImasStageForCinderellaResult.self)}
+}
+
 public struct ImasLive: RDFTypeConvertible {
     public static var rdfType: IRIRef {return ImasSchema.rdfType("Live")}
 }
@@ -1479,6 +1487,10 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
 }
 
 public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == ImasCinderellaDreamUnitResult {
+    
+}
+
+public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == ImasStageForCinderellaResult {
     
 }
 
