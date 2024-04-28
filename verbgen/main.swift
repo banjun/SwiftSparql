@@ -1,6 +1,5 @@
 import Foundation
 import SwiftSparql
-import BrightFutures
 
 guard CommandLine.argc >= 2 else {
     print("usage: \(CommandLine.arguments[0]) (output_dir)")

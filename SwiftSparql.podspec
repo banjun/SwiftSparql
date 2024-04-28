@@ -10,18 +10,10 @@ Pod::Spec.new do |s|
   s.author           = { 'banjun' => 'banjun@gmail.com' }
   s.source           = { :git => 'https://github.com/banjun/SwiftSparql.git', :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/banjun'
-  s.ios.deployment_target = "12.0"
-  s.osx.deployment_target = "10.12"
+  s.ios.deployment_target = "15.0"
+  s.osx.deployment_target = "12.0"
+  # s.visionos.deployment_target = "1.0"
   s.swift_version = "5.0"
-  
-  s.subspec 'Core' do |ss|
-    ss.source_files = 'SwiftSparql/Classes/**/*'
-    ss.dependency 'FootlessParser', '~> 0.5'
-  end
-
-  s.subspec 'BrightFutures' do |ss|
-    ss.source_files = 'SwiftSparql/BrightFutures/**/*'
-    ss.dependency 'SwiftSparql/Core'
-    ss.dependency 'BrightFutures', '~> 8.0'
-  end
+  s.source_files = 'SwiftSparql/Classes/**/*'
+  s.dependency 'FootlessParser', '~> 0.5'
 end
