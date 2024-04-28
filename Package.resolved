@@ -1,25 +1,23 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "FootlessParser",
-        "repositoryURL": "https://github.com/kareman/FootlessParser",
-        "state": {
-          "branch": null,
-          "revision": "11c7a366720a2cc62d13ee69c8bdb8372bb3bb2b",
-          "version": "0.5.2"
-        }
-      },
-      {
-        "package": "ReactiveSwift",
-        "repositoryURL": "https://github.com/ReactiveCocoa/ReactiveSwift",
-        "state": {
-          "branch": null,
-          "revision": "3f4351d04115fd8797802d9b2d17b812cd761602",
-          "version": "6.3.0"
-        }
+  "pins" : [
+    {
+      "identity" : "footlessparser",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kareman/FootlessParser",
+      "state" : {
+        "revision" : "11c7a366720a2cc62d13ee69c8bdb8372bb3bb2b",
+        "version" : "0.5.2"
       }
-    ]
-  },
-  "version": 1
+    },
+    {
+      "identity" : "reactiveswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ReactiveCocoa/ReactiveSwift",
+      "state" : {
+        "revision" : "40c465af19b993344e84355c00669ba2022ca3cd",
+        "version" : "7.1.1"
+      }
+    }
+  ],
+  "version" : 2
 }
