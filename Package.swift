@@ -12,7 +12,7 @@ let package = Package(
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         .package(url: "https://github.com/kareman/FootlessParser", .upToNextMajor(from:"0.5.2")),
-        .package(url: "https://github.com/ReactiveCocoa/ReactiveSwift", .upToNextMajor(from:"6.0.0")),
+        .package(url: "https://github.com/ReactiveCocoa/ReactiveSwift", .upToNextMajor(from:"7.0.0")),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -21,7 +21,7 @@ let package = Package(
             name: "SwiftSparql",
             dependencies: ["FootlessParser"],
             path: "SwiftSparql"),
-        .target(
+        .executableTarget(
             name: "verbgen",
             dependencies: ["SwiftSparql", "ReactiveSwift"],
             path: "verbgen"),
