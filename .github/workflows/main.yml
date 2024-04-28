@@ -8,14 +8,14 @@ on:
 
 jobs:
   build:
-    runs-on: macOS-latest
+    runs-on: macOS-14
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - run: swift build
   podspec:
-    runs-on: macOS-latest
+    runs-on: macOS-14
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - run: bundle update --bundler
     - run: bundle install
     - run: bundle exec pod lib lint
