@@ -915,6 +915,16 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
         return appended(verb: SchemaSchema.verb("birthPlace"), value: [.var(v)])
     }
     
+    /// description: A description of the item.
+    func schemaDescription(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("description"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// description: A description of the item.
+    func schemaDescription(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("description"), value: [.var(v)])
+    }
+    
     /// familyName: Family name. In the U.S., the last name of a Person.
     func schemaFamilyName(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: SchemaSchema.verb("familyName"), value: [.varOrTerm(.term(v))])
