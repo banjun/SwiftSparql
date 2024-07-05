@@ -201,6 +201,16 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
 }
 
 public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == ImasIdol {
+    /// additionalName: An additional name for a Person, can be used for a middle name.
+    func schemaAdditionalName(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("additionalName"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// additionalName: An additional name for a Person, can be used for a middle name.
+    func schemaAdditionalName(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: SchemaSchema.verb("additionalName"), value: [.var(v)])
+    }
+    
     /// alternateName: An alias for the item.
     func schemaAlternateName(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: SchemaSchema.verb("alternateName"), value: [.varOrTerm(.term(v))])
@@ -549,6 +559,16 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
     /// 腹囲: 腹囲を表すプロパティ
     func imasWaist(is v: Var) -> TripleBuilder<State> {
         return appended(verb: ImasSchema.verb("Waist"), value: [.var(v)])
+    }
+    
+    /// ミドルネームよみがな: ミドルネームのよみがなを表すプロパティ
+    func imasAdditionalNameKana(is v: GraphTerm) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("additionalNameKana"), value: [.varOrTerm(.term(v))])
+    }
+    
+    /// ミドルネームよみがな: ミドルネームのよみがなを表すプロパティ
+    func imasAdditionalNameKana(is v: Var) -> TripleBuilder<State> {
+        return appended(verb: ImasSchema.verb("additionalNameKana"), value: [.var(v)])
     }
     
     /// 通称よみがな: 通称のよみがなを表すプロパティ
