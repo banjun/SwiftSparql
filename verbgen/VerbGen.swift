@@ -19,8 +19,8 @@ struct VerbGen {
 
     @available(macOS 10.15, *)
     func gen(additionalDirectives: [IRIBaseProvider] = []) async -> String {
-        await withUnsafeContinuation {
-            gen(additionalDirectives: additionalDirectives, completion: $0.resume)
+        await withUnsafeContinuation { c in
+            gen(additionalDirectives: additionalDirectives) { c.resume(returning: $0) }
         }
     }
     func gen(additionalDirectives: [IRIBaseProvider] = [], completion: @escaping (String) -> Void) {
@@ -58,13 +58,14 @@ struct VerbGen {
         SignalProducer(classes)
             .flatMap(.concat) { subjectDescription in
                 SignalProducer<[VerbQuery.Response], Never> { observer, lifetime in
-                    VerbQuery(subjectDescription, endpoint: self.endpoint, prologues: prologues).fetch {
-                        observer.send(value: $0)
+                    nonisolated(unsafe) let observer = observer
+                    Task { @Sendable in
+                        observer.send(value: await VerbQuery(subjectDescription, endpoint: self.endpoint, prologues: prologues).fetch())
                         observer.sendCompleted()
                     }
-                    }
-                    .map {(subjectDescription, $0)}
-                    .delay(0.2, on: QueueScheduler.main)
+                }
+                .map {(subjectDescription, $0)}
+                .delay(0.2, on: QueueScheduler.main)
             }
             .on(value: { sd, vs in
                 let type: String

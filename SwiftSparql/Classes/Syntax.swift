@@ -3,10 +3,10 @@ import struct Foundation.Decimal
 
 typealias QueryUnit = Query
 
-public struct Query {
+public struct Query: Sendable {
     public var prologues: [Prologue]
     public var query: Query
-    public enum Query {
+    public enum Query: Sendable {
         case select(SelectQuery)
         case construct(ConstructQuery)
         case describe(DescribeQuery)
@@ -25,13 +25,13 @@ public struct Query {
     }
 }
 
-public enum Prologue {
+public enum Prologue: Sendable {
     case base(IRIRef) // BaseDecl      ::=      'BASE' IRIREF
     case prefix(PNameNS, IRIRef) // PrefixDecl      ::=      'PREFIX' PNAME_NS IRIREF
 }
 
 /// IRIREF      ::=      '<' ([^<>"{}|^`\]-[#x00-#x20])* '>'
-public struct IRIRef: Equatable {
+public struct IRIRef: Equatable, Sendable {
     public var value: String
 
     // public memberwise init
@@ -43,7 +43,7 @@ public struct IRIRef: Equatable {
 /// PN_CHARS_BASE      ::=      [A-Z] | [a-z] | [#x00C0-#x00D6] | [#x00D8-#x00F6] | [#x00F8-#x02FF] | [#x0370-#x037D] | [#x037F-#x1FFF] | [#x200C-#x200D] | [#x2070-#x218F] | [#x2C00-#x2FEF] | [#x3001-#xD7FF] | [#xF900-#xFDCF] | [#xFDF0-#xFFFD] | [#x10000-#xEFFFF]
 /// PN_CHARS      ::=      PN_CHARS_U | '-' | [0-9] | #x00B7 | [#x0300-#x036F] | [#x203F-#x2040]
 /// PN_CHARS_U      ::=      PN_CHARS_BASE | '_'
-public struct PNameNS: Equatable {
+public struct PNameNS: Equatable, Sendable {
     public var value: String?
 
     // public memberwise init
@@ -51,7 +51,7 @@ public struct PNameNS: Equatable {
 }
 
 /// SelectQuery      ::=      SelectClause DatasetClause* WhereClause SolutionModifier
-public struct SelectQuery {
+public struct SelectQuery: Sendable {
     public var selectClause: SelectClause
     public var datasetClause: [DatasetClause]
     public var whereClause: WhereClause
@@ -71,7 +71,7 @@ public struct SelectQuery {
 }
 
 /// DatasetClause      ::=      'FROM' ( DefaultGraphClause | NamedGraphClause )
-public enum DatasetClause {
+public enum DatasetClause: Sendable {
     case `default`(DefaultGraphClause)
     case named(NamedGraphClause)
 }
@@ -84,7 +84,7 @@ public typealias NamedGraphClause = SourceSelector
 public typealias SourceSelector = IRI
 
 /// SubSelect      ::=      SelectClause WhereClause SolutionModifier ValuesClause
-public struct SubSelect {
+public struct SubSelect: Sendable {
     public var selectClause: SelectClause
     public var whereClause: WhereClause
     public var solutionModifier: SolutionModifier
@@ -104,15 +104,15 @@ public struct SubSelect {
 }
 
 /// SelectClause      ::=      'SELECT' ( 'DISTINCT' | 'REDUCED' )? ( ( Var | ( '(' Expression 'AS' Var ')' ) )+ | '*' )
-public struct SelectClause {
+public struct SelectClause: Sendable {
     public var option: Option?
-    public enum Option {
+    public enum Option: Sendable {
         case distinct
         case reduced
     }
 
     public var capture: Capture
-    public enum Capture {
+    public enum Capture: Sendable {
         /// ( Var | ( '(' Expression 'AS' Var ')' ) )+
         case expressions([(Var, Expression?)])
         /// '*'
@@ -140,15 +140,15 @@ public struct SelectClause {
 /// ExpressionList      ::=      NIL | '(' Expression ( ',' Expression )* ')'
 public typealias Expression = ConditionalOrExpression
 
-public struct ConditionalOrExpression {
+public struct ConditionalOrExpression: Sendable {
     public var ands: [ConditionalAndExpression]
 }
 
-public struct ConditionalAndExpression {
+public struct ConditionalAndExpression: Sendable {
     public var valueLogicals: [ValueLogical]
 }
 
-public enum ValueLogical {
+public enum ValueLogical: Sendable {
     case numeric(NumericExpression)
     case eq(NumericExpression, NumericExpression)
     case neq(NumericExpression, NumericExpression)
@@ -166,25 +166,25 @@ public enum ValueLogical {
 /// UnaryExpression      ::=        '!' PrimaryExpression |    '+' PrimaryExpression |    '-' PrimaryExpression |    PrimaryExpression
 /// PrimaryExpression      ::=      BrackettedExpression | BuiltInCall | iriOrFunction | RDFLiteral | NumericLiteral | BooleanLiteral | Var
 public typealias NumericExpression = AdditiveExpression
-public enum AdditiveExpression {
+public enum AdditiveExpression: Sendable {
     case single(MultiplicativeExpression)
     case plus(MultiplicativeExpression, MultiplicativeExpression)
     case minus(MultiplicativeExpression, MultiplicativeExpression)
     case multiple(MultiplicativeExpression, NumericLiteral, [Multiplier])
-    public enum Multiplier {
+    public enum Multiplier: Sendable {
         case multiple(UnaryExpression)
         case divide(UnaryExpression)
     }
 }
 public typealias MultiplicativeExpression = (UnaryExpression, [AdditiveExpression.Multiplier])
-public enum UnaryExpression {
+public enum UnaryExpression: Sendable {
     case negate(PrimaryExpression)
     case plus(PrimaryExpression)
     case minus(PrimaryExpression)
     case simple(PrimaryExpression)
 }
 
-public enum PrimaryExpression {
+public enum PrimaryExpression: Sendable {
     case brackettedExpression(Expression)
     case builtInCall(BuiltInCall)
     case iriOrFunction(IRIOrFunction)
@@ -198,32 +198,32 @@ public enum PrimaryExpression {
 /// NumericLiteralUnsigned      ::=      INTEGER |    DECIMAL |    DOUBLE
 /// NumericLiteralPositive      ::=      INTEGER_POSITIVE |    DECIMAL_POSITIVE |    DOUBLE_POSITIVE
 /// NumericLiteralNegative      ::=      INTEGER_NEGATIVE |    DECIMAL_NEGATIVE |    DOUBLE_NEGATIVE
-public enum NumericLiteral {
+public enum NumericLiteral: Sendable {
     case integer(Int)
     case decimal(Decimal)
     case double(Double)
 }
 
 /// iriOrFunction      ::=      iri ArgList?
-public struct IRIOrFunction {
+public struct IRIOrFunction: Sendable {
     public var iri: IRI
     public var argList: ArgList?
 }
 
 /// iri      ::=      IRIREF |    PrefixedName
-public enum IRI {
+public enum IRI: Sendable {
     case ref(IRIRef)
     case prefixedName(PrefixedName)
 }
 
 /// ArgList      ::=      NIL | '(' 'DISTINCT'? Expression ( ',' Expression )* ')'
-public struct ArgList {
+public struct ArgList: Sendable {
     public var distinct: Bool
     public var expressions: [Expression]
 }
 
 /// PrefixedName      ::=      PNAME_LN | PNAME_NS
-public enum PrefixedName {
+public enum PrefixedName: Sendable {
     case ln(PNameLN)
     case ns(PNameNS)
 }
@@ -233,7 +233,7 @@ public enum PrefixedName {
 public typealias PNameLN = (PNameNS, String)
 
 /// RDFLiteral      ::=      String ( LANGTAG | ( '^^' iri ) )?
-public struct RDFLiteral {
+public struct RDFLiteral: Sendable {
     public var string: String
     public var lang: String?
 
@@ -248,7 +248,7 @@ public struct RDFLiteral {
 /// VAR1      ::=      '?' VARNAME
 /// VAR2      ::=      '$' VARNAME
 /// VARNAME      ::=      ( PN_CHARS_U | [0-9] ) ( PN_CHARS_U | [0-9] | #x00B7 | [#x0300-#x036F] | [#x203F-#x2040] )*
-public struct Var {
+public struct Var: Sendable {
     /// Variables are prefixed by either "?" or "$"; the "?" or "$" is not part of the variable name
     public var name: String
 
@@ -259,7 +259,7 @@ public struct Var {
 }
 
 /// WhereClause      ::=      'WHERE'? GroupGraphPattern
-public struct WhereClause {
+public struct WhereClause: Sendable {
     public var pattern: GroupGraphPattern
 
     // public memberwise init
@@ -267,7 +267,7 @@ public struct WhereClause {
 }
 
 /// SolutionModifier      ::=      GroupClause? HavingClause? OrderClause? LimitOffsetClauses?
-public struct SolutionModifier {
+public struct SolutionModifier: Sendable {
     public var group: GroupClause?
     public var having: HavingClause?
     public var order: OrderClause?
@@ -289,7 +289,7 @@ public struct SolutionModifier {
 /// GroupClause      ::=      'GROUP' 'BY' GroupCondition+
 public typealias GroupClause = [GroupCondition]
 /// GroupCondition      ::=      BuiltInCall | FunctionCall | '(' Expression ( 'AS' Var )? ')' | Var
-public enum GroupCondition {
+public enum GroupCondition: Sendable {
     case builtInCall(BuiltInCall)
     case functionCall(FunctionCall)
     case expression(Expression, Var?)
@@ -301,7 +301,7 @@ public enum GroupCondition {
 /// Constraint      ::=      BrackettedExpression | BuiltInCall | FunctionCall
 public typealias HavingClause = [HavingCondition]
 public typealias HavingCondition = Constraint
-public enum Constraint {
+public enum Constraint: Sendable {
     case brackettedExpression(Expression)
     case builtInCall(BuiltInCall)
     case functionCall(FunctionCall)
@@ -310,7 +310,7 @@ public enum Constraint {
 /// OrderClause      ::=      'ORDER' 'BY' OrderCondition+
 /// OrderCondition      ::=      ( ( 'ASC' | 'DESC' ) BrackettedExpression ) | ( Constraint | Var )
 public typealias OrderClause = [OrderCondition]
-public enum OrderCondition {
+public enum OrderCondition: Sendable {
     case asc(Expression)
     case desc(Expression)
     case constraint(Constraint)
@@ -320,28 +320,28 @@ public enum OrderCondition {
 /// LimitOffsetClauses      ::=      LimitClause OffsetClause? | OffsetClause LimitClause?
 /// LimitClause      ::=      'LIMIT' INTEGER
 /// OffsetClause      ::=      'OFFSET' INTEGER
-public enum LimitOffsetClauses {
+public enum LimitOffsetClauses: Sendable {
     case limit(Int, offset: Int?)
     case offset(Int, limit: Int?)
     public static func limit(_ limit: Int) -> LimitOffsetClauses { return .limit(limit, offset: nil) }
 }
 
 /// ConstructQuery      ::=      'CONSTRUCT' ( ConstructTemplate DatasetClause* WhereClause SolutionModifier | DatasetClause* 'WHERE' '{' TriplesTemplate? '}' SolutionModifier )
-public struct ConstructQuery {
+public struct ConstructQuery: Sendable {
     // TODO: pending
 }
 
 /// DescribeQuery      ::=      'DESCRIBE' ( VarOrIri+ | '*' ) DatasetClause* WhereClause? SolutionModifier
-public struct DescribeQuery {
+public struct DescribeQuery: Sendable {
     // TODO: pending
 }
 
 /// AskQuery      ::=      'ASK' DatasetClause* WhereClause SolutionModifier
-public struct AskQuery {
+public struct AskQuery: Sendable {
     // TODO: pending
 }
 
-public struct ValuesClause {
+public struct ValuesClause: Sendable {
     // TODO: pending
 
     // public memberwise init
@@ -349,7 +349,7 @@ public struct ValuesClause {
 }
 
 
-public enum BuiltInCall {
+public enum BuiltInCall: Sendable {
     // case aggregate(Aggregate)
     /// Aggregate      ::=        'COUNT' '(' 'DISTINCT'? ( '*' | Expression ) ')'
     /// | 'SUM' '(' 'DISTINCT'? Expression ')'
@@ -422,13 +422,13 @@ public enum BuiltInCall {
 }
 
 /// FunctionCall      ::=      iri ArgList
-public struct FunctionCall {
+public struct FunctionCall: Sendable {
     public var iri: IRI
     public var argList: ArgList
 }
 
 /// GroupGraphPattern      ::=      '{' ( SubSelect | GroupGraphPatternSub ) '}'
-public indirect enum GroupGraphPattern {
+public indirect enum GroupGraphPattern: Sendable {
     case subSelect(SubSelect)
     case groupGraphPatternSub(GroupGraphPatternSub)
 }
@@ -438,7 +438,7 @@ public indirect enum GroupGraphPattern {
 /// TriplesSameSubjectPath      ::=      VarOrTerm PropertyListPathNotEmpty |    TriplesNodePath PropertyListPath
 /// VarOrTerm      ::=      Var | GraphTerm
 /// GraphTerm      ::=      iri |    RDFLiteral |    NumericLiteral |    BooleanLiteral |    BlankNode |    NIL
-public struct GroupGraphPatternSub {
+public struct GroupGraphPatternSub: Sendable {
     public var first: TriplesBlock?
     public var successors: [(GraphPatternNotTriples, TriplesBlock?)]
 
@@ -452,19 +452,19 @@ public struct GroupGraphPatternSub {
 }
 
 /// workaround for recursive-structure
-public class Indirect<V> {
-    public var value: V
+public final class Indirect<V: Sendable>: Sendable {
+    public nonisolated(unsafe) var value: V
     public init(_ value: V) {
         self.value = value
     }
 }
 
-public struct TriplesBlock {
+public struct TriplesBlock: Sendable {
     public var triplesSameSubjectPath: TriplesSameSubjectPath
     public var triplesBlock: Indirect<TriplesBlock?>
 }
 
-public enum TriplesSameSubjectPath {
+public enum TriplesSameSubjectPath: Sendable {
     case varOrTerm(VarOrTerm, PropertyListPathNotEmpty)
     case triplesNodePath(TriplesNodePath, PropertyListPath)
 }
@@ -478,7 +478,7 @@ public enum TriplesSameSubjectPath {
 /// Filter      ::=      'FILTER' Constraint
 /// Bind      ::=      'BIND' '(' Expression 'AS' Var ')'
 /// InlineData      ::=      'VALUES' DataBlock
-public enum GraphPatternNotTriples {
+public enum GraphPatternNotTriples: Sendable {
     case GroupOrUnionGraphPattern([GroupGraphPattern])
     case OptionalGraphPattern(GroupGraphPattern)
     case MinusGraphPattern(GroupGraphPattern)
@@ -490,13 +490,13 @@ public enum GraphPatternNotTriples {
 }
 
 /// VarOrTerm      ::=      Var | GraphTerm
-public enum VarOrTerm {
+public enum VarOrTerm: Sendable {
     case `var`(Var)
     case term(GraphTerm)
 }
 
 /// VarOrIri      ::=      Var | iri
-public enum VarOrIRI {
+public enum VarOrIRI: Sendable {
     case `var`(Var)
     case iri(IRI)
 }
@@ -505,15 +505,15 @@ public enum VarOrIRI {
 /// InlineDataOneVar      ::=      Var '{' DataBlockValue* '}'
 /// DataBlockValue      ::=      iri |    RDFLiteral |    NumericLiteral |    BooleanLiteral |    'UNDEF'
 /// InlineDataFull      ::=      ( NIL | '(' Var* ')' ) '{' ( '(' DataBlockValue* ')' | NIL )* '}'
-public enum DataBlock {
+public enum DataBlock: Sendable {
     case one(InlineDataOneVar)
     case full(InlineDataFull)
 }
-public struct InlineDataOneVar {
+public struct InlineDataOneVar: Sendable {
     public var `var`: Var
     public var dataBlockValue: [DataBlockValue]
 }
-public enum DataBlockValue {
+public enum DataBlockValue: Sendable {
     case iri(IRI)
     case rdf(RDFLiteral)
     case numeric(NumericLiteral)
@@ -521,7 +521,7 @@ public enum DataBlockValue {
     case undef
 }
 
-public struct InlineDataFull {
+public struct InlineDataFull: Sendable {
     public var vars: [Var]
     public var values: [DataBlockValue]
 }
@@ -532,7 +532,7 @@ public struct InlineDataFull {
 /// BLANK_NODE_LABEL      ::=      '_:' ( PN_CHARS_U | [0-9] ) ((PN_CHARS|'.')* PN_CHARS)?
 /// ANON      ::=      '[' WS* ']'
 /// WS      ::=      #x20 | #x9 | #xD | #xA
-public enum GraphTerm {
+public enum GraphTerm: Sendable {
     case iri(IRI)
     case rdf(RDFLiteral)
     case numeric(NumericLiteral)
@@ -540,7 +540,7 @@ public enum GraphTerm {
     case blank(BlankNode)
     case `nil`
 }
-public enum BlankNode {
+public enum BlankNode: Sendable {
     case label(String)
     case anon
 }
@@ -548,9 +548,9 @@ public enum BlankNode {
 /// PropertyListPath      ::=      PropertyListPathNotEmpty?
 /// PropertyListPathNotEmpty      ::=      ( VerbPath | VerbSimple ) ObjectListPath ( ';' ( ( VerbPath | VerbSimple ) ObjectList )? )*
 public typealias PropertyListPath = PropertyListPathNotEmpty?
-public struct PropertyListPathNotEmpty {
+public struct PropertyListPathNotEmpty: Sendable {
     public var verb: Verb
-    public enum Verb {
+    public enum Verb: Sendable {
         case path(VerbPath)
         case simple(VerbSimple)
     }
@@ -586,7 +586,7 @@ public typealias Path = PathAlternative
 public typealias PathAlternative = [PathSequence]
 public typealias PathSequence = [PathEltOrInverse]
 
-public struct PathElt {
+public struct PathElt: Sendable {
     public var primary: PathPrimary
     public var mod: PathMod?
 
@@ -597,13 +597,13 @@ public struct PathElt {
     }
 }
 
-public enum PathEltOrInverse {
+public enum PathEltOrInverse: Sendable {
     case elt(PathElt)
     case hat_elt(PathElt)
 }
 
 /// PathPrimary      ::=      iri | 'a' | '!' PathNegatedPropertySet | '(' Path ')'
-public enum PathPrimary {
+public enum PathPrimary: Sendable {
     case iri(IRI)
     case a
     case pathNegatedPropertySet(PathNegatedPropertySet)
@@ -613,7 +613,7 @@ public enum PathPrimary {
 /// PathNegatedPropertySet      ::=      PathOneInPropertySet | '(' ( PathOneInPropertySet ( '|' PathOneInPropertySet )* )? ')'
 /// PathOneInPropertySet      ::=      iri | 'a' | '^' ( iri | 'a' )
 public typealias PathNegatedPropertySet = [PathOneInPropertySet]
-public enum PathOneInPropertySet {
+public enum PathOneInPropertySet: Sendable {
     case iri(IRI)
     case a
     case hat_iri(IRI)
@@ -621,7 +621,7 @@ public enum PathOneInPropertySet {
 }
 
 /// PathMod      ::=      '?' | '*' | '+'
-public enum PathMod: String {
+public enum PathMod: String, Sendable{
     case question = "?"
     case asterisk = "*"
     case plus = "+"
@@ -630,29 +630,29 @@ public enum PathMod: String {
 /// TriplesNodePath      ::=      CollectionPath |    BlankNodePropertyListPath
 /// CollectionPath      ::=      '(' GraphNodePath+ ')'
 /// BlankNodePropertyListPath      ::=      '[' PropertyListPathNotEmpty ']'
-public enum TriplesNodePath {
+public enum TriplesNodePath: Sendable {
     case collection(CollectionPath)
     case blank(BlankNodePropertyListPath)
 }
-public struct CollectionPath {
+public struct CollectionPath: Sendable {
     public var paths: [GraphNodePath]
 }
 public typealias BlankNodePropertyListPath = PropertyListPathNotEmpty
 
 /// GraphNode      ::=      VarOrTerm |    TriplesNode
 /// GraphNodePath      ::=      VarOrTerm |    TriplesNodePath
-public enum GraphNode {
+public enum GraphNode: Sendable {
     case varOrTerm(VarOrTerm)
     case triplesNode(TriplesNode)
 }
-public enum GraphNodePath {
+public enum GraphNodePath: Sendable {
     case varOrTerm(VarOrTerm)
     case triplesNodePath(TriplesNodePath)
 }
 /// TriplesNode      ::=      Collection |    BlankNodePropertyList
 /// Collection      ::=      '(' GraphNode+ ')'
 /// BlankNodePropertyList      ::=      '[' PropertyListNotEmpty ']'
-public enum TriplesNode {
+public enum TriplesNode: Sendable {
     case collection(Collection)
     case blankNode(BlankNodePropertyList)
 }
@@ -662,7 +662,7 @@ public typealias BlankNodePropertyList = PropertyListNotEmpty
 /// PropertyListNotEmpty      ::=      Verb ObjectList ( ';' ( Verb ObjectList )? )*
 /// ObjectList      ::=      Object ( ',' Object )*
 /// Object      ::=      GraphNode
-public struct PropertyListNotEmpty {
+public struct PropertyListNotEmpty: Sendable {
     public var list: [(Verb, ObjectList)]
 }
 public typealias ObjectList = [Object]
@@ -670,7 +670,7 @@ public typealias Object = GraphNode
 
 /// Verb      ::=      VarOrIri | 'a'
 /// VarOrIri      ::=      Var | iri
-public enum Verb {
+public enum Verb: Sendable {
     case `var`(Var)
     case iri(IRI)
     case a
