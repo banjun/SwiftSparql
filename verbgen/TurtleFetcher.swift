@@ -11,13 +11,14 @@ struct TurtleFetcher {
 
     @available(macOS 10.15, *)
     func fetch() async -> [TurtleDoc] {
-        await withUnsafeContinuation { fetch(completion: $0.resume) }
+        await withUnsafeContinuation { c in fetch { c.resume(returning: $0) } }
     }
-    func fetch(completion: @escaping ([TurtleDoc]) -> Void) {
+    func fetch(completion: @Sendable @escaping ([TurtleDoc]) -> Void) {
         SignalProducer(urls)
             .on(value: {print("fetching \($0)")})
             .flatMap(.concat) { url in
                 SignalProducer<Data, Never> { observer, lifetime in
+                    nonisolated(unsafe) let observer = observer
                     URLSession.shared.dataTask(with: url) { data, response, error in
                         guard let data = data else { fatalError(String(describing: error)) }
                         print("fetched \(url)")

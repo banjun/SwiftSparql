@@ -30,10 +30,8 @@ struct VerbQuery {
                     ])))
     }
     
-    func fetch(completion: @escaping ([Response]) -> Void) {
-        URLSession.shared.dataTask(with: Request(endpoint: endpoint, query: query).request) { (data, response, error) in
-            guard let data = data else {fatalError()}
-            completion(try! SRJBindingsDecoder().decode(Response.self, from: data))
-            }.resume()
+    func fetch() async -> [Response] {
+        let (data, _) = try! await URLSession.shared.data(for: Request(endpoint: endpoint, query: query).request)
+        return try! SRJBindingsDecoder().decode(Response.self, from: data)
     }
 }

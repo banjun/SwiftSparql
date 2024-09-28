@@ -1,6 +1,6 @@
 import Foundation
 
-public struct TurtleDoc {
+public struct TurtleDoc: Sendable {
     public enum Token: Equatable {
         // Turtle terminaters
         case IRIREF(String)
@@ -36,13 +36,13 @@ public struct TurtleDoc {
 
     public var statements: [Statement]
 
-    public enum Statement {
+    public enum Statement: Sendable {
         case directive(Directive)
         case triple(Triple)
     }
 
     // [3]    directive    ::=    prefixID | base | sparqlPrefix | sparqlBase
-    public enum Directive {
+    public enum Directive: Sendable {
         case prefixID(PNameNS, IRIRef)
         case base(IRIRef)
         case sparqlPrefix(PNameNS, IRIRef)
@@ -50,36 +50,36 @@ public struct TurtleDoc {
     }
 
     // [6]    triples    ::=    subject predicateObjectList | blankNodePropertyList predicateObjectList?
-    public enum Triple {
+    public enum Triple: Sendable {
         case subject(Subject, PredicateObjectList)
         case blank(BlankNodePropertyList, PredicateObjectList?)
     }
 
     // [7]    predicateObjectList    ::=    verb objectList (';' (verb objectList)?)*
-    public struct PredicateObjectList {
+    public struct PredicateObjectList: Sendable {
         public var head: (Verb, ObjectList)
         public var tail: [(Verb, ObjectList)]
         public var list: [(Verb, ObjectList)] {return [head] + tail}
     }
 
     // subject    ::=    iri | BlankNode | collection
-    public enum Subject {
+    public enum Subject: Sendable {
         case iri(IRI)
         case blank(BlankNode)
         case collection(Collection)
     }
 
-    public enum Verb {
+    public enum Verb: Sendable {
         case iri(IRI)
         case a
     }
 
-    public struct BlankNodePropertyList {
+    public struct BlankNodePropertyList: Sendable {
         public var predicateObjectList: PredicateObjectList
     }
 
     // [8]    objectList    ::=    object (',' object)*
-    public struct ObjectList {
+    public struct ObjectList: Sendable {
         public var head: Object
         public var tail: [Object]
         public var list: [Object] {return [head] + tail}
@@ -88,7 +88,7 @@ public struct TurtleDoc {
     public typealias Collection = [Object]
 
     // [12]    object    ::=    iri | BlankNode | collection | blankNodePropertyList | literal
-    public indirect enum Object {
+    public indirect enum Object: Sendable {
         case iri(IRI)
         case blankNode(BlankNode)
         case collection(Collection)
@@ -97,7 +97,7 @@ public struct TurtleDoc {
     }
 
     // [13]    literal    ::=    RDFLiteral | NumericLiteral | BooleanLiteral
-    public enum Literal {
+    public enum Literal: Sendable {
         case rdf(RDFLiteral)
         case numeric(NumericLiteral)
         case boolean(Bool)
@@ -688,7 +688,7 @@ extension IRI {
     }
 }
 
-public struct SubjectDescription {
+public struct SubjectDescription: Sendable {
     public var subject: TurtleDoc.Subject
     public var a: [IRI] = []
     public var label: String?
