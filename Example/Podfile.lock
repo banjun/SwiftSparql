@@ -1,6 +1,6 @@
 PODS:
   - FootlessParser (0.5.2)
-  - SwiftSparql (0.14.0):
+  - SwiftSparql (0.15.0):
     - FootlessParser (~> 0.5)
 
 DEPENDENCIES:
@@ -16,7 +16,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   FootlessParser: 521916d592fa6cba06cfca6f4b5d4f5a2d49175a
-  SwiftSparql: bd86ce1721c29a953d66404f21b3e87de009928f
+  SwiftSparql: 329377685957ea469d90d9aa6df11a1d0c60a5fe
 
 PODFILE CHECKSUM: 7910f3e490dc5d563bd043fce2ccc504fc56a246
 
