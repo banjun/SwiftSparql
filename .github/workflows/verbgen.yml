@@ -9,6 +9,9 @@ jobs:
   re-generate:
     runs-on: macOS-14
     steps:
+    - uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: '^16.0.0'
     - uses: actions/checkout@v4
     - run: swift run -c release verbgen SwiftSparql/Classes/verbgen
     - uses: peter-evans/create-pull-request@v6
