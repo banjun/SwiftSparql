@@ -1337,12 +1337,12 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
 }
 
 public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == ImasEvent {
-    /// actor: An actor, e.g. in TV, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip.
+    /// actor: An actor (individual or a group), e.g. in TV, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip.
     func schemaActor(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: SchemaSchema.verb("actor"), value: [.varOrTerm(.term(v))])
     }
     
-    /// actor: An actor, e.g. in TV, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip.
+    /// actor: An actor (individual or a group), e.g. in TV, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip.
     func schemaActor(is v: Var) -> TripleBuilder<State> {
         return appended(verb: SchemaSchema.verb("actor"), value: [.var(v)])
     }
@@ -1525,12 +1525,12 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
 }
 
 public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == ImasLive {
-    /// actor: An actor, e.g. in TV, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip.
+    /// actor: An actor (individual or a group), e.g. in TV, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip.
     func schemaActor(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: SchemaSchema.verb("actor"), value: [.varOrTerm(.term(v))])
     }
     
-    /// actor: An actor, e.g. in TV, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip.
+    /// actor: An actor (individual or a group), e.g. in TV, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip.
     func schemaActor(is v: Var) -> TripleBuilder<State> {
         return appended(verb: SchemaSchema.verb("actor"), value: [.var(v)])
     }
@@ -1667,12 +1667,12 @@ public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, 
 }
 
 public extension TripleBuilder where State: TripleBuilderStateRDFTypeBoundType, State.RDFType == ImasSetlistNumber {
-    /// actor: An actor, e.g. in TV, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip.
+    /// actor: An actor (individual or a group), e.g. in TV, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip.
     func schemaActor(is v: GraphTerm) -> TripleBuilder<State> {
         return appended(verb: SchemaSchema.verb("actor"), value: [.varOrTerm(.term(v))])
     }
     
-    /// actor: An actor, e.g. in TV, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip.
+    /// actor: An actor (individual or a group), e.g. in TV, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip.
     func schemaActor(is v: Var) -> TripleBuilder<State> {
         return appended(verb: SchemaSchema.verb("actor"), value: [.var(v)])
     }
